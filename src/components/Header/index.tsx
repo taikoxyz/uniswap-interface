@@ -14,8 +14,8 @@ import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 
 import { YellowCard } from '../Card'
-import Settings from '../Settings'
 import Menu from '../Menu'
+import Settings from '../Settings'
 
 import Row, { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
@@ -132,7 +132,8 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
-  [ChainId.SEPOLIA]: 'Sepolia'
+  [ChainId.SEPOLIA]: 'Sepolia',
+  [ChainId.HARDHAT]: 'hardhat'
 }
 
 export default function Header() {

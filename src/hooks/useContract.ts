@@ -66,6 +66,9 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
       case ChainId.SEPOLIA:
         address = '0x457f57fEF8c189EB688f27A7E0674dc610810897'
         break
+      case ChainId.HARDHAT:
+        address = '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9'
+        break
     }
   }
   return useContract(address, ENS_ABI, withSignerIfPossible)

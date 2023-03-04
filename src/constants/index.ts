@@ -3,7 +3,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0xf0cC3752BDE1B65bd32B925b1a672396BF26B77e'
+export const ROUTER_ADDRESS = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'
 
 // a list of tokens by chain
 type ChainTokenList = {
@@ -24,6 +24,7 @@ const WETH_ONLY: ChainTokenList = {
   [ChainId.GÖRLI]: [WETH[ChainId.GÖRLI]],
   [ChainId.KOVAN]: [WETH[ChainId.KOVAN]],
   [ChainId.SEPOLIA]: [WETH[ChainId.SEPOLIA]],
+  [ChainId.HARDHAT]: [WETH[ChainId.HARDHAT]]
 }
 
 // used to construct intermediary pairs for trading
