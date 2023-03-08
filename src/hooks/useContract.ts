@@ -69,6 +69,12 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
       case ChainId.HARDHAT:
         address = '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9'
         break
+      case ChainId.TAIKO:
+        address = '0xf9D9e38B6343aA99EB0d9bF832a61f3111B53Eb0'
+        break
+      case ChainId.TAIKO_INTERNAL_1:
+        address = '0xf9D9e38B6343aA99EB0d9bF832a61f3111B53Eb0'
+        break
     }
   }
   return useContract(address, ENS_ABI, withSignerIfPossible)
