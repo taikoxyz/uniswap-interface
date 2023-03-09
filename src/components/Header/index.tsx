@@ -1,4 +1,5 @@
 import { ChainId } from '@uniswap/sdk'
+import React from 'react'
 import { isMobile } from 'react-device-detect'
 import { Text } from 'rebass'
 
@@ -132,9 +133,9 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan',
   [ChainId.SEPOLIA]: 'Sepolia',
-  [ChainId.HARDHAT]: 'hardhat',
-  [ChainId.TAIKO]: 'taiko',
-  [ChainId.TAIKO_INTERNAL_1]: 'taiko-internal-1'
+  [ChainId.HARDHAT]: 'Hardhat',
+  [ChainId.TAIKO]: 'Taiko',
+  [ChainId.TAIKO_INTERNAL_1]: 'Taiko_Internal_1'
 }
 
 export default function Header() {

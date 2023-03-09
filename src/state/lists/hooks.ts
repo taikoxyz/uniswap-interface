@@ -38,7 +38,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.MAINNET]: {},
   [ChainId.SEPOLIA]: {},
   [ChainId.HARDHAT]: {},
-  [ChainId.TAIKO_INTERNAL_1]: {},
+  [ChainId.TAIKO]: {},
   [ChainId.TAIKO_INTERNAL_1]: {}
 }
 
