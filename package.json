@@ -55,7 +55,7 @@
     "lodash.flatmap": "^4.5.0",
     "multicodec": "^2.0.0",
     "multihashes": "^3.0.1",
-    "patch-package": "^6.5.1",
+    "patch-package": "^7.0.0",
     "polished": "^3.3.2",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^1.17.0",
