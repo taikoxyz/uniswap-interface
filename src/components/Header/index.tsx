@@ -10,12 +10,12 @@ import { useETHBalances } from '../../state/wallet/hooks'
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
 
-import  { RowBetween } from '../Row'
-import Web3Status from '../Web3Status'
+import { RowBetween } from '../Row'
 import VersionSwitch from './VersionSwitch'
 import { StyledLink } from '../../theme/components'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { TaikoIcon, TaikoIconLight } from '../TaikoIcon/TaikoIcon'
+import { Web3Button } from '@web3modal/react'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -56,7 +56,6 @@ const Title = styled.a`
     cursor: pointer;
   }
 `
-
 
 const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
@@ -126,25 +125,17 @@ export default function Header() {
       <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem 1rem 0 1rem">
         <HeaderElement>
           <Title href=".">
-            {isDark ?
-               <TaikoIcon
-                width="120"
-                viewBox="0 0 340 94"
-                data-testid="taiko-logo"
-             
-              />
-              :
-              <TaikoIconLight
-                width="120"
-                viewBox="0 0 340 94"
-                data-testid="taiko-logo"
-            />}
-          
+            {isDark ? (
+              <TaikoIcon width="120" viewBox="0 0 340 94" data-testid="taiko-logo" />
+            ) : (
+              <TaikoIconLight width="120" viewBox="0 0 340 94" data-testid="taiko-logo" />
+            )}
           </Title>
-              <StyledLink target={"_blank"} rel={"noreferrer"} href={"https://taiko.xyz/docs/guides/swap-tokens"} >Guide ↗</StyledLink>
+          <StyledLink target={'_blank'} rel={'noreferrer'} href={process.env.REACT_APP_PUBLIC_GUIDE_URL}>
+            Guide ↗
+          </StyledLink>
         </HeaderElement>
 
-        
         <HeaderControls>
           <HeaderElement>
             <TestnetWrapper>
@@ -156,7 +147,8 @@ export default function Header() {
                   {userEthBalance?.toSignificant(4)} ETH
                 </BalanceText>
               ) : null}
-              <Web3Status />
+              {/* <Web3Status /> */}
+              <Web3Button />
             </AccountElement>
           </HeaderElement>
           <HeaderElementWrap>
