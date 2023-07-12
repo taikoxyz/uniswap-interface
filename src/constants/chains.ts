@@ -61,7 +61,7 @@ export const taikoChain: Chain = {
   }
 }
 
-export const chains = [mainnetChain, taikoChain]
+export const customChains = [mainnetChain, taikoChain]
 
 export const chainContractsMap = {
   [PUBLIC_L1_CHAIN_ID]: {

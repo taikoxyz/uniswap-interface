@@ -24,18 +24,20 @@ import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { chains, taikoChain } from '../constants/chains'
+import { configureChains, createConfig, mainnet, WagmiConfig } from 'wagmi'
+import { customChains } from '../constants/chains'
 
 const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECT_ID ?? ''
 
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+const chains = [mainnet, ...customChains]
 
+const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
+  connectors: w3mConnectors({ chains, projectId }),
   publicClient
 })
+
 const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 const AppWrapper = styled.div`
@@ -112,15 +114,7 @@ export default function App() {
         </WagmiConfig>
         <Web3Modal
           projectId={projectId}
-          defaultChain={taikoChain}
           ethereumClient={ethereumClient}
-          enableNetworkView={true}
-          // chainImages={[
-          //   {
-          //     1: 'https://example.com/ethereum.png',
-          //     137: 'https://example.com/polygon.webp'
-          //   }
-          // ]}
           themeVariables={
             {
               // TODO: customize the theme variables

@@ -28,7 +28,7 @@ export interface TransactionState {
 
 export const initialState: TransactionState = {}
 
-export default createReducer(initialState, builder =>
+export default createReducer(initialState, (builder) =>
   builder
     .addCase(addTransaction, (transactions, { payload: { chainId, from, hash, approval, summary } }) => {
       if (transactions[chainId]?.[hash]) {

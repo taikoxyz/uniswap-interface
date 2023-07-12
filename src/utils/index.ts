@@ -8,8 +8,7 @@ import IUniswapV2Router02 from '@uniswap/v2-periphery/build/IUniswapV2Router02.j
 import { ROUTER_ADDRESS } from '../constants'
 import { TokenAddressMap } from '../state/lists/hooks'
 
-const IUniswapV2Router02ABI = IUniswapV2Router02.abi;
-
+const IUniswapV2Router02ABI = IUniswapV2Router02.abi
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
