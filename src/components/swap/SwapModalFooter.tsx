@@ -33,10 +33,10 @@ export default function SwapModalFooter({
 }) {
   const [showInverted, setShowInverted] = useState<boolean>(false)
   const theme = useContext(ThemeContext)
-  const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
-    allowedSlippage,
-    trade
-  ])
+  const slippageAdjustedAmounts = useMemo(
+    () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
+    [allowedSlippage, trade]
+  )
   const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
 

@@ -33,7 +33,7 @@ interface BatchItem {
 }
 
 class MiniRpcProvider implements AsyncSendable {
-  public readonly isMetaMask: false = false
+  public readonly isMetaMask = false as const
   public readonly chainId: number
   public readonly url: string
   public readonly host: string

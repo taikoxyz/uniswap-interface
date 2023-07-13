@@ -11,6 +11,7 @@ import DoubleCurrencyLogo from '../DoubleLogo'
 import { useActiveWeb3React } from '../../hooks'
 import { ThemeContext } from 'styled-components'
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 interface PositionCardProps extends RouteComponentProps<{}> {
   token: Token
   V1LiquidityBalance: TokenAmount

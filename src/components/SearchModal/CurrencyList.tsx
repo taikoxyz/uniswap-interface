@@ -122,7 +122,7 @@ function CurrencyRow({
             <TYPE.main fontWeight={500}>
               Added by user
               <LinkStyledButton
-                onClick={event => {
+                onClick={(event) => {
                   event.stopPropagation()
                   if (chainId && currency instanceof Token) removeToken(chainId, currency.address)
                 }}
@@ -135,7 +135,7 @@ function CurrencyRow({
             <TYPE.main fontWeight={500}>
               Found by address
               <LinkStyledButton
-                onClick={event => {
+                onClick={(event) => {
                   event.stopPropagation()
                   if (currency instanceof Token) addToken(currency)
                 }}

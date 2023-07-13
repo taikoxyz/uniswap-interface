@@ -184,7 +184,7 @@ export default function AddLiquidity({
       gasLimit: calculateGasMargin(estimatedGasLimit)
     })
     console.log('addLiquidityETH response:', response)
-    const f = async function() {
+    const f = async function () {
       setAttemptingTxn(false)
       addTransaction(response, {
         summary:
@@ -207,7 +207,7 @@ export default function AddLiquidity({
       })
     }
 
-    await f().catch(error => {
+    await f().catch((error) => {
       setAttemptingTxn(false)
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {
@@ -250,8 +250,9 @@ export default function AddLiquidity({
           </Text>
         </Row>
         <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
+          {`Output is estimated. If the price changes by more than ${
+            allowedSlippage / 100
+          }% your transaction will revert.`}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -270,9 +271,8 @@ export default function AddLiquidity({
     )
   }
 
-  const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-    currencies[Field.CURRENCY_A]?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
+  const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${currencies[Field.CURRENCY_A]
+    ?.symbol} and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
 
   const handleCurrencyASelect = useCallback(
     (currencyA: Currency) => {

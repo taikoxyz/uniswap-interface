@@ -83,14 +83,14 @@ export function CurrencySearch({
     const symbolMatch = searchQuery
       .toLowerCase()
       .split(/\s+/)
-      .filter(s => s.length > 0)
+      .filter((s) => s.length > 0)
     if (symbolMatch.length > 1) return sorted
 
     return [
       ...(searchToken ? [searchToken] : []),
       // sort any exact symbol matches first
-      ...sorted.filter(token => token.symbol?.toLowerCase() === symbolMatch[0]),
-      ...sorted.filter(token => token.symbol?.toLowerCase() !== symbolMatch[0])
+      ...sorted.filter((token) => token.symbol?.toLowerCase() === symbolMatch[0]),
+      ...sorted.filter((token) => token.symbol?.toLowerCase() !== symbolMatch[0])
     ]
   }, [filteredTokens, searchQuery, searchToken, tokenComparator])
 
@@ -163,7 +163,7 @@ export function CurrencySearch({
           <Text fontSize={14} fontWeight={500}>
             Token Name
           </Text>
-          <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder(iso => !iso)} />
+          <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder((iso) => !iso)} />
         </RowBetween>
       </PaddedColumn>
 
