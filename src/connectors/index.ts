@@ -5,13 +5,12 @@ import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 
 import { NetworkConnector } from './NetworkConnector'
 
-// import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 import { customChains } from '../constants/chains'
 
 export const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
-export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1')
+export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_PUBLIC_L2_CHAIN_ID ?? '1')
 
 if (typeof NETWORK_URL === 'undefined') {
   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)

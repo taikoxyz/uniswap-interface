@@ -68,13 +68,6 @@ const AccountElement = styled.div<{ active: boolean }>`
   }
 `
 
-const TestnetWrapper = styled.div`
-  white-space: nowrap;
-  width: fit-content;
-  margin-left: 10px;
-  pointer-events: auto;
-`
-
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
@@ -115,9 +108,6 @@ export default function Header() {
 
         <HeaderControls>
           <HeaderElement>
-            <TestnetWrapper>
-              {/* {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>} */}
-            </TestnetWrapper>
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
                 <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
@@ -131,7 +121,6 @@ export default function Header() {
           <HeaderElementWrap>
             <VersionSwitch />
             <Settings />
-            {/* <Menu /> */}
           </HeaderElementWrap>
         </HeaderControls>
       </RowBetween>
