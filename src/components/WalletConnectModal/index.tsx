@@ -38,9 +38,6 @@ export default function WalletConnectModal() {
         '--w3m-overlay-backdrop-filter': 'blur(10px)',
         '--w3m-accent-color': theme.primary1,
         '--w3m-background-color': theme.primary1
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // '--w3m-color-bg-1': theme.bg2
       }}
       themeMode={isDark ? 'dark' : 'light'}
     />

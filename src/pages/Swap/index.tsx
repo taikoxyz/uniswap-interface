@@ -48,6 +48,7 @@ import isTaikoChain from '../../utils/isTaikoChain'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import switchNetwork from '../../utils/switchNetwork'
 import { NETWORK_CHAIN_ID, NETWORK_URL } from '../../connectors'
+import { useAccount, useNetwork } from 'wagmi'
 
 const MaskBlock = styled.div`
   position: absolute;
@@ -66,8 +67,10 @@ const MaskBlock = styled.div`
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
-  const { chainId, error } = useWeb3React()
-  const showMask = !isTaikoChain(chainId) || error instanceof UnsupportedChainIdError
+  const { error } = useWeb3React()
+  const { chain } = useNetwork()
+  const { isConnected } = useAccount()
+  const showMask = !isTaikoChain(chain?.id) || error instanceof UnsupportedChainIdError
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -307,7 +310,7 @@ export default function Swap() {
                 switchNetwork(NETWORK_CHAIN_ID, 'Taiko', NETWORK_URL as string)
               }}
             >
-              Connect to Taiko network
+              {!isConnected ? 'You need to connect your wallet first' : 'Connect to Taiko network'}
             </Button>
           </MaskBlock>
         )}

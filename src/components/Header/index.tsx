@@ -3,7 +3,6 @@ import { Text } from 'rebass'
 import styled from 'styled-components'
 
 import { useActiveWeb3React } from '../../hooks'
-import { useETHBalances } from '../../state/wallet/hooks'
 
 import Settings from '../Settings'
 
@@ -13,6 +12,7 @@ import { StyledLink } from '../../theme/components'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { TaikoIcon, TaikoIconLight } from '../TaikoIcon/TaikoIcon'
 import { Web3Button, Web3NetworkSwitch } from '@web3modal/react'
+import { useAccount, useBalance } from 'wagmi'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -88,8 +88,13 @@ const BalanceText = styled(Text)`
 export default function Header() {
   const { account } = useActiveWeb3React()
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
+
+  const { address, isConnected } = useAccount()
+  const { data } = useBalance({
+    address
+  })
+
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem 1rem 0 1rem">
@@ -109,12 +114,12 @@ export default function Header() {
         <HeaderControls>
           <HeaderElement>
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-              {account && userEthBalance ? (
+              {isConnected && data ? (
                 <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                  {userEthBalance?.toSignificant(4)} ETH
+                  {Number(data?.formatted).toFixed(3)} {data?.symbol}
                 </BalanceText>
               ) : null}
-              <Web3NetworkSwitch />
+              {isConnected && <Web3NetworkSwitch />}
               <Web3Button label={'Connect your wallet'} />
             </AccountElement>
           </HeaderElement>
