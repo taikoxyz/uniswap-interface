@@ -22,10 +22,10 @@ import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redir
 import Swap from './Swap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 
-import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { Web3Modal } from '@web3modal/react'
+import { w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { configureChains, createConfig, mainnet, WagmiConfig } from 'wagmi'
 import { customChains } from '../constants/chains'
+import WalletConnectModal from '../components/WalletConnectModal'
 
 const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECT_ID ?? ''
 
@@ -37,8 +37,6 @@ const wagmiConfig = createConfig({
   connectors: w3mConnectors({ chains, projectId }),
   publicClient
 })
-
-const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 const AppWrapper = styled.div`
   display: flex;
@@ -112,15 +110,7 @@ export default function App() {
             </BodyWrapper>
           </AppWrapper>
         </WagmiConfig>
-        <Web3Modal
-          projectId={projectId}
-          ethereumClient={ethereumClient}
-          themeVariables={
-            {
-              // TODO: customize the theme variables
-            }
-          }
-        />
+        <WalletConnectModal />
       </HashRouter>
     </Suspense>
   )

@@ -1,5 +1,3 @@
-import { ChainId } from '@uniswap/sdk'
-import { isMobile } from 'react-device-detect'
 import { Text } from 'rebass'
 
 import styled from 'styled-components'
@@ -7,7 +5,6 @@ import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 
-import { YellowCard } from '../Card'
 import Settings from '../Settings'
 
 import { RowBetween } from '../Row'
@@ -15,7 +12,7 @@ import VersionSwitch from './VersionSwitch'
 import { StyledLink } from '../../theme/components'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { TaikoIcon, TaikoIconLight } from '../TaikoIcon/TaikoIcon'
-import { Web3Button } from '@web3modal/react'
+import { Web3Button, Web3NetworkSwitch } from '@web3modal/react'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -78,13 +75,6 @@ const TestnetWrapper = styled.div`
   pointer-events: auto;
 `
 
-const NetworkCard = styled(YellowCard)`
-  width: fit-content;
-  margin-right: 10px;
-  border-radius: 12px;
-  padding: 8px 12px;
-`
-
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
@@ -102,21 +92,8 @@ const BalanceText = styled(Text)`
   `};
 `
 
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
-  [ChainId.MAINNET]: null,
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan',
-  [ChainId.SEPOLIA]: 'Sepolia',
-  [ChainId.HARDHAT]: 'Hardhat',
-  [ChainId.TAIKO]: 'Taiko',
-  [ChainId.TAIKO_INTERNAL_1]: 'Taiko Internal 1',
-  [ChainId.TAIKO_TESTNET]: 'Taiko (Alpha-3 Testnet)'
-}
-
 export default function Header() {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
@@ -139,7 +116,7 @@ export default function Header() {
         <HeaderControls>
           <HeaderElement>
             <TestnetWrapper>
-              {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
+              {/* {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>} */}
             </TestnetWrapper>
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
@@ -147,8 +124,8 @@ export default function Header() {
                   {userEthBalance?.toSignificant(4)} ETH
                 </BalanceText>
               ) : null}
-              {/* <Web3Status /> */}
-              <Web3Button />
+              <Web3NetworkSwitch />
+              <Web3Button label={'Connect your wallet'} />
             </AccountElement>
           </HeaderElement>
           <HeaderElementWrap>
