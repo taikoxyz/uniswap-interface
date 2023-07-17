@@ -10,10 +10,8 @@ import Copy from './Copy'
 import Transaction from './Transaction'
 
 import { ExternalLink as LinkIcon } from 'react-feather'
-import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
-// import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { injected, walletlink } from '../../connectors'
+import { injected } from '../../connectors'
 import { SUPPORTED_WALLETS } from '../../constants'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import { getEtherscanLink } from '../../utils'
@@ -242,12 +240,6 @@ export default function AccountDetails({
           <Identicon />
         </IconWrapper>
       )
-    } else if (connector === walletlink) {
-      return (
-        <IconWrapper size={16}>
-          <img src={CoinbaseWalletIcon} alt={'coinbase wallet logo'} />
-        </IconWrapper>
-      )
     }
     return null
   }
@@ -269,7 +261,7 @@ export default function AccountDetails({
               <AccountGroupingRow>
                 {formatConnectorName()}
                 <div>
-                  {connector !== injected && connector !== walletlink && (
+                  {connector !== injected && (
                     <WalletAction
                       style={{ fontSize: '.825rem', fontWeight: 400, marginRight: '8px' }}
                       onClick={() => {
