@@ -1,8 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { InjectedConnector } from '@web3-react/injected-connector'
 
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-
 import { NetworkConnector } from './NetworkConnector'
 
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
@@ -27,14 +25,6 @@ export function getNetworkLibrary(): Web3Provider {
 
 export const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42, 31337, 167, 167001, 167005]
-})
-
-// mainnet only
-export const walletlink = new WalletLinkConnector({
-  url: NETWORK_URL,
-  appName: 'Taiko',
-  appLogoUrl:
-    'https://mpng.pngfly.com/20181202/bex/kisspng-emoji-domain-unicorn-pin-badges-sticker-unicorn-tumblr-emoji-unicorn-iphoneemoji-5c046729264a77.5671679315437924251569.jpg'
 })
 
 export const walletconnect = new WalletConnectConnector({

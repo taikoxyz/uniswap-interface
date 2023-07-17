@@ -13,7 +13,7 @@ import { useDarkModeManager } from '../../state/user/hooks'
 import { TaikoIcon, TaikoIconLight } from '../TaikoIcon/TaikoIcon'
 import { Web3Button, Web3NetworkSwitch } from '@web3modal/react'
 import { useAccount, useBalance } from 'wagmi'
-
+import { isMobile } from 'react-device-detect'
 const HeaderFrame = styled.div`
   display: flex;
   align-items: center;
@@ -119,7 +119,7 @@ export default function Header() {
                   {Number(data?.formatted).toFixed(3)} {data?.symbol}
                 </BalanceText>
               ) : null}
-              {isConnected && <Web3NetworkSwitch />}
+              {isConnected && !isMobile && <Web3NetworkSwitch />}
               <Web3Button label={'Connect your wallet'} />
             </AccountElement>
           </HeaderElement>
