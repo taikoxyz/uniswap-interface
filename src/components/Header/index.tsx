@@ -33,6 +33,7 @@ const HeaderFrame = styled.div`
 const HeaderElement = styled.div`
   display: flex;
   align-items: center;
+  margin: 0 0.2rem;
 `
 
 const HeaderElementWrap = styled.div`
@@ -120,8 +121,10 @@ export default function Header() {
                 </BalanceText>
               ) : null}
               {isConnected && !isMobile && <Web3NetworkSwitch />}
-              <Web3Button label={'Connect your wallet'} />
             </AccountElement>
+          </HeaderElement>
+          <HeaderElement>
+            <Web3Button label={'Connect your wallet'} />
           </HeaderElement>
           <HeaderElementWrap>
             <VersionSwitch />
