@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { RowBetween } from '../Row'
 import { AutoColumn } from '../Column'
@@ -35,7 +34,7 @@ const CircleRow = styled.div`
 const Connector = styled.div<{ prevConfirmed?: boolean }>`
   width: 100%;
   height: 2px;
-  background-color: ;
+  background-color:;
   background: linear-gradient(
     90deg,
     ${({ theme, prevConfirmed }) => transparentize(0.5, prevConfirmed ? theme.green1 : theme.primary1)} 0%,

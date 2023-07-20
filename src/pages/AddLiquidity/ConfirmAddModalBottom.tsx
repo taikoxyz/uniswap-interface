@@ -1,5 +1,4 @@
 import { Currency, CurrencyAmount, Fraction, Percent } from '@uniswap/sdk'
-import React from 'react'
 import { Text } from 'rebass'
 import { ButtonPrimary } from '../../components/Button'
 import { RowBetween, RowFixed } from '../../components/Row'
@@ -41,16 +40,15 @@ export function ConfirmAddModalBottom({
       <RowBetween>
         <TYPE.body>Rates</TYPE.body>
         <TYPE.body>
-          {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(4)} ${
-            currencies[Field.CURRENCY_B]?.symbol
-          }`}
+          {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(4)} ${currencies[Field.CURRENCY_B]
+            ?.symbol}`}
         </TYPE.body>
       </RowBetween>
       <RowBetween style={{ justifyContent: 'flex-end' }}>
         <TYPE.body>
-          {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${price?.invert().toSignificant(4)} ${
-            currencies[Field.CURRENCY_A]?.symbol
-          }`}
+          {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${price?.invert().toSignificant(4)} ${currencies[
+            Field.CURRENCY_A
+          ]?.symbol}`}
         </TYPE.body>
       </RowBetween>
       <RowBetween>

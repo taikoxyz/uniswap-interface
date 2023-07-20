@@ -26,7 +26,7 @@ const initialState: SwapState = {
   recipient: null
 }
 
-export default createReducer<SwapState>(initialState, builder =>
+export default createReducer<SwapState>(initialState, (builder) =>
   builder
     .addCase(
       replaceSwapState,
@@ -62,7 +62,7 @@ export default createReducer<SwapState>(initialState, builder =>
         }
       }
     })
-    .addCase(switchCurrencies, state => {
+    .addCase(switchCurrencies, (state) => {
       return {
         ...state,
         independentField: state.independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT,

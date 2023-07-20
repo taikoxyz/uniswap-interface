@@ -1,5 +1,5 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@uniswap/sdk'
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { Currency, CurrencyAmount, JSBI, Token, Trade } from '@uniswap/sdk'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
@@ -48,6 +48,8 @@ import isTaikoChain from '../../utils/isTaikoChain'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import switchNetwork from '../../utils/switchNetwork'
 import { NETWORK_CHAIN_ID, NETWORK_URL } from '../../connectors'
+import { useAccount, useNetwork } from 'wagmi'
+import { useWeb3Modal } from '@web3modal/react'
 
 const MaskBlock = styled.div`
   position: absolute;
@@ -66,8 +68,11 @@ const MaskBlock = styled.div`
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
-  const { chainId, error } = useWeb3React()
-  const showMask = !isTaikoChain(chainId) || error instanceof UnsupportedChainIdError
+  const { error } = useWeb3React()
+  const { chain } = useNetwork()
+  const { isConnected } = useAccount()
+  const showMask = !isTaikoChain(chain?.id) || error instanceof UnsupportedChainIdError
+  const { open } = useWeb3Modal()
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -107,11 +112,11 @@ export default function Swap() {
     currencies,
     inputError: swapInputError
   } = useDerivedSwapInfo()
-  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
-    currencies[Field.INPUT],
-    currencies[Field.OUTPUT],
-    typedValue
-  )
+  const {
+    wrapType,
+    execute: onWrap,
+    inputError: wrapInputError
+  } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const { address: recipientAddress } = useENSAddress(recipient)
   const toggledVersion = useToggledVersion()
@@ -219,7 +224,7 @@ export default function Swap() {
     }
     setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
-      .then(hash => {
+      .then((hash) => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
 
         ReactGA.event({
@@ -237,7 +242,7 @@ export default function Swap() {
           ].join('/')
         })
       })
-      .catch(error => {
+      .catch((error) => {
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
@@ -276,7 +281,7 @@ export default function Swap() {
   }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
 
   const handleInputSelect = useCallback(
-    inputCurrency => {
+    (inputCurrency: Currency) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
     },
@@ -287,9 +292,10 @@ export default function Swap() {
     maxAmountInput && onUserInput(Field.INPUT, maxAmountInput.toExact())
   }, [maxAmountInput, onUserInput])
 
-  const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
-    onCurrencySelection
-  ])
+  const handleOutputSelect = useCallback(
+    (outputCurrency: Currency) => onCurrencySelection(Field.OUTPUT, outputCurrency),
+    [onCurrencySelection]
+  )
 
   return (
     <>
@@ -303,10 +309,12 @@ export default function Swap() {
           <MaskBlock>
             <Button
               onClick={() => {
-                switchNetwork(NETWORK_CHAIN_ID, 'Taiko', NETWORK_URL as string)
+                {
+                  isConnected ? switchNetwork(NETWORK_CHAIN_ID, 'Taiko', NETWORK_URL as string) : open()
+                }
               }}
             >
-              Connect to Taiko network
+              {!isConnected ? 'You need to connect your wallet first' : 'Connect to Taiko network'}
             </Button>
           </MaskBlock>
         )}
