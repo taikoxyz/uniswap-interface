@@ -4,11 +4,12 @@ import { useContext } from 'react'
 import { configureChains, createConfig } from 'wagmi'
 
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { customChains, PUBLIC_L2_CHAIN_ID, PUBLIC_L1_CHAIN_ID } from '../../constants/chains'
+import { customChains, PUBLIC_L2_CHAIN_ID, PUBLIC_L1_CHAIN_ID, PUBLIC_L3_CHAIN_ID } from '../../constants/chains'
 import { useDarkModeManager } from '../../state/user/hooks'
 
 import TaikoIcon from '../../assets/images/taiko-chain.png'
 import EthereumIcon from '../../assets/images/ethereum-chain.png'
+import L3Icon from '../../assets/images/eldfell.svg'
 
 const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECT_ID ?? ''
 const chains = [...customChains]
@@ -53,6 +54,9 @@ const getChainImages = (): { [id: number]: string } => {
         break
       case Number(PUBLIC_L2_CHAIN_ID):
         chainImages[chain.id] = TaikoIcon
+        break
+      case Number(PUBLIC_L3_CHAIN_ID):
+        chainImages[chain.id] = L3Icon
         break
       default:
         break

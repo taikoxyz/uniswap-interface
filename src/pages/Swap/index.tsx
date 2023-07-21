@@ -45,9 +45,8 @@ import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 import isTaikoChain from '../../utils/isTaikoChain'
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import switchNetwork from '../../utils/switchNetwork'
-import { NETWORK_CHAIN_ID, NETWORK_URL } from '../../connectors'
+import { NETWORK_CHAIN_ID, NETWORK_URL, isL3Swap } from '../../connectors'
 import { useAccount, useNetwork } from 'wagmi'
 import { useWeb3Modal } from '@web3modal/react'
 
@@ -68,10 +67,14 @@ const MaskBlock = styled.div`
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
-  const { error } = useWeb3React()
   const { chain } = useNetwork()
   const { isConnected } = useAccount()
-  const showMask = !isTaikoChain(chain?.id) || error instanceof UnsupportedChainIdError
+  const showMask = () => {
+    if (isTaikoChain(chain?.id) && chain?.id === NETWORK_CHAIN_ID) {
+      return false
+    }
+    return true
+  }
   const { open } = useWeb3Modal()
 
   // token warning stuff
@@ -305,7 +308,7 @@ export default function Swap() {
         onConfirm={handleConfirmTokenWarning}
       />
       <AppBody>
-        {showMask && (
+        {showMask() && (
           <MaskBlock>
             <Button
               onClick={() => {
@@ -314,7 +317,11 @@ export default function Swap() {
                 }
               }}
             >
-              {!isConnected ? 'You need to connect your wallet first' : 'Connect to Taiko network'}
+              {!isConnected
+                ? 'You need to connect your wallet first'
+                : isL3Swap
+                ? 'Connect to Taiko L3 network'
+                : 'Connect to Taiko L2 network'}
             </Button>
           </MaskBlock>
         )}

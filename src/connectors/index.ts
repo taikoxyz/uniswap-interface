@@ -7,8 +7,18 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 import { customChains } from '../constants/chains'
 
+export const isL3Swap = process.env.REACT_APP_L3_ENABLED ?? false
+
 export const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
-export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_PUBLIC_L2_CHAIN_ID ?? '1')
+
+let networkChainId: number
+if (isL3Swap) {
+  networkChainId = parseInt(process.env.REACT_APP_PUBLIC_L3_CHAIN_ID ?? '1')
+} else {
+  networkChainId = parseInt(process.env.REACT_APP_PUBLIC_L2_CHAIN_ID ?? '1')
+}
+
+export const NETWORK_CHAIN_ID = networkChainId
 
 if (typeof NETWORK_URL === 'undefined') {
   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
@@ -24,7 +34,7 @@ export function getNetworkLibrary(): Web3Provider {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42, 31337, 167, 167001, 167005]
+  supportedChainIds: [1, 3, 4, 5, 42, 31337, 167, 167001, 167005, 167006]
 })
 
 export const walletconnect = new WalletConnectConnector({

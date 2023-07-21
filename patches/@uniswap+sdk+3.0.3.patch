@@ -42,7 +42,7 @@ index 3b5b50b..9cb1d4c 100644
 +    167006: Token;
  };
 diff --git a/node_modules/@uniswap/sdk/dist/sdk.cjs.development.js b/node_modules/@uniswap/sdk/dist/sdk.cjs.development.js
-index a4450f3..0588b10 100644
+index a4450f3..4046cd4 100644
 --- a/node_modules/@uniswap/sdk/dist/sdk.cjs.development.js
 +++ b/node_modules/@uniswap/sdk/dist/sdk.cjs.development.js
 @@ -2,7 +2,7 @@
@@ -200,7 +200,7 @@ index a4450f3..0588b10 100644
 +  _WETH[exports.ChainId.TAIKO] = /*#__PURE__*/new Token(exports.ChainId.TAIKO, '0x582232A9462C0D113ec7263f69b8685034219a9C', 18, 'WETH', 'Wrapped Ether'),
 +  _WETH[exports.ChainId.TAIKO_INTERNAL_1] = /*#__PURE__*/new Token(exports.ChainId.TAIKO_INTERNAL_1, '0xBfd71D0343eb812364fbE911A0E6095Ce284E023', 18, 'WETH', 'Wrapped Ether'),
 +  _WETH[exports.ChainId.TAIKO_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.TAIKO_TESTNET, '0x1017F42D1D3E7D490eA3CC4C95591c339ba71AC5', 18, 'WETH', 'Wrapped Ether'), 
-+  _WETH[exports.ChainId.TAIKO_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.TAIKO_TESTNET_, '0x1017F42D1D3E7D490eA3CC4C95591c339ba71AC5', 18, 'WETH', 'Wrapped Ether'), _WETH);
++  _WETH[exports.ChainId.TAIKO_TESTNET_L3] = /*#__PURE__*/new Token(exports.ChainId.TAIKO_TESTNET_L3, '0x1017F42D1D3E7D490eA3CC4C95591c339ba71AC5', 18, 'WETH', 'Wrapped Ether'), _WETH);
  
  var _toSignificantRoundin, _toFixedRounding;
  var Decimal = /*#__PURE__*/toFormat(_Decimal);
@@ -838,7 +838,7 @@ index a4450f3..0588b10 100644
          return new Pair(new TokenAmount(tokenA, balances[0]), new TokenAmount(tokenB, balances[1]));
        });
 diff --git a/node_modules/@uniswap/sdk/dist/sdk.esm.js b/node_modules/@uniswap/sdk/dist/sdk.esm.js
-index 6c34a78..c0dce04 100644
+index 6c34a78..269b77a 100644
 --- a/node_modules/@uniswap/sdk/dist/sdk.esm.js
 +++ b/node_modules/@uniswap/sdk/dist/sdk.esm.js
 @@ -1,16 +1,17 @@
@@ -983,7 +983,7 @@ index 6c34a78..c0dce04 100644
 +  _WETH[ChainId.TAIKO] = /*#__PURE__*/new Token(ChainId.TAIKO, '0x582232A9462C0D113ec7263f69b8685034219a9C', 18, 'WETH', 'Wrapped Ether'),
 +  _WETH[ChainId.TAIKO_INTERNAL_1] = /*#__PURE__*/new Token(ChainId.TAIKO_INTERNAL_1, '0xBfd71D0343eb812364fbE911A0E6095Ce284E023', 18, 'WETH', 'Wrapped Ether'),
 +  _WETH[ChainId.TAIKO_TESTNET] = /*#__PURE__*/new Token(ChainId.TAIKO_TESTNET, '0x1017F42D1D3E7D490eA3CC4C95591c339ba71AC5', 18, 'WETH', 'Wrapped Ether'),
-+  _WETH[ChainId.TAIKO_TESTNET] = /*#__PURE__*/new Token(ChainId.TAIKO_TESTNET_L3, '0x1017F42D1D3E7D490eA3CC4C95591c339ba71AC5', 18, 'WETH', 'Wrapped Ether'),
++  _WETH[ChainId.TAIKO_TESTNET_L3] = /*#__PURE__*/new Token(ChainId.TAIKO_TESTNET_L3, '0x1017F42D1D3E7D490eA3CC4C95591c339ba71AC5', 18, 'WETH', 'Wrapped Ether'),
 +  _WETH);
  
  var _toSignificantRoundin, _toFixedRounding;
