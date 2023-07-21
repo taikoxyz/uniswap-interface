@@ -7,7 +7,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 import { customChains } from '../constants/chains'
 
-export const isL3Swap = process.env.REACT_APP_L3_ENABLED ?? false
+export const isL3Swap = process.env.REACT_APP_L3_ENABLED?.toLowerCase() === 'true' || false
 
 export const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
 

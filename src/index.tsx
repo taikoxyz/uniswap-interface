@@ -2,8 +2,8 @@ import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import 'inter-ui'
 import { StrictMode } from 'react'
 import { isMobile } from 'react-device-detect'
-import ReactDOM from 'react-dom'
 import ReactGA from 'react-ga'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { NetworkContextName } from './constants'
 import './i18n'
@@ -51,8 +51,11 @@ function Updaters() {
     </>
   )
 }
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Root element not found') // Throw an error if rootElement is not found
+const root = createRoot(rootElement)
 
-ReactDOM.render(
+root.render(
   <StrictMode>
     <FixedGlobalStyle />
     <Web3ReactProvider getLibrary={getLibrary}>
@@ -66,6 +69,5 @@ ReactDOM.render(
         </Provider>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
-  </StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 )
