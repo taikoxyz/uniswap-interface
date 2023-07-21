@@ -100,7 +100,7 @@ function useSwapCallArguments(
         )
         break
     }
-    return swapMethods.map(parameters => ({ parameters, contract }))
+    return swapMethods.map((parameters) => ({ parameters, contract }))
   }, [account, allowedSlippage, chainId, deadline, library, recipient, trade, v1Exchange])
 }
 
@@ -139,7 +139,7 @@ export function useSwapCallback(
       state: SwapCallbackState.VALID,
       callback: async function onSwap(): Promise<string> {
         const estimatedCalls: EstimatedSwapCall[] = await Promise.all(
-          swapCalls.map(call => {
+          swapCalls.map((call) => {
             const {
               parameters: { methodName, args, value },
               contract
@@ -147,21 +147,21 @@ export function useSwapCallback(
             const options = !value || isZero(value) ? {} : { value }
 
             return contract.estimateGas[methodName](...args, options)
-              .then(gasEstimate => {
+              .then((gasEstimate) => {
                 return {
                   call,
                   gasEstimate
                 }
               })
-              .catch(gasError => {
+              .catch((gasError) => {
                 console.debug('Gas estimate failed, trying eth_call to extract error', call)
 
                 return contract.callStatic[methodName](...args, options)
-                  .then(result => {
+                  .then((result) => {
                     console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
                     return { call, error: new Error('Unexpected issue with estimating the gas. Please try again.') }
                   })
-                  .catch(callError => {
+                  .catch((callError) => {
                     console.debug('Call threw error', call, callError)
                     let errorMessage: string
                     switch (callError.reason) {

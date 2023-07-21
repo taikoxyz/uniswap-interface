@@ -13,7 +13,7 @@ const initialState: MintState = {
   otherTypedValue: ''
 }
 
-export default createReducer<MintState>(initialState, builder =>
+export default createReducer<MintState>(initialState, (builder) =>
   builder
     .addCase(resetMintState, () => initialState)
     .addCase(typeInput, (state, { payload: { field, typedValue, noLiquidity } }) => {

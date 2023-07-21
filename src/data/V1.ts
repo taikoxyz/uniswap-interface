@@ -55,7 +55,7 @@ function useMockV1Pair(inputCurrency?: Currency): MockV1Pair | undefined {
 export function useAllTokenV1Exchanges(): { [exchangeAddress: string]: Token } {
   const allTokens = useAllTokens()
   const factory = useV1FactoryContract()
-  const args = useMemo(() => Object.keys(allTokens).map(tokenAddress => [tokenAddress]), [allTokens])
+  const args = useMemo(() => Object.keys(allTokens).map((tokenAddress) => [tokenAddress]), [allTokens])
 
   const data = useSingleContractMultipleData(factory, 'getExchange', args, NEVER_RELOAD)
 
@@ -79,7 +79,7 @@ export function useUserHasLiquidityInAllTokens(): boolean | undefined {
 
   const v1ExchangeLiquidityTokens = useMemo(
     () =>
-      chainId ? Object.keys(exchanges).map(address => new Token(chainId, address, 18, 'UNI-V1', 'Uniswap V1')) : [],
+      chainId ? Object.keys(exchanges).map((address) => new Token(chainId, address, 18, 'UNI-V1', 'Uniswap V1')) : [],
     [chainId, exchanges]
   )
 
@@ -87,7 +87,7 @@ export function useUserHasLiquidityInAllTokens(): boolean | undefined {
 
   return useMemo(
     () =>
-      Object.keys(balances).some(tokenAddress => {
+      Object.keys(balances).some((tokenAddress) => {
         const b = balances[tokenAddress]?.raw
         return b && JSBI.greaterThan(b, JSBI.BigInt(0))
       }),
@@ -137,7 +137,7 @@ export function useV1Trade(
 }
 
 export function getTradeVersion(trade?: Trade): Version | undefined {
-  const isV1 = trade?.route?.pairs?.some(pair => pair instanceof MockV1Pair)
+  const isV1 = trade?.route?.pairs?.some((pair) => pair instanceof MockV1Pair)
   if (isV1) return Version.v1
   if (isV1 === false) return Version.v2
   return undefined

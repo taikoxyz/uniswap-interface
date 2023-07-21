@@ -1,5 +1,5 @@
 import { Trade, TradeType } from '@uniswap/sdk'
-import React, { useContext, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import { ArrowDown, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
@@ -26,10 +26,10 @@ export default function SwapModalHeader({
   showAcceptChanges: boolean
   onAcceptChanges: () => void
 }) {
-  const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
-    trade,
-    allowedSlippage
-  ])
+  const slippageAdjustedAmounts = useMemo(
+    () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
+    [trade, allowedSlippage]
+  )
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 

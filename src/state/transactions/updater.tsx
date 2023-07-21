@@ -7,6 +7,7 @@ import { checkedTransaction, finalizeTransaction } from './actions'
 
 export function shouldCheck(
   lastBlockNumber: number,
+  // eslint-disable-next-line @typescript-eslint/ban-types
   tx: { addedTime: number; receipt?: {}; lastCheckedBlockNumber?: number }
 ): boolean {
   if (tx.receipt) return false
@@ -32,7 +33,7 @@ export default function Updater(): null {
   const lastBlockNumber = useBlockNumber()
 
   const dispatch = useDispatch<AppDispatch>()
-  const state = useSelector<AppState, AppState['transactions']>(state => state.transactions)
+  const state = useSelector<AppState, AppState['transactions']>((state) => state.transactions)
 
   const transactions = chainId ? state[chainId] ?? {} : {}
 
@@ -43,11 +44,11 @@ export default function Updater(): null {
     if (!chainId || !library || !lastBlockNumber) return
 
     Object.keys(transactions)
-      .filter(hash => shouldCheck(lastBlockNumber, transactions[hash]))
-      .forEach(hash => {
+      .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
+      .forEach((hash) => {
         library
           .getTransactionReceipt(hash)
-          .then(receipt => {
+          .then((receipt) => {
             if (receipt) {
               dispatch(
                 finalizeTransaction({
@@ -80,7 +81,7 @@ export default function Updater(): null {
               dispatch(checkedTransaction({ chainId, hash, blockNumber: lastBlockNumber }))
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.error(`failed to check transaction hash: ${hash}`, error)
           })
       })

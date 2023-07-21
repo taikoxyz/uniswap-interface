@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useRef, useState } from 'react'
+import { SetStateAction, memo, useCallback, useMemo, useRef, useState } from 'react'
 import { ArrowLeft } from 'react-feather'
 import ReactGA from 'react-ga'
 import { usePopper } from 'react-popper'
@@ -33,12 +33,17 @@ const UnpaddedLinkStyledButton = styled(LinkStyledButton)`
 
 const PopoverContainer = styled.div<{ show: boolean }>`
   z-index: 100;
-  visibility: ${props => (props.show ? 'visible' : 'hidden')};
-  opacity: ${props => (props.show ? 1 : 0)};
-  transition: visibility 150ms linear, opacity 150ms linear;
+  visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.show ? 1 : 0)};
+  transition:
+    visibility 150ms linear,
+    opacity 150ms linear;
   background: ${({ theme }) => theme.bg2};
   border: 1px solid ${({ theme }) => theme.bg3};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+  box-shadow:
+    0px 0px 1px rgba(0, 0, 0, 0.01),
+    0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
   color: ${({ theme }) => theme.text2};
   border-radius: 0.5rem;
@@ -90,7 +95,7 @@ function listUrlRowHTMLId(listUrl: string) {
 }
 
 const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; onBack: () => void }) {
-  const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
   const selectedListUrl = useSelectedListUrl()
   const dispatch = useDispatch<AppDispatch>()
   const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
@@ -252,11 +257,11 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
   const [listUrlInput, setListUrlInput] = useState<string>('')
 
   const dispatch = useDispatch<AppDispatch>()
-  const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  const lists = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
   const adding = Boolean(lists[listUrlInput]?.loadingRequestId)
   const [addError, setAddError] = useState<string | null>(null)
 
-  const handleInput = useCallback(e => {
+  const handleInput = useCallback((e: { target: { value: SetStateAction<string> } }) => {
     setListUrlInput(e.target.value)
     setAddError(null)
   }, [])
@@ -274,7 +279,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
           label: listUrlInput
         })
       })
-      .catch(error => {
+      .catch((error) => {
         ReactGA.event({
           category: 'Lists',
           action: 'Add List Failed',
@@ -290,7 +295,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
   }, [listUrlInput])
 
   const handleEnterKey = useCallback(
-    e => {
+    (e: { key: string }) => {
       if (validUrl && e.key === 'Enter') {
         handleAddList()
       }
@@ -301,7 +306,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
   const sortedLists = useMemo(() => {
     const listUrls = Object.keys(lists)
     return listUrls
-      .filter(listUrl => {
+      .filter((listUrl) => {
         return Boolean(lists[listUrl].current)
       })
       .sort((u1, u2) => {
@@ -365,7 +370,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
       <Separator />
 
       <ListContainer>
-        {sortedLists.map(listUrl => (
+        {sortedLists.map((listUrl) => (
           <ListRow key={listUrl} listUrl={listUrl} onBack={onBack} />
         ))}
       </ListContainer>
