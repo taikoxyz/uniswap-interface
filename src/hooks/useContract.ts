@@ -74,7 +74,7 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
         address = '0xf9D9e38B6343aA99EB0d9bF832a61f3111B53Eb0'
         break
       case ChainId.TAIKO_INTERNAL_1:
-        address = '0xbC5929dbd745e22E6FE7418F2B10018ad7EDc2c7'
+        address = '0x962006211fE2cf3986017a46d57f373713131623'
         break
       case ChainId.TAIKO_TESTNET:
         address = '0xe19C88d852C3bc2D655458dE1901f42663708c0F'

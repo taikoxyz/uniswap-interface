@@ -1,5 +1,5 @@
 diff --git a/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json b/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
-index 3aa9ec6..9151695 100644
+index 3aa9ec6..5aed834 100644
 --- a/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
 +++ b/node_modules/@uniswap/default-token-list/build/uniswap-default.tokenlist.json
 @@ -1116,6 +1116,62 @@
@@ -33,7 +33,7 @@ index 3aa9ec6..9151695 100644
 +    },
 +    {
 +      "name": "Wrapped Ether",
-+      "address": "0x21542d178e9Bf0c580D19B4F8bD9600204fA01D7",
++      "address": "0x7be7937A395FD3B527F428124f6a33E10D1C0638",
 +      "symbol": "WETH",
 +      "decimals": 18,
 +      "chainId": 167001,
