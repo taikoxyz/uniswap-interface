@@ -1,8 +1,24 @@
 diff --git a/node_modules/@uniswap/sdk/dist/constants.d.ts b/node_modules/@uniswap/sdk/dist/constants.d.ts
-index 68228a0..9e51e7f 100644
+index 68228a0..bee7179 100644
 --- a/node_modules/@uniswap/sdk/dist/constants.d.ts
 +++ b/node_modules/@uniswap/sdk/dist/constants.d.ts
-@@ -16,7 +16,7 @@ export declare enum Rounding {
+@@ -5,7 +5,14 @@ export declare enum ChainId {
+     ROPSTEN = 3,
+     RINKEBY = 4,
+     GÖRLI = 5,
+-    KOVAN = 42
++    KOVAN = 42,
++    SEPOLIA = 11155111,
++    HARDHAT = 31337,
++    TAIKO = 167,
++    TAIKO_INTERNAL_1 = 167001,
++    TAIKO_TESTNET = 167005,
++    TAIKO_TESTNET_L3 = 167006,
++    TAIKO_TESTNET_JOLNIR = 167007
+ }
+ export declare enum TradeType {
+     EXACT_INPUT = 0,
+@@ -16,7 +23,7 @@ export declare enum Rounding {
      ROUND_HALF_UP = 1,
      ROUND_UP = 2
  }
