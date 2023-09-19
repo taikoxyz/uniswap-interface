@@ -50,6 +50,8 @@ export function getEtherscanLink(chainId: ChainId, data: string, type: 'transact
       break
   }
 
+  prefix = 'https://explorer.jolnir.taiko.xyz'
+
   switch (type) {
     case 'transaction': {
       return `${prefix}/tx/${data}`
