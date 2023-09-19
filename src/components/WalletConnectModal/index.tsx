@@ -12,7 +12,7 @@ import EthereumIcon from '../../assets/images/ethereum-chain.png'
 import L3Icon from '../../assets/images/eldfell.svg'
 
 const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECT_ID ?? ''
-const chains = [...customChains]
+const chains = [customChains[0], customChains[1]]
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiConfig = createConfig({
