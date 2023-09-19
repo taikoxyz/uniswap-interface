@@ -35,20 +35,21 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
 }
 
 export function getEtherscanLink(chainId: ChainId, data: string, type: 'transaction' | 'token' | 'address'): string {
-  let prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
+  // let prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
+  let prefix = "https://explorer.jolnir.taiko.xyz"
 
-  switch (chainId) {
-    case ChainId.HARDHAT:
-    case ChainId.TAIKO:
-      prefix = 'https://explorer.test.taiko.xyz'
-      break
-    case ChainId.TAIKO_INTERNAL_1:
-      prefix = 'https://explorer.internal.taiko.xyz'
-      break
-    case ChainId.TAIKO_TESTNET:
-      prefix = 'https://test.taikoscan.io'
-      break
-  }
+  // switch (chainId) {
+  //   case ChainId.HARDHAT:
+  //   case ChainId.TAIKO:
+  //     prefix = 'https://explorer.test.taiko.xyz'
+  //     break
+  //   case ChainId.TAIKO_INTERNAL_1:
+  //     prefix = 'https://explorer.internal.taiko.xyz'
+  //     break
+  //   case ChainId.TAIKO_TESTNET:
+  //     prefix = 'https://test.taikoscan.io'
+  //     break
+  // }
 
   switch (type) {
     case 'transaction': {

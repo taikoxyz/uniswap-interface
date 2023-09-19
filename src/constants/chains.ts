@@ -102,7 +102,7 @@ export const l3Chain: Chain = {
   }
 }
 
-export const customChains = [mainnetChain, taikoChain, l3Chain]
+export const customChains = [mainnetChain, taikoChain]
 
 export const chainContractsMap = {
   [PUBLIC_L1_CHAIN_ID]: {
