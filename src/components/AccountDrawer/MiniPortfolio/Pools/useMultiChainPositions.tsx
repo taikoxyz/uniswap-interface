@@ -1,18 +1,18 @@
+import { Call, DEFAULT_GAS_LIMIT } from './getTokensAsync'
 import { ChainId, CurrencyAmount, Token, V3_CORE_FACTORY_ADDRESSES } from '@uniswap/sdk-core'
-import IUniswapV3PoolStateJSON from '@uniswap/v3-core/artifacts/contracts/interfaces/pool/IUniswapV3PoolState.sol/IUniswapV3PoolState.json'
-import { computePoolAddress, Pool, Position } from '@uniswap/v3-sdk'
-import { DEFAULT_ERC20_DECIMALS } from 'constants/tokens'
-import { BigNumber } from 'ethers/lib/ethers'
-import { Interface } from 'ethers/lib/utils'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { PositionDetails } from 'types/position'
 import { NonfungiblePositionManager, UniswapInterfaceMulticall } from 'types/v3'
+import { Pool, Position, computePoolAddress } from '@uniswap/v3-sdk'
+import { PositionInfo, useCachedPositions, useGetCachedTokens, usePoolAddressCache } from './cache'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useInterfaceMulticallContracts, usePoolPriceMap, useV3ManagerContracts } from './hooks'
+
+import { BigNumber } from 'ethers/lib/ethers'
+import { DEFAULT_ERC20_DECIMALS } from 'constants/tokens'
+import IUniswapV3PoolStateJSON from '@uniswap/v3-core/artifacts/contracts/interfaces/pool/IUniswapV3PoolState.sol/IUniswapV3PoolState.json'
+import { Interface } from 'ethers/lib/utils'
+import { PositionDetails } from 'types/position'
 import { UniswapV3PoolInterface } from 'types/v3/UniswapV3Pool'
 import { currencyKey } from 'utils/currencyKey'
-
-import { PositionInfo, useCachedPositions, useGetCachedTokens, usePoolAddressCache } from './cache'
-import { Call, DEFAULT_GAS_LIMIT } from './getTokensAsync'
-import { useInterfaceMulticallContracts, usePoolPriceMap, useV3ManagerContracts } from './hooks'
 
 function createPositionInfo(
   owner: string,
@@ -48,6 +48,7 @@ const DEFAULT_CHAINS = [
   ChainId.BNB,
   ChainId.AVALANCHE,
   ChainId.BASE,
+  167007
 ]
 
 type UseMultiChainPositionsData = { positions?: PositionInfo[]; loading: boolean }

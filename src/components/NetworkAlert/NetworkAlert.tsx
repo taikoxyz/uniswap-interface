@@ -1,14 +1,14 @@
-import { Trans } from '@lingui/macro'
-import { ChainId } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
-import { getChainInfo } from 'constants/chainInfo'
-import { ArrowUpRight } from 'react-feather'
-import styled from 'styled-components'
 import { ExternalLink, HideSmall } from 'theme'
-import { colors } from 'theme/colors'
-import { useDarkModeManager } from 'theme/components/ThemeToggle'
 
+import { ArrowUpRight } from 'react-feather'
+import { ChainId } from '@uniswap/sdk-core'
 import Column from '../Column'
+import { Trans } from '@lingui/macro'
+import { colors } from 'theme/colors'
+import { getChainInfo } from 'constants/chainInfo'
+import styled from 'styled-components'
+import { useDarkModeManager } from 'theme/components/ThemeToggle'
+import { useWeb3React } from '@web3-react/core'
 
 const L2Icon = styled.img`
   width: 24px;
@@ -41,6 +41,7 @@ const SHOULD_SHOW_ALERT = {
   [ChainId.BNB]: true,
   [ChainId.AVALANCHE]: true,
   [ChainId.BASE]: true,
+  [167007]: true,
 }
 
 type NetworkAlertChains = keyof typeof SHOULD_SHOW_ALERT
@@ -71,6 +72,8 @@ const BG_COLORS_BY_DARK_MODE_AND_CHAIN_ID: {
       'radial-gradient(948% 292% at 42% 0%, rgba(255, 58, 212, 0.01) 0%, rgba(255, 255, 255, 0.04) 100%),radial-gradient(98% 96% at 2% 0%, rgba(255, 39, 39, 0.01) 0%, rgba(235, 0, 255, 0.01) 96%)',
     [ChainId.BASE]:
       'radial-gradient(100% 100% at 50% 0%, rgba(10, 41, 75, 0.7) 0%, rgba(0, 82, 255, .1) 40%, rgba(0, 82, 255, 0) 100%), rgb(13, 14, 14);',
+    [167007]:
+      'radial-gradient(100% 100% at 50% 0%, rgba(10, 41, 75, 0.7) 0%, rgba(0, 82, 255, .1) 40%, rgba(0, 82, 255, 0) 100%), rgb(13, 14, 14);',
   },
   light: {
     [ChainId.POLYGON]:
@@ -95,6 +98,8 @@ const BG_COLORS_BY_DARK_MODE_AND_CHAIN_ID: {
       'radial-gradient(92% 105% at 50% 7%, rgba(255, 58, 212, 0.04) 0%, rgba(255, 255, 255, 0.03) 100%),radial-gradient(100% 97% at 0% 12%, rgba(235, 0, 255, 0.1) 0%, rgba(243, 19, 19, 0.1) 100%), hsla(0, 0%, 100%, 0.1)',
     [ChainId.BASE]:
       'radial-gradient(100% 100% at 50% 0%, rgba(0, 82, 255, 0.20) 0%, rgba(0, 82, 255, 0.08) 40.0%, rgba(252, 255, 82, 0.00) 100%), rgb(255, 255, 255)',
+    [167007]:
+      'radial-gradient(100% 100% at 50% 0%, rgba(10, 41, 75, 0.7) 0%, rgba(0, 82, 255, .1) 40%, rgba(0, 82, 255, 0) 100%), rgb(13, 14, 14);',
   },
 }
 
@@ -156,6 +161,8 @@ const TEXT_COLORS: { [chainId in NetworkAlertChains]: string } = {
   [ChainId.ARBITRUM_GOERLI]: '#0490ed',
   [ChainId.AVALANCHE]: '#ff3856',
   [ChainId.BASE]: colors.networkBase,
+  [167007]: '#e81899'
+  
 }
 
 function shouldShowAlert(chainId: number | undefined): chainId is NetworkAlertChains {
