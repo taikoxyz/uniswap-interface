@@ -6,7 +6,7 @@ import { Trans } from '@lingui/macro'
 
 export const FEE_AMOUNT_DETAIL: Record<
   FeeAmount,
-  { label: string; description: ReactNode; supportedChains: readonly (ChainId | 167007)[] }
+  { label: string; description: ReactNode; supportedChains: readonly ChainId[] }
 > = {
   [FeeAmount.LOWEST]: {
     label: '0.01',
@@ -22,22 +22,22 @@ export const FEE_AMOUNT_DETAIL: Record<
       ChainId.POLYGON_MUMBAI,
       ChainId.AVALANCHE,
       ChainId.BASE,
-      167007, // ChainId.TAIKO
+      ChainId.TAIKO_JOLNIR, // ChainId.TAIKO
     ],
   },
   [FeeAmount.LOW]: {
     label: '0.05',
     description: <Trans>Best for stable pairs.</Trans>,
-    supportedChains: [...SUPPORTED_CHAINS,167007],
+    supportedChains: SUPPORTED_CHAINS,
   },
   [FeeAmount.MEDIUM]: {
     label: '0.3',
     description: <Trans>Best for most pairs.</Trans>,
-    supportedChains: [...SUPPORTED_CHAINS,167007],
+    supportedChains: SUPPORTED_CHAINS,
   },
   [FeeAmount.HIGH]: {
     label: '1',
     description: <Trans>Best for exotic pairs.</Trans>,
-    supportedChains: [...SUPPORTED_CHAINS,167007],
+    supportedChains: SUPPORTED_CHAINS,
   },
 }

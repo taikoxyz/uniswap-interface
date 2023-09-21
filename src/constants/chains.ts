@@ -15,7 +15,7 @@ export const CHAIN_IDS_TO_NAMES = {
   [ChainId.BNB]: 'bnb',
   [ChainId.AVALANCHE]: 'avalanche',
   [ChainId.BASE]: 'base',
-  [167007]: 'taiko'
+  [ChainId.TAIKO_JOLNIR]: 'taiko'
 } as const
 
 // Include ChainIds in this array if they are not supported by the UX yet, but are already in the SDK.
@@ -54,7 +54,7 @@ export const SUPPORTED_GAS_ESTIMATE_CHAIN_IDS = [
   ChainId.BNB,
   ChainId.AVALANCHE,
   ChainId.BASE,
-  167007
+  ChainId.TAIKO_JOLNIR
 ] as const
 
 /**
@@ -69,7 +69,7 @@ export const TESTNET_CHAIN_IDS = [
   ChainId.ARBITRUM_GOERLI,
   ChainId.OPTIMISM_GOERLI,
   ChainId.CELO_ALFAJORES,
-  167007
+  ChainId.TAIKO_JOLNIR
 ] as const
 
 /**
@@ -99,7 +99,7 @@ export const L2_CHAIN_IDS = [
   ChainId.OPTIMISM,
   ChainId.OPTIMISM_GOERLI,
   ChainId.BASE,
-  167007
+  ChainId.TAIKO_JOLNIR
 ] as const
 
 export type SupportedL2ChainId = (typeof L2_CHAIN_IDS)[number]
@@ -109,9 +109,9 @@ export type SupportedL2ChainId = (typeof L2_CHAIN_IDS)[number]
  * @param {ChainId} chainId - The chainId to determine the priority for.
  * @returns {number} The priority of the chainId, the lower the priority, the earlier it should be displayed, with base of MAINNET=0.
  */
-export function getChainPriority(chainId: ChainId | 167007): number {
+export function getChainPriority(chainId: ChainId): number {
   switch (chainId) {
-    case 167007:
+    case ChainId.TAIKO_JOLNIR:
     case ChainId.MAINNET:
     case ChainId.GOERLI:
     case ChainId.SEPOLIA:
