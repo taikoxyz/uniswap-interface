@@ -48,7 +48,7 @@ const DEFAULT_CHAINS = [
   ChainId.BNB,
   ChainId.AVALANCHE,
   ChainId.BASE,
-  ChainId.TAIKO_JOLNIR  
+  ChainId.TAIKO
 ]
 
 type UseMultiChainPositionsData = { positions?: PositionInfo[]; loading: boolean }
