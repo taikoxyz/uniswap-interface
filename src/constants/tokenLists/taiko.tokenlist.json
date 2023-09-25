@@ -1,0 +1,33 @@
+{
+  "name": "TAIKO Token List",
+  "timestamp": "2021-01-05T20:47:02.923Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  
+  
+  
+  "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/ttko.svg",
+  "keywords": ["taiko"],
+  "tokens": [
+    {
+      "name": "TTKO",
+      "address": "0xe705498492D0aE94CA9365D395D2C6924F24F445",
+      "symbol": "TTKO",
+      "decimals": 18,
+      "chainId": 167007,
+      "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/ttko.svg"
+    },
+    {
+      "name": "HORSE",
+      "address": "0x9833DcA11f178dbaF2b88da42557DA2970534430",
+      "symbol": "HORSE",
+      "decimals": 18,
+      "chainId": 167007,
+      "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/horse.svg"
+    }
+  ]
+}
