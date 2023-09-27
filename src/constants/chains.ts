@@ -22,7 +22,7 @@ export const CHAIN_IDS_TO_NAMES = {
 const NOT_YET_UX_SUPPORTED_CHAIN_IDS: number[] = [ChainId.BASE_GOERLI]
 
 // TODO: include BASE_GOERLI when routing is implemented
-export type SupportedInterfaceChain = Exclude<SupportedChainsType, [ChainId.BASE_GOERLI]>
+export type SupportedInterfaceChain = Exclude<SupportedChainsType, ChainId.BASE_GOERLI>
 
 export function isSupportedChain(
   chainId: number | null | undefined | ChainId,
