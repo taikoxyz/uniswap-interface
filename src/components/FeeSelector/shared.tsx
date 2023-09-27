@@ -22,7 +22,7 @@ export const FEE_AMOUNT_DETAIL: Record<
       ChainId.POLYGON_MUMBAI,
       ChainId.AVALANCHE,
       ChainId.BASE,
-      ChainId.TAIKO, // ChainId.TAIKO
+      ChainId.TAIKO_JOLNIR, // ChainId.TAIKO_JOLNIR
     ],
   },
   [FeeAmount.LOW]: {

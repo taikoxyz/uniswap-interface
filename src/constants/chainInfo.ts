@@ -263,7 +263,7 @@ const CHAIN_INFO: ChainInfoMap = {
   [167007]: {
     networkType: NetworkType.L2,
     blockWaitMsBeforeWarning: ms(`25m`),
-    bridge: 'https://bridge.base.org/deposit',
+    bridge: 'https://bridge.jolnir.taiko.xyz',
     defaultListUrl: BASE_LIST,
     docs: 'https://docs.taiko.xyz',
     explorer: 'https://explorer.jolnir.taiko.xyz/',

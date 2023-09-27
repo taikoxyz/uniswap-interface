@@ -335,9 +335,9 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'WAVAX',
     'Wrapped AVAX'
   ),
-  [ChainId.TAIKO]: new Token(
-    ChainId.TAIKO,
-    '0xf86E3b4cde65c0cd59580Ee3F8dd34343E23ea5B',
+  [ChainId.TAIKO_JOLNIR]: new Token(
+    ChainId.TAIKO_JOLNIR,
+    '0x7be7937A395FD3B527F428124f6a33E10D1C0638',
     18,
     'WETH',
     'Wrapped ETH'
