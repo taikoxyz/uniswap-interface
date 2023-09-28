@@ -68,6 +68,9 @@ export const PageTabs = () => {
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
         <Trans>Swap</Trans>
       </MenuItem>
+      <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
+          <Trans>Pools</Trans>
+        </MenuItem>
       {/* <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
         <Trans>Tokens</Trans>
       </MenuItem>
@@ -76,14 +79,12 @@ export const PageTabs = () => {
           <Trans>NFTs</Trans>
         </MenuItem>
       )} */}
-      <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
-        <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
-          <Trans>Pools</Trans>
-        </MenuItem>
+      {/* <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
+
       </Box>
       <Box marginY="4">
         <MenuDropdown />
-      </Box>
+      </Box> */}
     </>
   )
 }
