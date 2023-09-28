@@ -83,7 +83,7 @@ export const USDC_BASE = new Token(
 )
 
 export const USDC_TAIKO_JOLNIR = new Token(
-  ChainId.BASE,
+  ChainId.TAIKO_JOLNIR,
   '0xf0380c236Eb7C3Fc51a9b46706D27bA738B0BE7f',
   6,
   'USDC',
