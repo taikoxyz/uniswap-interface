@@ -137,7 +137,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
               display: 'flex',
             })}
           >
-            <SearchBar />
+            {/* <SearchBar /> */}
           </Box>
           <Box className={styles.rightSideContainer}>
             <Row gap="12">

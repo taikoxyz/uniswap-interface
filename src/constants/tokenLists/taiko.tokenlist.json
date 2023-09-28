@@ -28,6 +28,14 @@
       "decimals": 18,
       "chainId": 167007,
       "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/horse.svg"
+    },
+    {
+      "name": "USDC",
+      "address": "0xf0380c236Eb7C3Fc51a9b46706D27bA738B0BE7f",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 167007,
+      "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/horse.svg"
     }
   ]
 }

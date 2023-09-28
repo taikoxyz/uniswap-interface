@@ -82,6 +82,14 @@ export const USDC_BASE = new Token(
   'USDbC'
 )
 
+export const USDC_TAIKO_JOLNIR = new Token(
+  ChainId.BASE,
+  '0xf0380c236Eb7C3Fc51a9b46706D27bA738B0BE7f',
+  6,
+  'USDC',
+  'USDC'
+)
+
 export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
 export const DAI_ARBITRUM_ONE = new Token(
   ChainId.ARBITRUM_ONE,
@@ -479,5 +487,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in ChainId]?: s
     [ChainId.GOERLI]: USDC_GOERLI.address,
     [ChainId.SEPOLIA]: USDC_SEPOLIA.address,
     [ChainId.AVALANCHE]: USDC_AVALANCHE.address,
+    [ChainId.TAIKO_JOLNIR]: USDC_TAIKO_JOLNIR.address,
   },
 }
