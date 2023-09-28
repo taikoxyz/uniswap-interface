@@ -89,6 +89,22 @@ export const USDC_TAIKO_JOLNIR = new Token(
   'USDC',
   'USDC'
 )
+export const HORSE_TAIKO_JOLNIR = new Token(
+  ChainId.TAIKO_JOLNIR,
+  '0x9833DcA11f178dbaF2b88da42557DA2970534430',
+  18,
+  'Horse Token',
+  'HORSE'
+)
+
+export const TTKO_TAIKO_JOLNIR = new Token(
+  ChainId.TAIKO_JOLNIR,
+  '0xe705498492D0aE94CA9365D395D2C6924F24F445',
+  18,
+  'Taiko Token (Jolnir)',
+  'TTKOj'
+)
+
 
 export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
 export const DAI_ARBITRUM_ONE = new Token(
