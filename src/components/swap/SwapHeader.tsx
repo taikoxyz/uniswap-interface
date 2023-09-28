@@ -1,12 +1,12 @@
-import { Trans } from '@lingui/macro'
-import { Percent } from '@uniswap/sdk-core'
-import { InterfaceTrade } from 'state/routing/types'
-import styled from 'styled-components'
-import { ThemedText } from 'theme'
-
 import { RowBetween, RowFixed } from '../Row'
+
+import { InterfaceTrade } from 'state/routing/types'
+import { Percent } from '@uniswap/sdk-core'
 import SettingsTab from '../Settings'
 import SwapBuyFiatButton from './SwapBuyFiatButton'
+import { ThemedText } from 'theme'
+import { Trans } from '@lingui/macro'
+import styled from 'styled-components'
 
 const StyledSwapHeader = styled(RowBetween)`
   margin-bottom: 10px;
@@ -33,7 +33,7 @@ export default function SwapHeader({
         <ThemedText.SubHeader>
           <Trans>Swap</Trans>
         </ThemedText.SubHeader>
-        <SwapBuyFiatButton />
+        {/* <SwapBuyFiatButton /> */}
       </HeaderButtonContainer>
       <RowFixed>
         <SettingsTab autoSlippage={autoSlippage} chainId={chainId} trade={trade} />
