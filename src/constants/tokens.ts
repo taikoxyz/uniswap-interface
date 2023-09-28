@@ -105,6 +105,13 @@ export const TTKO_TAIKO_JOLNIR = new Token(
   'TTKOj'
 )
 
+export const WETH_TAIKO_JOLNIR = new Token(
+  ChainId.TAIKO_JOLNIR,
+  '0x7be7937A395FD3B527F428124f6a33E10D1C0638',
+  18,
+  'Taiko Token (Jolnir)',
+  'TTKOj'
+)
 
 export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
 export const DAI_ARBITRUM_ONE = new Token(

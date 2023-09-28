@@ -30,6 +30,14 @@
       "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/horse.svg"
     },
     {
+      "name": "Wrapped Ether",
+      "address": "0x7be7937A395FD3B527F428124f6a33E10D1C0638",
+      "symbol": "WETH",
+      "decimals": 18,
+      "chainId": 167007,
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+    },
+    {
       "name": "USDC",
       "address": "0xf0380c236Eb7C3Fc51a9b46706D27bA738B0BE7f",
       "symbol": "USDC",
