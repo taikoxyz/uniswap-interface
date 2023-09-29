@@ -1,11 +1,10 @@
-import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { AutoColumn } from 'components/Column'
+import { ExternalLink } from '../../theme'
+import { ThemedText } from 'theme'
+import { Trans } from '@lingui/macro'
 import { getChainInfoOrDefault } from 'constants/chainInfo'
 import styled from 'styled-components'
-import { ThemedText } from 'theme'
-
-import { ExternalLink } from '../../theme'
+import { useWeb3React } from '@web3-react/core'
 
 const CTASection = styled.section`
   display: grid;
@@ -68,7 +67,7 @@ export default function CTACards() {
 
   return (
     <CTASection>
-      <CTA href="https://support.uniswap.org/hc/en-us/categories/8122334631437-Providing-Liquidity-">
+      {/* <CTA href="https://support.uniswap.org/hc/en-us/categories/8122334631437-Providing-Liquidity-">
         <ResponsiveColumn>
           <HeaderText>
             <Trans>Learn about providing liquidity</Trans> ↗
@@ -87,7 +86,7 @@ export default function CTACards() {
             <Trans>Explore Uniswap Analytics.</Trans>
           </ThemedText.DeprecatedBody>
         </ResponsiveColumn>
-      </CTA>
+      </CTA> */}
     </CTASection>
   )
 }
