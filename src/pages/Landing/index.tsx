@@ -320,9 +320,7 @@ export default function Landing() {
 
   const location = useLocation()
   const queryParams = parse(location.search, { ignoreQueryPrefix: true })
-  if (selectedWallet && !queryParams.intro) {
-    return <Navigate to={{ ...location, pathname: '/swap' }} replace />
-  }
+  return <Navigate to={{ ...location, pathname: '/swap' }} replace />
 
   return (
     <Trace page={InterfacePageName.LANDING_PAGE} shouldLogImpression>

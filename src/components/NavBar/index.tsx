@@ -102,8 +102,8 @@ const Navbar = ({ blur }: { blur: boolean }) => {
       toggleAccountDrawer()
     }
     navigate({
-      pathname: '/',
-      search: '?intro=true',
+      pathname: '/swap',
+      search: '',
     })
   }, [accountDrawerOpen, navigate, toggleAccountDrawer])
 
