@@ -1,29 +1,30 @@
-import { t } from '@lingui/macro'
+import * as styles from './ChainSelector.css'
+
+import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
+import { Column, Row } from 'nft/components/Flex'
+import { L1_CHAIN_IDS, L2_CHAIN_IDS, TESTNET_CHAIN_IDS, getChainPriority } from 'constants/chains'
+import { useCallback, useMemo, useRef, useState } from 'react'
+
+import { Box } from 'nft/components/Box'
 import { ChainId } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
-import { showTestnetsAtom } from 'components/AccountDrawer/TestnetsToggle'
-import { MouseoverTooltip } from 'components/Tooltip'
-import { getConnection } from 'connection'
+import ChainSelectorRow from './ChainSelectorRow'
 import { ConnectionType } from 'connection/types'
+import { MouseoverTooltip } from 'components/Tooltip'
+import { NavDropdown } from './NavDropdown'
+import { Portal } from 'nft/components/common/Portal'
 import { WalletConnectV2 } from 'connection/WalletConnectV2'
 import { getChainInfo } from 'constants/chainInfo'
-import { getChainPriority, L1_CHAIN_IDS, L2_CHAIN_IDS, TESTNET_CHAIN_IDS } from 'constants/chains'
+import { getConnection } from 'connection'
+import { getSupportedChainIdsFromWalletConnectSession } from 'utils/getSupportedChainIdsFromWalletConnectSession'
+import { showTestnetsAtom } from 'components/AccountDrawer/TestnetsToggle'
+import { t } from '@lingui/macro'
+import { useAtomValue } from 'jotai/utils'
+import { useIsMobile } from 'nft/hooks'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import useSelectChain from 'hooks/useSelectChain'
 import useSyncChainQuery from 'hooks/useSyncChainQuery'
-import { useAtomValue } from 'jotai/utils'
-import { Box } from 'nft/components/Box'
-import { Portal } from 'nft/components/common/Portal'
-import { Column, Row } from 'nft/components/Flex'
-import { useIsMobile } from 'nft/hooks'
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
 import { useTheme } from 'styled-components'
-import { getSupportedChainIdsFromWalletConnectSession } from 'utils/getSupportedChainIdsFromWalletConnectSession'
-
-import * as styles from './ChainSelector.css'
-import ChainSelectorRow from './ChainSelectorRow'
-import { NavDropdown } from './NavDropdown'
+import { useWeb3React } from '@web3-react/core'
 
 const NETWORK_SELECTOR_CHAINS = [ChainId.TAIKO_JOLNIR]
 
@@ -33,15 +34,10 @@ interface ChainSelectorProps {
 
 function useWalletSupportedChains(): ChainId[] {
   const { connector } = useWeb3React()
-  const connectionType = getConnection(connector).type
+  // const connectionType = getConnection(connector).type
 
-  switch (connectionType) {
-    case ConnectionType.WALLET_CONNECT_V2:
-    case ConnectionType.UNISWAP_WALLET_V2:
-      return getSupportedChainIdsFromWalletConnectSession((connector as WalletConnectV2).provider?.session)
-    default:
-      return NETWORK_SELECTOR_CHAINS
-  }
+  return NETWORK_SELECTOR_CHAINS
+  
 }
 
 export const ChainSelector = ({ leftAlign }: ChainSelectorProps) => {
