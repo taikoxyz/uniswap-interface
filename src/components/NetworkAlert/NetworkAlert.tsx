@@ -9,6 +9,7 @@ import { getChainInfo } from 'constants/chainInfo'
 import styled from 'styled-components'
 import { useDarkModeManager } from 'theme/components/ThemeToggle'
 import { useWeb3React } from '@web3-react/core'
+import { AlertTriangle } from 'react-feather'
 
 const L2Icon = styled.img`
   width: 24px;
@@ -30,17 +31,17 @@ const RootWrapper = styled.div`
 `
 
 const SHOULD_SHOW_ALERT = {
-  [ChainId.OPTIMISM]: true,
-  [ChainId.OPTIMISM_GOERLI]: true,
-  [ChainId.ARBITRUM_ONE]: true,
-  [ChainId.ARBITRUM_GOERLI]: true,
-  [ChainId.POLYGON]: true,
-  [ChainId.POLYGON_MUMBAI]: true,
-  [ChainId.CELO]: true,
-  [ChainId.CELO_ALFAJORES]: true,
-  [ChainId.BNB]: true,
-  [ChainId.AVALANCHE]: true,
-  [ChainId.BASE]: true,
+  // [ChainId.OPTIMISM]: true,
+  // [ChainId.OPTIMISM_GOERLI]: true,
+  // [ChainId.ARBITRUM_ONE]: true,
+  // [ChainId.ARBITRUM_GOERLI]: true,
+  // [ChainId.POLYGON]: true,
+  // [ChainId.POLYGON_MUMBAI]: true,
+  // [ChainId.CELO]: true,
+  // [ChainId.CELO_ALFAJORES]: true,
+  // [ChainId.BNB]: true,
+  // [ChainId.AVALANCHE]: true,
+  // [ChainId.BASE]: true,
   [ChainId.TAIKO_JOLNIR]: true,
 }
 
@@ -174,7 +175,28 @@ export function NetworkAlert() {
   const [darkMode] = useDarkModeManager()
 
   if (!shouldShowAlert(chainId)) {
-    return null
+    const textColor = TEXT_COLORS[ChainId.TAIKO_JOLNIR]
+
+    return (
+      <RootWrapper>
+        <ContentWrapper chainId={ChainId.TAIKO_JOLNIR} darkMode={darkMode} logoUrl="">
+          <LinkOutToBridge href="#">
+            <BodyText color={darkMode ? textColor : "black"}>
+              <AlertTriangle size={24} style={{ marginRight: "16px" }} />
+                <Header>
+                  <Trans>Intended for Demo Purposes Only</Trans>
+                </Header>
+                <HideSmall>
+                  <Trans>This is not an official Uniswap release.</Trans>
+                </HideSmall>
+            </BodyText>
+            <StyledArrowUpRight color={darkMode ? textColor : "black"} />
+          </LinkOutToBridge>
+        </ContentWrapper>
+      </RootWrapper>
+
+    )
+
   }
 
   const chainInfo = getChainInfo(chainId)
