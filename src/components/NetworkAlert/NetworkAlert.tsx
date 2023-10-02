@@ -194,9 +194,7 @@ export function NetworkAlert() {
           </LinkOutToBridge>
         </ContentWrapper>
       </RootWrapper>
-
     )
-
   }
 
   const chainInfo = getChainInfo(chainId)
