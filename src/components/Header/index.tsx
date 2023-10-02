@@ -110,6 +110,9 @@ export default function Header() {
           <StyledLink target={'_blank'} rel={'noreferrer'} href={process.env.REACT_APP_PUBLIC_GUIDE_URL}>
             Guide ↗
           </StyledLink>
+          <StyledLink target={'_blank'} rel={'noreferrer'} href={process.env.REACT_APP_SWAP_V3_URL}>
+            Swap V3 ↗
+          </StyledLink>
         </HeaderElement>
 
         <HeaderControls>
