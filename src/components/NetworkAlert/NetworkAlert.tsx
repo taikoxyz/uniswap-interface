@@ -180,7 +180,7 @@ export function NetworkAlert() {
     return (
       <RootWrapper>
         <ContentWrapper chainId={ChainId.TAIKO_JOLNIR} darkMode={darkMode} logoUrl="">
-          <LinkOutToBridge href="#">
+          <LinkOutToBridge href="https://gov.uniswap.org/t/rfc-uniswap-v3-deployment-on-taiko/21089">
             <BodyText color={darkMode ? textColor : "black"}>
               <AlertTriangle size={24} style={{ marginRight: "16px" }} />
                 <Header>
@@ -224,7 +224,7 @@ export function NetworkAlert() {
       </ContentWrapper>
       <div style={{ height: "16px" }} />
       <ContentWrapper chainId={ChainId.TAIKO_JOLNIR} darkMode={darkMode} logoUrl="">
-          <LinkOutToBridge href="#">
+          <LinkOutToBridge href="https://gov.uniswap.org/t/rfc-uniswap-v3-deployment-on-taiko/21089">
             <BodyText color={darkMode ? textColor : "black"}>
               <AlertTriangle size={24} style={{ marginRight: "16px" }} />
                 <Header>
