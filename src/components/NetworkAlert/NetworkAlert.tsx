@@ -222,6 +222,21 @@ export function NetworkAlert() {
           <StyledArrowUpRight color={textColor} />
         </LinkOutToBridge>
       </ContentWrapper>
+      <div style={{ height: "16px" }} />
+      <ContentWrapper chainId={ChainId.TAIKO_JOLNIR} darkMode={darkMode} logoUrl="">
+          <LinkOutToBridge href="#">
+            <BodyText color={darkMode ? textColor : "black"}>
+              <AlertTriangle size={24} style={{ marginRight: "16px" }} />
+                <Header>
+                  <Trans>Intended for Demo Purposes Only</Trans>
+                </Header>
+                <HideSmall>
+                  <Trans>This is not an official Uniswap release.</Trans>
+                </HideSmall>
+            </BodyText>
+            <StyledArrowUpRight color={darkMode ? textColor : "black"} />
+          </LinkOutToBridge>
+        </ContentWrapper>
     </RootWrapper>
   ) : null
 }
