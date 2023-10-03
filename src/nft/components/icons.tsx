@@ -1,7 +1,7 @@
-import styled, { useTheme } from 'styled-components'
-import { themeVars, vars } from '../css/sprinkles.css'
-
 import React from 'react'
+import styled, { useTheme } from 'styled-components'
+
+import { themeVars, vars } from '../css/sprinkles.css'
 
 // ESLint reports `fill` is missing, whereas it exists on an SVGProps type
 type SVGProps = React.SVGProps<SVGSVGElement> & {
