@@ -128,7 +128,7 @@ export function NetworkAlert() {
       <RootWrapper>
         <ContentWrapper chainId={ChainId.TAIKO_JOLNIR} darkMode={darkMode} logoUrl="">
           <LinkOutToBridge href="https://gov.uniswap.org/t/rfc-uniswap-v3-deployment-on-taiko/21089">
-            <BodyText color={darkMode ? textColor : 'black'}>
+            <BodyText color={darkMode ? textColor : '#e81899'}>
               <AlertTriangle size={24} style={{ marginRight: '16px' }} />
               <Header>
                 <Trans>Intended for Demo Purposes Only</Trans>
@@ -137,7 +137,7 @@ export function NetworkAlert() {
                 <Trans>This is not an official Uniswap release.</Trans>
               </HideSmall>
             </BodyText>
-            <StyledArrowUpRight color={darkMode ? textColor : 'black'} />
+            <StyledArrowUpRight color={darkMode ? textColor : '#e81899'} />
           </LinkOutToBridge>
         </ContentWrapper>
       </RootWrapper>
@@ -172,7 +172,7 @@ export function NetworkAlert() {
       <div style={{ height: '16px' }} />
       <ContentWrapper chainId={ChainId.TAIKO_JOLNIR} darkMode={darkMode} logoUrl="">
         <LinkOutToBridge href="https://gov.uniswap.org/t/rfc-uniswap-v3-deployment-on-taiko/21089">
-          <BodyText color={darkMode ? textColor : 'black'}>
+          <BodyText color={darkMode ? textColor : '#e81899'}>
             <AlertTriangle size={24} style={{ marginRight: '16px' }} />
             <Header>
               <Trans>Intended for Demo Purposes Only</Trans>
@@ -181,7 +181,7 @@ export function NetworkAlert() {
               <Trans>This is not an official Uniswap release.</Trans>
             </HideSmall>
           </BodyText>
-          <StyledArrowUpRight color={darkMode ? textColor : 'black'} />
+          <StyledArrowUpRight color={darkMode ? textColor : '#e81899'} />
         </LinkOutToBridge>
       </ContentWrapper>
     </RootWrapper>
