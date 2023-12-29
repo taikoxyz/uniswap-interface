@@ -1,27 +1,28 @@
-import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
-import { useAccountDrawer } from 'components/AccountDrawer'
-import Web3Status from 'components/Web3Status'
-import { chainIdToBackendName } from 'graphql/data/util'
-import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
-import { useIsNftPage } from 'hooks/useIsNftPage'
-import { useIsPoolsPage } from 'hooks/useIsPoolsPage'
-import { Box } from 'nft/components/Box'
-import { Row } from 'nft/components/Flex'
-import { UniIcon } from 'nft/components/icons'
-import { useProfilePageState } from 'nft/hooks'
-import { ProfilePageStateType } from 'nft/types'
-import { ReactNode, useCallback } from 'react'
-import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
+import * as styles from './style.css'
 
-import { useIsNavSearchInputVisible } from '../../nft/hooks/useIsNavSearchInputVisible'
+import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
+import { ReactNode, useCallback } from 'react'
+
 import { Bag } from './Bag'
 import Blur from './Blur'
+import { Box } from 'nft/components/Box'
 import { ChainSelector } from './ChainSelector'
 import { MenuDropdown } from './MenuDropdown'
+import { ProfilePageStateType } from 'nft/types'
+import { Row } from 'nft/components/Flex'
 import { SearchBar } from './SearchBar'
-import * as styles from './style.css'
+import { Trans } from '@lingui/macro'
+import { UniIcon } from 'nft/components/icons'
+import Web3Status from 'components/Web3Status'
+import { chainIdToBackendName } from 'graphql/data/util'
+import styled from 'styled-components'
+import { useAccountDrawer } from 'components/AccountDrawer'
+import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
+import { useIsNavSearchInputVisible } from '../../nft/hooks/useIsNavSearchInputVisible'
+import { useIsNftPage } from 'hooks/useIsNftPage'
+import { useIsPoolsPage } from 'hooks/useIsPoolsPage'
+import { useProfilePageState } from 'nft/hooks'
+import { useWeb3React } from '@web3-react/core'
 
 const Nav = styled.nav`
   padding: ${({ theme }) => `${theme.navVerticalPad}px 12px`};
@@ -67,22 +68,23 @@ export const PageTabs = () => {
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
         <Trans>Swap</Trans>
       </MenuItem>
-      <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
+      <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
+          <Trans>Pools</Trans>
+        </MenuItem>
+      {/* <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
         <Trans>Tokens</Trans>
       </MenuItem>
       {!shouldDisableNFTRoutes && (
         <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
           <Trans>NFTs</Trans>
         </MenuItem>
-      )}
-      <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
-        <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
-          <Trans>Pools</Trans>
-        </MenuItem>
+      )} */}
+      {/* <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
+
       </Box>
       <Box marginY="4">
         <MenuDropdown />
-      </Box>
+      </Box> */}
     </>
   )
 }
@@ -100,8 +102,8 @@ const Navbar = ({ blur }: { blur: boolean }) => {
       toggleAccountDrawer()
     }
     navigate({
-      pathname: '/',
-      search: '?intro=true',
+      pathname: '/swap',
+      search: '',
     })
   }, [accountDrawerOpen, navigate, toggleAccountDrawer])
 
@@ -135,7 +137,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
               display: 'flex',
             })}
           >
-            <SearchBar />
+            {/* <SearchBar /> */}
           </Box>
           <Box className={styles.rightSideContainer}>
             <Row gap="12">

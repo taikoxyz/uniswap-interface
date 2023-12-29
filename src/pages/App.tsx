@@ -26,7 +26,6 @@ import { getCurrentPageFromLocation } from 'utils/urlRoutes'
 import { getCLS, getFCP, getFID, getLCP, Metric } from 'web-vitals'
 
 // High-traffic pages (index and /swap) should not be lazy-loaded.
-import Landing from './Landing'
 import Swap from './Swap'
 
 const AppChrome = lazy(() => import('./AppChrome'))
@@ -223,14 +222,7 @@ export default function App() {
             <Suspense fallback={<Loader />}>
               {isLoaded ? (
                 <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      // If we match "/" and # is defined, we are using BrowserRouter and need to redirect.
-                      browserRouterEnabled && hash ? <Navigate to={hash.replace('#', '')} replace /> : <Landing />
-                    }
-                  />
-
+                  <Route path="/" element={<Navigate to={{ ...location, pathname: '/swap' }} replace />} />
                   <Route path="tokens" element={<Tokens />}>
                     <Route path=":chainName" />
                   </Route>

@@ -1,4 +1,5 @@
 import { ChainId, Currency, Ether, NativeCurrency, Token, UNI_ADDRESSES, WETH9 } from '@uniswap/sdk-core'
+
 import invariant from 'tiny-invariant'
 
 export const NATIVE_CHAIN_ID = 'NATIVE'
@@ -79,6 +80,37 @@ export const USDC_BASE = new Token(
   6,
   'USD Base Coin',
   'USDbC'
+)
+
+export const USDC_TAIKO_JOLNIR = new Token(
+  ChainId.TAIKO_JOLNIR,
+  '0xf0380c236Eb7C3Fc51a9b46706D27bA738B0BE7f',
+  6,
+  'USDC',
+  'USDC'
+)
+export const HORSE_TAIKO_JOLNIR = new Token(
+  ChainId.TAIKO_JOLNIR,
+  '0x9833DcA11f178dbaF2b88da42557DA2970534430',
+  18,
+  'HORSE',
+  'HORSE'
+)
+
+export const TTKO_TAIKO_JOLNIR = new Token(
+  ChainId.TAIKO_JOLNIR,
+  '0xe705498492D0aE94CA9365D395D2C6924F24F445',
+  18,
+  'TTKOj',
+  'TTKOj'
+)
+
+export const WETH_TAIKO_JOLNIR = new Token(
+  ChainId.TAIKO_JOLNIR,
+  '0x7be7937A395FD3B527F428124f6a33E10D1C0638',
+  18,
+  'WETH',
+  'WETH'
 )
 
 export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
@@ -334,6 +366,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'WAVAX',
     'Wrapped AVAX'
   ),
+  [ChainId.TAIKO_JOLNIR]: new Token(
+    ChainId.TAIKO_JOLNIR,
+    '0x7be7937A395FD3B527F428124f6a33E10D1C0638',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
 }
 
 export function isCelo(chainId: number): chainId is ChainId.CELO | ChainId.CELO_ALFAJORES {
@@ -471,5 +510,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in ChainId]?: s
     [ChainId.GOERLI]: USDC_GOERLI.address,
     [ChainId.SEPOLIA]: USDC_SEPOLIA.address,
     [ChainId.AVALANCHE]: USDC_AVALANCHE.address,
+    [ChainId.TAIKO_JOLNIR]: USDC_TAIKO_JOLNIR.address,
   },
 }

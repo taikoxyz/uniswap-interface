@@ -1,0 +1,187 @@
+diff --git a/node_modules/@ethersproject/networks/lib.esm/index.js b/node_modules/@ethersproject/networks/lib.esm/index.js
+index 5c232b8..a4cfa97 100644
+--- a/node_modules/@ethersproject/networks/lib.esm/index.js
++++ b/node_modules/@ethersproject/networks/lib.esm/index.js
+@@ -1,4 +1,5 @@
+ "use strict";
++
+ import { Logger } from "@ethersproject/logger";
+ import { version } from "./_version";
+ const logger = new Logger(version);
+@@ -173,6 +174,7 @@ const networks = {
+     "arbitrum-goerli": { chainId: 421613, name: "arbitrum-goerli" },
+     bnb: { chainId: 56, name: "bnb" },
+     bnbt: { chainId: 97, name: "bnbt" },
++    taiko: { chainId: 167007, name: "taiko_jolnir" },
+ };
+ /**
+  *  getNetwork
+diff --git a/node_modules/@ethersproject/networks/lib/index.js b/node_modules/@ethersproject/networks/lib/index.js
+index 693a671..4d2f391 100644
+--- a/node_modules/@ethersproject/networks/lib/index.js
++++ b/node_modules/@ethersproject/networks/lib/index.js
+@@ -175,6 +175,7 @@ var networks = {
+     "arbitrum-goerli": { chainId: 421613, name: "arbitrum-goerli" },
+     bnb: { chainId: 56, name: "bnb" },
+     bnbt: { chainId: 97, name: "bnbt" },
++    taiko: { chainId: 167007, name: "taiko" },
+ };
+ /**
+  *  getNetwork
+diff --git a/node_modules/@ethersproject/networks/src.ts/index.ts b/node_modules/@ethersproject/networks/src.ts/index.ts
+index cb1b8e5..c75c7d4 100644
+--- a/node_modules/@ethersproject/networks/src.ts/index.ts
++++ b/node_modules/@ethersproject/networks/src.ts/index.ts
+@@ -1,10 +1,12 @@
+ "use strict";
+ 
++import { Network, Networkish } from "./types";
++
+ import { Logger } from "@ethersproject/logger";
+ import { version } from "./_version";
++
+ const logger = new Logger(version);
+ 
+-import { Network, Networkish } from "./types";
+ 
+ export {
+     Network,
+@@ -18,30 +20,30 @@ interface Renetworkable extends DefaultProviderFunc {
+ };
+ 
+ function isRenetworkable(value: any): value is Renetworkable {
+-    return (value && typeof(value.renetwork) === "function");
++    return (value && typeof (value.renetwork) === "function");
+ }
+ 
+ function ethDefaultProvider(network: string | Network): Renetworkable {
+-    const func = function(providers: any, options?: any): any {
+-        if (options == null) { options = { }; }
++    const func = function (providers: any, options?: any): any {
++        if (options == null) { options = {}; }
+         const providerList: Array<any> = [];
+ 
+         if (providers.InfuraProvider && options.infura !== "-") {
+             try {
+                 providerList.push(new providers.InfuraProvider(network, options.infura));
+-            } catch(error) { }
++            } catch (error) { }
+         }
+ 
+         if (providers.EtherscanProvider && options.etherscan !== "-") {
+             try {
+                 providerList.push(new providers.EtherscanProvider(network, options.etherscan));
+-            } catch(error) { }
++            } catch (error) { }
+         }
+ 
+         if (providers.AlchemyProvider && options.alchemy !== "-") {
+             try {
+                 providerList.push(new providers.AlchemyProvider(network, options.alchemy));
+-            } catch(error) { }
++            } catch (error) { }
+         }
+ 
+         if (providers.PocketProvider && options.pocket !== "-") {
+@@ -49,29 +51,29 @@ function ethDefaultProvider(network: string | Network): Renetworkable {
+             // network does not handle the Berlin hardfork, which is
+             // live on these ones.
+             // @TODO: This goes away once Pocket has upgraded their nodes
+-            const skip = [ "goerli", "ropsten", "rinkeby", "sepolia" ];
++            const skip = ["goerli", "ropsten", "rinkeby", "sepolia"];
+             try {
+                 const provider = new providers.PocketProvider(network, options.pocket);
+                 if (provider.network && skip.indexOf(provider.network.name) === -1) {
+                     providerList.push(provider);
+                 }
+-            } catch(error) { }
++            } catch (error) { }
+         }
+ 
+         if (providers.CloudflareProvider && options.cloudflare !== "-") {
+             try {
+                 providerList.push(new providers.CloudflareProvider(network));
+-            } catch(error) { }
++            } catch (error) { }
+         }
+ 
+         if (providers.AnkrProvider && options.ankr !== "-") {
+             try {
+-                const skip = [ "ropsten" ];
++                const skip = ["ropsten"];
+                 const provider = new providers.AnkrProvider(network, options.ankr);
+                 if (provider.network && skip.indexOf(provider.network.name) === -1) {
+                     providerList.push(provider);
+                 }
+-            } catch(error) { }
++            } catch (error) { }
+         }
+ 
+         if (providerList.length === 0) { return null; }
+@@ -89,7 +91,7 @@ function ethDefaultProvider(network: string | Network): Renetworkable {
+         return providerList[0];
+     };
+ 
+-    func.renetwork = function(network: Network) {
++    func.renetwork = function (network: Network) {
+         return ethDefaultProvider(network);
+     };
+ 
+@@ -97,7 +99,7 @@ function ethDefaultProvider(network: string | Network): Renetworkable {
+ }
+ 
+ function etcDefaultProvider(url: string, network: string | Network): Renetworkable {
+-    const func = function(providers: any, options?: any): any {
++    const func = function (providers: any, options?: any): any {
+         if (providers.JsonRpcProvider) {
+             return new providers.JsonRpcProvider(url, network);
+         }
+@@ -105,7 +107,7 @@ function etcDefaultProvider(url: string, network: string | Network): Renetworkab
+         return null;
+     };
+ 
+-    func.renetwork = function(network: Network) {
++    func.renetwork = function (network: Network) {
+         return etcDefaultProvider(url, network);
+     };
+ 
+@@ -214,6 +216,7 @@ const networks: { [name: string]: Network } = {
+ 
+     bnb: { chainId: 56, name: "bnb" },
+     bnbt: { chainId: 97, name: "bnbt" },
++    taiko: { chainId: 167007, name: "taiko" },
+ }
+ 
+ /**
+@@ -226,7 +229,7 @@ export function getNetwork(network: Networkish): Network {
+     // No network (null)
+     if (network == null) { return null; }
+ 
+-    if (typeof(network) === "number") {
++    if (typeof (network) === "number") {
+         for (const name in networks) {
+             const standard = networks[name];
+             if (standard.chainId === network) {
+@@ -245,7 +248,7 @@ export function getNetwork(network: Networkish): Network {
+         };
+     }
+ 
+-    if (typeof(network) === "string") {
++    if (typeof (network) === "string") {
+         const standard = networks[network];
+         if (standard == null) { return null; }
+         return {
+@@ -256,11 +259,11 @@ export function getNetwork(network: Networkish): Network {
+         };
+     }
+ 
+-    const standard  = networks[network.name];
++    const standard = networks[network.name];
+ 
+     // Not a standard network; check that it is a valid network in general
+     if (!standard) {
+-        if (typeof(network.chainId) !== "number") {
++        if (typeof (network.chainId) !== "number") {
+             logger.throwArgumentError("invalid network chainId", "network", network);
+         }
+         return network;

@@ -1,27 +1,27 @@
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
-import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
-import { TraceEvent } from 'analytics'
-import Loader from 'components/Icons/LoadingSpinner'
-import TokenSafetyIcon from 'components/TokenSafety/TokenSafetyIcon'
-import { checkWarning } from 'constants/tokenSafety'
-import { TokenBalances } from 'lib/hooks/useTokenList/sorting'
-import tryParseCurrencyAmount from 'lib/utils/tryParseCurrencyAmount'
 import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
-import { Check } from 'react-feather'
-import { FixedSizeList } from 'react-window'
-import { Text } from 'rebass'
-import styled from 'styled-components'
-
-import { useIsUserAddedToken } from '../../../hooks/Tokens'
-import { WrappedTokenInfo } from '../../../state/lists/wrappedTokenInfo'
-import { ThemedText } from '../../../theme'
 import Column, { AutoColumn } from '../../Column'
-import CurrencyLogo from '../../Logo/CurrencyLogo'
-import Row, { RowFixed } from '../../Row'
-import { MouseoverTooltip } from '../../Tooltip'
+import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { LoadingRows, MenuItem } from '../styled'
+import Row, { RowFixed } from '../../Row'
+
+import { Check } from 'react-feather'
+import CurrencyLogo from '../../Logo/CurrencyLogo'
+import { FixedSizeList } from 'react-window'
+import Loader from 'components/Icons/LoadingSpinner'
+import { MouseoverTooltip } from '../../Tooltip'
+import { Text } from 'rebass'
+import { ThemedText } from '../../../theme'
+import { TokenBalances } from 'lib/hooks/useTokenList/sorting'
+import TokenSafetyIcon from 'components/TokenSafety/TokenSafetyIcon'
+import { TraceEvent } from 'analytics'
+import { WrappedTokenInfo } from '../../../state/lists/wrappedTokenInfo'
+import { checkWarning } from 'constants/tokenSafety'
 import { scrollbarStyle } from './index.css'
+import styled from 'styled-components'
+import tryParseCurrencyAmount from 'lib/utils/tryParseCurrencyAmount'
+import { useIsUserAddedToken } from '../../../hooks/Tokens'
+import { useWeb3React } from '@web3-react/core'
 
 function currencyKey(currency: Currency): string {
   return currency.isToken ? currency.address : 'ETHER'
@@ -170,7 +170,7 @@ export function CurrencyRow({
         </Column>
         {showCurrencyAmount ? (
           <RowFixed style={{ justifySelf: 'flex-end' }}>
-            {account ? balance ? <Balance balance={balance} /> : <Loader /> : null}
+            {/* {account ? balance ? <Balance balance={balance} /> : <Loader /> : null} */}
             {isSelected && <CheckIcon />}
           </RowFixed>
         ) : (
