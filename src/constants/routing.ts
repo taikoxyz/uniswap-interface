@@ -1,3 +1,6 @@
+// a list of tokens by chain
+import { ChainId, Currency, Token } from '@uniswap/sdk-core'
+
 import {
   ARB,
   BTC_BSC,
@@ -14,10 +17,13 @@ import {
   DAI_POLYGON,
   ETH_BSC,
   HORSE_TAIKO_JOLNIR,
+  HORSE_TAIKO_KATLA,
+  nativeOnChain,
   OP,
   PORTAL_ETH_CELO,
   PORTAL_USDC_CELO,
   TTKO_TAIKO_JOLNIR,
+  TTKO_TAIKO_KATLA,
   USDC_ARBITRUM,
   USDC_ARBITRUM_GOERLI,
   USDC_AVALANCHE,
@@ -27,6 +33,7 @@ import {
   USDC_OPTIMISM,
   USDC_POLYGON,
   USDC_TAIKO_JOLNIR,
+  USDC_TAIKO_KATLA,
   USDT,
   USDT_ARBITRUM_ONE,
   USDT_AVALANCHE,
@@ -42,11 +49,9 @@ import {
   WETH_POLYGON,
   WETH_POLYGON_MUMBAI,
   WETH_TAIKO_JOLNIR,
+  WETH_TAIKO_KATLA,
   WRAPPED_NATIVE_CURRENCY,
-  nativeOnChain,
 } from './tokens'
-// a list of tokens by chain
-import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 
 type ChainTokenList = {
   readonly [chainId: number]: Token[]
@@ -124,6 +129,13 @@ export const COMMON_BASES: ChainCurrencyList = {
     TTKO_TAIKO_JOLNIR,
     HORSE_TAIKO_JOLNIR,
     WETH_TAIKO_JOLNIR,
+  ],
+  [ChainId.TAIKO_KATLA]: [
+    nativeOnChain(ChainId.TAIKO_KATLA),
+    USDC_TAIKO_KATLA,
+    TTKO_TAIKO_KATLA,
+    HORSE_TAIKO_KATLA,
+    WETH_TAIKO_KATLA,
   ],
 }
 

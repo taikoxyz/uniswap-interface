@@ -144,6 +144,7 @@ const commonTheme = {
   chain_80001: colors.networkPolygon,
   chain_43114: colors.networkOptimism,
   chain_167007: colors.networkTaiko,
+  chain_167008: colors.networkTaiko,
   chain_137_background: colors.purple900,
   chain_10_background: colors.red900,
   chain_43114_background: colors.red900,

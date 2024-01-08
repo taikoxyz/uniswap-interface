@@ -42,6 +42,7 @@ const SHOULD_SHOW_ALERT = {
   // [ChainId.AVALANCHE]: true,
   // [ChainId.BASE]: true,
   [ChainId.TAIKO_JOLNIR]: true,
+  [ChainId.TAIKO_KATLA]: true,
 }
 
 type NetworkAlertChains = keyof typeof SHOULD_SHOW_ALERT
@@ -52,9 +53,13 @@ const BG_COLORS_BY_DARK_MODE_AND_CHAIN_ID: {
   dark: {
     [ChainId.TAIKO_JOLNIR]:
       'radial-gradient(100% 100% at 50% 0%, rgba(10, 41, 75, 0.7) 0%, rgba(0, 82, 255, .1) 40%, rgba(0, 82, 255, 0) 100%), rgb(13, 14, 14);',
+    [ChainId.TAIKO_KATLA]:
+      'radial-gradient(100% 100% at 50% 0%, rgba(10, 41, 75, 0.7) 0%, rgba(0, 82, 255, .1) 40%, rgba(0, 82, 255, 0) 100%), rgb(13, 14, 14);',
   },
   light: {
     [ChainId.TAIKO_JOLNIR]:
+      'radial-gradient(100% 100% at 50% 0%, rgba(0, 82, 255, 0.20) 0%, rgba(0, 82, 255, 0.08) 40.0%, rgba(252, 255, 82, 0.00) 100%), rgb(255, 255, 255)',
+    [ChainId.TAIKO_KATLA]:
       'radial-gradient(100% 100% at 50% 0%, rgba(0, 82, 255, 0.20) 0%, rgba(0, 82, 255, 0.08) 40.0%, rgba(252, 255, 82, 0.00) 100%), rgb(255, 255, 255)',
   },
 }
@@ -111,6 +116,7 @@ const StyledArrowUpRight = styled(ArrowUpRight)`
 
 const TEXT_COLORS: { [chainId in NetworkAlertChains]: string } = {
   [ChainId.TAIKO_JOLNIR]: '#e81899',
+  [ChainId.TAIKO_KATLA]: '#e81899',
 }
 
 function shouldShowAlert(chainId: number | undefined): chainId is NetworkAlertChains {

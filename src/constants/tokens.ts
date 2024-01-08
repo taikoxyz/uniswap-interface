@@ -1,5 +1,4 @@
 import { ChainId, Currency, Ether, NativeCurrency, Token, UNI_ADDRESSES, WETH9 } from '@uniswap/sdk-core'
-
 import invariant from 'tiny-invariant'
 
 export const NATIVE_CHAIN_ID = 'NATIVE'
@@ -108,6 +107,37 @@ export const TTKO_TAIKO_JOLNIR = new Token(
 export const WETH_TAIKO_JOLNIR = new Token(
   ChainId.TAIKO_JOLNIR,
   '0x7be7937A395FD3B527F428124f6a33E10D1C0638',
+  18,
+  'WETH',
+  'WETH'
+)
+
+export const USDC_TAIKO_KATLA = new Token(
+  ChainId.TAIKO_KATLA,
+  '0x0011E559da84dde3f841e22dc33F3adbF184D84A',
+  6,
+  'USDC',
+  'USDC'
+)
+export const HORSE_TAIKO_KATLA = new Token(
+  ChainId.TAIKO_KATLA,
+  '0x9833DcA11f178dbaF2b88da42557DA2970534430',
+  18,
+  'HORSE',
+  'HORSE'
+)
+
+export const TTKO_TAIKO_KATLA = new Token(
+  ChainId.TAIKO_KATLA,
+  '0xe705498492D0aE94CA9365D395D2C6924F24F445',
+  18,
+  'TTKOj',
+  'TTKOj'
+)
+
+export const WETH_TAIKO_KATLA = new Token(
+  ChainId.TAIKO_KATLA,
+  '0xae2C46ddb314B9Ba743C6dEE4878F151881333D9',
   18,
   'WETH',
   'WETH'
@@ -511,5 +541,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in ChainId]?: s
     [ChainId.SEPOLIA]: USDC_SEPOLIA.address,
     [ChainId.AVALANCHE]: USDC_AVALANCHE.address,
     [ChainId.TAIKO_JOLNIR]: USDC_TAIKO_JOLNIR.address,
+    [ChainId.TAIKO_KATLA]: USDC_TAIKO_KATLA.address,
   },
 }

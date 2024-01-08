@@ -17,7 +17,10 @@ const GEMINI_LIST = 'https://www.gemini.com/uniswap/manifest.json'
 const KLEROS_LIST = 't2crtokens.eth'
 const SET_LIST = 'https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlist/main/set.tokenlist.json'
 const WRAPPED_LIST = 'wrapped.tokensoft.eth'
-const TAIKO_JOLNIR_LIST = 'https://raw.githubusercontent.com/taikoxyz/uniswap-interface/taiko-uniswap-v3/src/constants/tokenLists/taiko.tokenlist.json'
+const TAIKO_JOLNIR_LIST =
+  'https://raw.githubusercontent.com/taikoxyz/uniswap-interface/taiko-uniswap-v3/src/constants/tokenLists/taiko-jolnir.tokenlist.json'
+const TAIKO_KATLA_LIST =
+  'https://raw.githubusercontent.com/taikoxyz/uniswap-interface/taiko-uniswap-v3/src/constants/tokenLists/taiko-katla.tokenlist.json'
 
 export const OPTIMISM_LIST = 'https://static.optimism.io/optimism.tokenlist.json'
 export const ARBITRUM_LIST = 'https://bridge.arbitrum.io/token-list-42161.json'
@@ -31,7 +34,7 @@ export const BASE_LIST =
 export const UNSUPPORTED_LIST_URLS: string[] = [BA_LIST, UNI_UNSUPPORTED_LIST]
 
 // default lists to be 'active' aka searched across
-export const DEFAULT_ACTIVE_LIST_URLS: string[] = [TAIKO_JOLNIR_LIST]
+export const DEFAULT_ACTIVE_LIST_URLS: string[] = [TAIKO_JOLNIR_LIST, TAIKO_KATLA_LIST]
 export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
   UNI_EXTENDED_LIST,
   COMPOUND_LIST,

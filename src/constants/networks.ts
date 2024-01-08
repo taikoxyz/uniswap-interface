@@ -116,6 +116,7 @@ export const FALLBACK_URLS = {
     'https://base.meowrpc.com',
   ],
   [ChainId.TAIKO_JOLNIR]: ['https://rpc.jolnir.taiko.xyz'],
+  [ChainId.TAIKO_KATLA]: ['https://rpc.katla.taiko.xyz'],
 }
 
 /**
@@ -150,4 +151,5 @@ export const RPC_URLS = {
   [ChainId.AVALANCHE]: [`https://avalanche-mainnet.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[ChainId.AVALANCHE]],
   [ChainId.BASE]: [`https://base-mainnet.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[ChainId.BASE]],
   [ChainId.TAIKO_JOLNIR]: FALLBACK_URLS[ChainId.TAIKO_JOLNIR],
+  [ChainId.TAIKO_KATLA]: FALLBACK_URLS[ChainId.TAIKO_KATLA],
 }
