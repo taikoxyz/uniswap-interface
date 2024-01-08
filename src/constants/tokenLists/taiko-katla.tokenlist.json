@@ -12,7 +12,7 @@
   "tokens": [
     {
       "name": "TTKO",
-      "address": "0xe705498492D0aE94CA9365D395D2C6924F24F445", //TODO
+      "address": "0xe705498492D0aE94CA9365D395D2C6924F24F445",
       "symbol": "TTKO",
       "decimals": 18,
       "chainId": 167008,

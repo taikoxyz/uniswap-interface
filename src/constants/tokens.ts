@@ -131,8 +131,8 @@ export const TTKO_TAIKO_KATLA = new Token(
   ChainId.TAIKO_KATLA,
   '0xe705498492D0aE94CA9365D395D2C6924F24F445',
   18,
-  'TTKOj',
-  'TTKOj'
+  'TTKOk',
+  'TTKOk'
 )
 
 export const WETH_TAIKO_KATLA = new Token(
