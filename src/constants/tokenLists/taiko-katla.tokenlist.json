@@ -11,9 +11,9 @@
   "keywords": ["taiko"],
   "tokens": [
     {
-      "name": "TTKO",
-      "address": "0xe705498492D0aE94CA9365D395D2C6924F24F445",
-      "symbol": "TTKO",
+      "name": "TTKOk",
+      "address": "0x2a99837850543e223C134687f0c2B7E059873047",
+      "symbol": "TTKOk",
       "decimals": 18,
       "chainId": 167008,
       "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/ttko.svg"
