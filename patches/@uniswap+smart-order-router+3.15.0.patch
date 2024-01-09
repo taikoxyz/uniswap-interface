@@ -795,8 +795,8 @@ index bc019f6..77df809 100644
      [sdk_core_1.ChainId.AVALANCHE]: 'https://api.thegraph.com/subgraphs/name/lynnshaoyu/uniswap-v3-avax',
 -    [sdk_core_1.ChainId.BASE]: 'https://api.studio.thegraph.com/query/48211/uniswap-v3-base/v0.0.1',
 +    [sdk_core_1.ChainId.BASE]: 'https://api.studio.thegraph.com/query/48211/uniswap-v3-base/version/latest',
-+    [sdk_core_1.ChainId.TAIKO_JOLNIR]: 'https://graph.test.taiko.xyz/subgraphs/name/uniswap-v3/graphql',
-+    [sdk_core_1.ChainId.TAIKO_KATLA]: 'http://34.16.2.35:8000/subgraphs/name/uniswap-v3/graphql',
++    [sdk_core_1.ChainId.TAIKO_JOLNIR]: 'https://graph.test.taiko.xyz/subgraphs/name/uniswap-v3',
++    [sdk_core_1.ChainId.TAIKO_KATLA]: 'http://34.16.2.35:8000/subgraphs/name/uniswap-v3',
  };
  const PAGE_SIZE = 1000; // 1k is max possible query size from subgraph.
  class V3SubgraphProvider {
