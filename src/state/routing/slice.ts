@@ -184,9 +184,12 @@ export const routingApi = createApi({
           const method = fellBack ? QuoteMethod.CLIENT_SIDE_FALLBACK : QuoteMethod.CLIENT_SIDE
           const { getRouter, getClientSideQuote } = await import('lib/hooks/routing/clientSideSmartOrderRouter')
           const router = getRouter(args.tokenInChainId)
+          console.log('🚀 | queryFn | router:', router)
           const quoteResult = await getClientSideQuote(args, router, CLIENT_PARAMS)
+          console.log('🚀 | queryFn | quoteResult:', quoteResult)
           if (quoteResult.state === QuoteState.SUCCESS) {
             const trade = await transformRoutesToTrade(args, quoteResult.data, method)
+            console.log('🚀 | queryFn | trade:', trade)
             return {
               data: { ...trade, latencyMs: getQuoteLatencyMeasure(quoteStartMark).duration },
             }
