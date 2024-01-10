@@ -8,12 +8,10 @@ import Row, { RowFixed } from '../../Row'
 import { Check } from 'react-feather'
 import CurrencyLogo from '../../Logo/CurrencyLogo'
 import { FixedSizeList } from 'react-window'
-import Loader from 'components/Icons/LoadingSpinner'
 import { MouseoverTooltip } from '../../Tooltip'
 import { Text } from 'rebass'
 import { ThemedText } from '../../../theme'
 import { TokenBalances } from 'lib/hooks/useTokenList/sorting'
-import TokenSafetyIcon from 'components/TokenSafety/TokenSafetyIcon'
 import { TraceEvent } from 'analytics'
 import { WrappedTokenInfo } from '../../../state/lists/wrappedTokenInfo'
 import { checkWarning } from 'constants/tokenSafety'
@@ -157,9 +155,9 @@ export function CurrencyRow({
         <AutoColumn style={{ opacity: isBlockedToken ? blockedTokenOpacity : '1' }}>
           <Row>
             <CurrencyName title={currency.name}>{currency.name}</CurrencyName>
-            <WarningContainer>
+            {/* <WarningContainer>
               <TokenSafetyIcon warning={warning} />
-            </WarningContainer>
+            </WarningContainer> */}
           </Row>
           <ThemedText.LabelMicro ml="0px">{currency.symbol}</ThemedText.LabelMicro>
         </AutoColumn>
