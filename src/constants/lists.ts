@@ -19,7 +19,7 @@ const SET_LIST = 'https://raw.githubusercontent.com/SetProtocol/uniswap-tokenlis
 const WRAPPED_LIST = 'wrapped.tokensoft.eth'
 const TAIKO_JOLNIR_LIST =
   'https://raw.githubusercontent.com/taikoxyz/uniswap-interface/taiko-uniswap-v3/src/constants/tokenLists/taiko-jolnir.tokenlist.json'
-const TAIKO_KATLA_LIST = 'https://nftstorage.link/ipfs/bafkreidsxgfl2l6x7vcwhuqewus3v654fcpxfapigwr3s4tnqqlpiwidsy'
+const TAIKO_KATLA_LIST = 'https://nftstorage.link/ipfs/bafkreicq4cfhdshwsnh55lqc3mpv7g5tiw2wsjg2wiobdrkbjawej2ql6u'
 
 export const OPTIMISM_LIST = 'https://static.optimism.io/optimism.tokenlist.json'
 export const ARBITRUM_LIST = 'https://bridge.arbitrum.io/token-list-42161.json'

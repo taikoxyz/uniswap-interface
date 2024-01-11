@@ -28,7 +28,7 @@
     },
     {
       "name": "Wrapped Ether",
-      "address": "0xae2C46ddb314B9Ba743C6dEE4878F151881333D9",
+      "address": "0x0011E559da84dde3f841e22dc33F3adbF184D84A",
       "symbol": "WETH",
       "decimals": 18,
       "chainId": 167008,
@@ -36,7 +36,7 @@
     },
     {
       "name": "USDC",
-      "address": "0x0011E559da84dde3f841e22dc33F3adbF184D84A",
+      "address": "0xae2C46ddb314B9Ba743C6dEE4878F151881333D9",
       "symbol": "USDC",
       "decimals": 6,
       "chainId": 167008,

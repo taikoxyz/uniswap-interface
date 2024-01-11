@@ -115,7 +115,7 @@ export const WETH_TAIKO_JOLNIR = new Token(
 
 export const USDC_TAIKO_KATLA = new Token(
   ChainId.TAIKO_KATLA,
-  '0x0011E559da84dde3f841e22dc33F3adbF184D84A',
+  '0xae2C46ddb314B9Ba743C6dEE4878F151881333D9',
   6,
   'USDC',
   'USDC'
@@ -138,7 +138,7 @@ export const TTKO_TAIKO_KATLA = new Token(
 
 export const WETH_TAIKO_KATLA = new Token(
   ChainId.TAIKO_KATLA,
-  '0xae2C46ddb314B9Ba743C6dEE4878F151881333D9',
+  '0x0011E559da84dde3f841e22dc33F3adbF184D84A',
   18,
   'WETH',
   'WETH'
