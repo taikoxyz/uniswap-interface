@@ -1,28 +1,28 @@
-import { Trans } from '@lingui/macro'
 import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
-import { Pair } from '@uniswap/v2-sdk'
-import { useWeb3React } from '@web3-react/core'
-import { TraceEvent } from 'analytics'
 import { LoadingOpacityContainer, loadingOpacityMixin } from 'components/Loader/styled'
-import PrefetchBalancesWrapper from 'components/PrefetchBalancesWrapper/PrefetchBalancesWrapper'
-import { isSupportedChain } from 'constants/chains'
-import { darken } from 'polished'
 import { ReactNode, useCallback, useState } from 'react'
-import styled, { useTheme } from 'styled-components'
-import { flexColumnNoWrap, flexRowNoWrap } from 'theme/styles'
-import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
-
-import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
-import { useCurrencyBalance } from '../../state/connection/hooks'
-import { ThemedText } from '../../theme'
-import { ButtonGray } from '../Button'
-import DoubleCurrencyLogo from '../DoubleLogo'
-import CurrencyLogo from '../Logo/CurrencyLogo'
-import { Input as NumericalInput } from '../NumericalInput'
 import { RowBetween, RowFixed } from '../Row'
+import { flexColumnNoWrap, flexRowNoWrap } from 'theme/styles'
+import styled, { useTheme } from 'styled-components'
+
+import { ButtonGray } from '../Button'
+import CurrencyLogo from '../Logo/CurrencyLogo'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
+import DoubleCurrencyLogo from '../DoubleLogo'
+import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 import { FiatValue } from './FiatValue'
+import { Input as NumericalInput } from '../NumericalInput'
+import { Pair } from '@uniswap/v2-sdk'
+import PrefetchBalancesWrapper from 'components/PrefetchBalancesWrapper/PrefetchBalancesWrapper'
+import { ThemedText } from '../../theme'
+import { TraceEvent } from 'analytics'
+import { Trans } from '@lingui/macro'
+import { darken } from 'polished'
+import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+import { isSupportedChain } from 'constants/chains'
+import { useCurrencyBalance } from '../../state/connection/hooks'
+import { useWeb3React } from '@web3-react/core'
 
 const InputPanel = styled.div<{ hideInput?: boolean }>`
   ${flexColumnNoWrap};
@@ -267,7 +267,7 @@ export default function CurrencyInputPanel({
                             ? currency.symbol.slice(0, 4) +
                               '...' +
                               currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                            : currency?.symbol) || <Trans>Select a token</Trans>}
+                            : currency?.symbol) || <Trans>Select</Trans>}
                         </StyledTokenName>
                       )}
                     </RowFixed>

@@ -1,35 +1,35 @@
-import { Trans } from '@lingui/macro'
-import { InterfacePageName } from '@uniswap/analytics-events'
-import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
-import { Trace } from 'analytics'
-import { V2Unsupported } from 'components/V2Unsupported'
-import { useNetworkSupportsV2 } from 'hooks/useNetworkSupportsV2'
-import JSBI from 'jsbi'
-import { useCallback, useEffect, useState } from 'react'
-import { Plus } from 'react-feather'
-import { useLocation } from 'react-router'
-import { Text } from 'rebass'
-
-import { ButtonDropdownLight } from '../../components/Button'
-import { LightCard } from '../../components/Card'
-import { BlueCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
-import CurrencyLogo from '../../components/Logo/CurrencyLogo'
-import { FindPoolTabs } from '../../components/NavigationTabs'
-import { MinimalPositionCard } from '../../components/PositionCard'
-import Row from '../../components/Row'
-import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
-import { SwitchLocaleLink } from '../../components/SwitchLocaleLink'
-import { nativeOnChain } from '../../constants/tokens'
+import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { PairState, useV2Pair } from '../../hooks/useV2Pairs'
-import { useTokenBalance } from '../../state/connection/hooks'
-import { usePairAdder } from '../../state/user/hooks'
-import { StyledInternalLink } from '../../theme'
-import { ThemedText } from '../../theme'
-import { currencyId } from '../../utils/currencyId'
+import { useCallback, useEffect, useState } from 'react'
+
 import AppBody from '../AppBody'
+import { BlueCard } from '../../components/Card'
+import { ButtonDropdownLight } from '../../components/Button'
+import CurrencyLogo from '../../components/Logo/CurrencyLogo'
+import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
 import { Dots } from '../Pool/styled'
+import { FindPoolTabs } from '../../components/NavigationTabs'
+import { InterfacePageName } from '@uniswap/analytics-events'
+import JSBI from 'jsbi'
+import { LightCard } from '../../components/Card'
+import { MinimalPositionCard } from '../../components/PositionCard'
+import { Plus } from 'react-feather'
+import Row from '../../components/Row'
+import { StyledInternalLink } from '../../theme'
+import { SwitchLocaleLink } from '../../components/SwitchLocaleLink'
+import { Text } from 'rebass'
+import { ThemedText } from '../../theme'
+import { Trace } from 'analytics'
+import { Trans } from '@lingui/macro'
+import { V2Unsupported } from 'components/V2Unsupported'
+import { currencyId } from '../../utils/currencyId'
+import { nativeOnChain } from '../../constants/tokens'
+import { useLocation } from 'react-router'
+import { useNetworkSupportsV2 } from 'hooks/useNetworkSupportsV2'
+import { usePairAdder } from '../../state/user/hooks'
+import { useTokenBalance } from '../../state/connection/hooks'
+import { useWeb3React } from '@web3-react/core'
 
 enum Fields {
   TOKEN0 = 0,
@@ -131,7 +131,7 @@ export default function PoolFinder() {
                 </Row>
               ) : (
                 <Text fontWeight={535} fontSize={20} marginLeft="12px">
-                  <Trans>Select a token</Trans>
+                  <Trans>Select</Trans>
                 </Text>
               )}
             </ButtonDropdownLight>
@@ -155,7 +155,7 @@ export default function PoolFinder() {
                 </Row>
               ) : (
                 <Text fontWeight={535} fontSize={20} marginLeft="12px">
-                  <Trans>Select a token</Trans>
+                  <Trans>Select</Trans>
                 </Text>
               )}
             </ButtonDropdownLight>

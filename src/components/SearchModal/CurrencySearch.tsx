@@ -1,33 +1,33 @@
-// eslint-disable-next-line no-restricted-imports
-import { t, Trans } from '@lingui/macro'
-import { InterfaceEventName, InterfaceModalName } from '@uniswap/analytics-events'
-import { Currency, Token } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
-import { Trace } from 'analytics'
-import { useCachedPortfolioBalancesQuery } from 'components/PrefetchBalancesWrapper/PrefetchBalancesWrapper'
-import { supportedChainIdFromGQLChain } from 'graphql/data/util'
-import useDebounce from 'hooks/useDebounce'
-import { useOnClickOutside } from 'hooks/useOnClickOutside'
-import useToggle from 'hooks/useToggle'
-import useNativeCurrency from 'lib/hooks/useNativeCurrency'
-import { getTokenFilter } from 'lib/hooks/useTokenList/filtering'
-import { TokenBalances, tokenComparator, useSortTokensByQuery } from 'lib/hooks/useTokenList/sorting'
 import { ChangeEvent, KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { CloseIcon, ThemedText } from '../../theme'
+import { Currency, Token } from '@uniswap/sdk-core'
+import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
+import { InterfaceEventName, InterfaceModalName } from '@uniswap/analytics-events'
+import { PaddedColumn, SearchInput, Separator } from './styled'
+import Row, { RowBetween } from '../Row'
+import { TokenBalances, tokenComparator, useSortTokensByQuery } from 'lib/hooks/useTokenList/sorting'
+// eslint-disable-next-line no-restricted-imports
+import { Trans, t } from '@lingui/macro'
+import styled, { useTheme } from 'styled-components'
+import { useDefaultActiveTokens, useIsUserAddedToken, useSearchInactiveTokenLists, useToken } from '../../hooks/Tokens'
+
 import AutoSizer from 'react-virtualized-auto-sizer'
+import Column from '../Column'
+import CommonBases from './CommonBases'
+import CurrencyList from './CurrencyList'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
-import styled, { useTheme } from 'styled-components'
+import { Trace } from 'analytics'
 import { UserAddedToken } from 'types/tokens'
-
-import { useDefaultActiveTokens, useIsUserAddedToken, useSearchInactiveTokenLists, useToken } from '../../hooks/Tokens'
-import { CloseIcon, ThemedText } from '../../theme'
+import { getTokenFilter } from 'lib/hooks/useTokenList/filtering'
 import { isAddress } from '../../utils'
-import Column from '../Column'
-import Row, { RowBetween } from '../Row'
-import CommonBases from './CommonBases'
-import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
-import CurrencyList from './CurrencyList'
-import { PaddedColumn, SearchInput, Separator } from './styled'
+import { supportedChainIdFromGQLChain } from 'graphql/data/util'
+import { useCachedPortfolioBalancesQuery } from 'components/PrefetchBalancesWrapper/PrefetchBalancesWrapper'
+import useDebounce from 'hooks/useDebounce'
+import useNativeCurrency from 'lib/hooks/useNativeCurrency'
+import { useOnClickOutside } from 'hooks/useOnClickOutside'
+import useToggle from 'hooks/useToggle'
+import { useWeb3React } from '@web3-react/core'
 
 const ContentWrapper = styled(Column)`
   background-color: ${({ theme }) => theme.surface1};
@@ -228,7 +228,7 @@ export function CurrencySearch({
         <PaddedColumn gap="16px">
           <RowBetween>
             <Text fontWeight={535} fontSize={16}>
-              <Trans>Select a token</Trans>
+              <Trans>Select</Trans>
             </Text>
             <CloseIcon onClick={onDismiss} />
           </RowBetween>

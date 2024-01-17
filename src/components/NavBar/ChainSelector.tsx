@@ -1,27 +1,28 @@
-import { t } from '@lingui/macro'
+import * as styles from './ChainSelector.css'
+
+import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
+import { Column, Row } from 'nft/components/Flex'
+import { TESTNET_CHAIN_IDS, getChainPriority } from 'constants/chains'
+import { useCallback, useMemo, useRef, useState } from 'react'
+
+import { Box } from 'nft/components/Box'
 import { ChainId } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
-import { showTestnetsAtom } from 'components/AccountDrawer/TestnetsToggle'
+import ChainSelectorRow from './ChainSelectorRow'
 import { MouseoverTooltip } from 'components/Tooltip'
+import { NavDropdown } from './NavDropdown'
+import { Portal } from 'nft/components/common/Portal'
 import { getChainInfo } from 'constants/chainInfo'
-import { getChainPriority, TESTNET_CHAIN_IDS } from 'constants/chains'
+import { showTestnetsAtom } from 'components/AccountDrawer/TestnetsToggle'
+import { t } from '@lingui/macro'
+import { useAtomValue } from 'jotai/utils'
+import { useIsMobile } from 'nft/hooks'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import useSelectChain from 'hooks/useSelectChain'
 import useSyncChainQuery from 'hooks/useSyncChainQuery'
-import { useAtomValue } from 'jotai/utils'
-import { Box } from 'nft/components/Box'
-import { Portal } from 'nft/components/common/Portal'
-import { Column, Row } from 'nft/components/Flex'
-import { useIsMobile } from 'nft/hooks'
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
 import { useTheme } from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 
-import * as styles from './ChainSelector.css'
-import ChainSelectorRow from './ChainSelectorRow'
-import { NavDropdown } from './NavDropdown'
-
-const NETWORK_SELECTOR_CHAINS = [ChainId.TAIKO_JOLNIR, ChainId.TAIKO_KATLA]
+const NETWORK_SELECTOR_CHAINS = [ChainId.TAIKO_KATLA]
 
 interface ChainSelectorProps {
   leftAlign?: boolean
