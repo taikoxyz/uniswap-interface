@@ -356,8 +356,12 @@ function AddLiquidity() {
     [chainId]
   )
 
+  const [selectedCurrencyA, setSelectedCurrencyA] = useState<Currency | null>(null)
+  const [selectedCurrencyB, setSelectedCurrencyB] = useState<Currency | null>(null)
+
   const handleCurrencyASelect = useCallback(
     (currencyANew: Currency) => {
+      setSelectedCurrencyA(currencyANew)
       const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
       if (idB === undefined) {
         navigate(`/add/${idA}`)
@@ -370,6 +374,7 @@ function AddLiquidity() {
 
   const handleCurrencyBSelect = useCallback(
     (currencyBNew: Currency) => {
+      setSelectedCurrencyB(currencyBNew)
       const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA)
       if (idA === undefined) {
         navigate(`/add/${idB}`)
@@ -642,6 +647,7 @@ function AddLiquidity() {
                           onCurrencySelect={handleCurrencyASelect}
                           showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
                           currency={currencies[Field.CURRENCY_A] ?? null}
+                          otherCurrency={selectedCurrencyB}
                           id="add-liquidity-input-tokena"
                           showCommonBases
                         />
@@ -658,6 +664,7 @@ function AddLiquidity() {
                           }}
                           showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
                           currency={currencies[Field.CURRENCY_B] ?? null}
+                          otherCurrency={selectedCurrencyA}
                           id="add-liquidity-input-tokenb"
                           showCommonBases
                         />
