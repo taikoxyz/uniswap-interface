@@ -356,34 +356,34 @@ function AddLiquidity() {
     [chainId]
   )
 
-  const [selectedCurrencyA, setSelectedCurrencyA] = useState<Currency | null>(null);
-  const [selectedCurrencyB, setSelectedCurrencyB] = useState<Currency | null>(null);
+  const [selectedCurrencyA, setSelectedCurrencyA] = useState<Currency | null>(null)
+  const [selectedCurrencyB, setSelectedCurrencyB] = useState<Currency | null>(null)
 
   const handleCurrencyASelect = useCallback(
     (currencyANew: Currency) => {
-      setSelectedCurrencyA(currencyANew); // Установка выбранной валюты A
-      const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB);
+      setSelectedCurrencyA(currencyANew)
+      const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
       if (idB === undefined) {
-        navigate(`/add/${idA}`);
+        navigate(`/add/${idA}`)
       } else {
-        navigate(`/add/${idA}/${idB}`);
+        navigate(`/add/${idA}/${idB}`)
       }
     },
     [handleCurrencySelect, currencyIdB, navigate]
-  );
+  )
 
   const handleCurrencyBSelect = useCallback(
     (currencyBNew: Currency) => {
-      setSelectedCurrencyB(currencyBNew); // Установка выбранной валюты B
-      const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA);
+      setSelectedCurrencyB(currencyBNew)
+      const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA)
       if (idA === undefined) {
-        navigate(`/add/${idB}`);
+        navigate(`/add/${idB}`)
       } else {
-        navigate(`/add/${idA}/${idB}`);
+        navigate(`/add/${idA}/${idB}`)
       }
     },
     [handleCurrencySelect, currencyIdA, navigate]
-  );
+  )
 
   const handleFeePoolSelect = useCallback(
     (newFeeAmount: FeeAmount) => {
