@@ -356,29 +356,34 @@ function AddLiquidity() {
     [chainId]
   )
 
+  const [selectedCurrencyA, setSelectedCurrencyA] = useState<Currency | null>(null);
+  const [selectedCurrencyB, setSelectedCurrencyB] = useState<Currency | null>(null);
+
   const handleCurrencyASelect = useCallback(
     (currencyANew: Currency) => {
-      const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
+      setSelectedCurrencyA(currencyANew); // Установка выбранной валюты A
+      const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB);
       if (idB === undefined) {
-        navigate(`/add/${idA}`)
+        navigate(`/add/${idA}`);
       } else {
-        navigate(`/add/${idA}/${idB}`)
+        navigate(`/add/${idA}/${idB}`);
       }
     },
     [handleCurrencySelect, currencyIdB, navigate]
-  )
+  );
 
   const handleCurrencyBSelect = useCallback(
     (currencyBNew: Currency) => {
-      const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA)
+      setSelectedCurrencyB(currencyBNew); // Установка выбранной валюты B
+      const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA);
       if (idA === undefined) {
-        navigate(`/add/${idB}`)
+        navigate(`/add/${idB}`);
       } else {
-        navigate(`/add/${idA}/${idB}`)
+        navigate(`/add/${idA}/${idB}`);
       }
     },
     [handleCurrencySelect, currencyIdA, navigate]
-  )
+  );
 
   const handleFeePoolSelect = useCallback(
     (newFeeAmount: FeeAmount) => {
@@ -642,6 +647,7 @@ function AddLiquidity() {
                           onCurrencySelect={handleCurrencyASelect}
                           showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
                           currency={currencies[Field.CURRENCY_A] ?? null}
+                          otherCurrency={selectedCurrencyB}
                           id="add-liquidity-input-tokena"
                           showCommonBases
                         />
@@ -658,6 +664,7 @@ function AddLiquidity() {
                           }}
                           showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
                           currency={currencies[Field.CURRENCY_B] ?? null}
+                          otherCurrency={selectedCurrencyA}
                           id="add-liquidity-input-tokenb"
                           showCommonBases
                         />
