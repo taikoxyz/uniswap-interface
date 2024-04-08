@@ -145,7 +145,7 @@ export const WETH_TAIKO_KATLA = new Token(
 
 export const USDC_TAIKO_HEKLA = new Token(
   ChainId.TAIKO_HEKLA,
-  '0x0011E559da84dde3f841e22dc33F3adbF184D84A'
+  '0x0011E559da84dde3f841e22dc33F3adbF184D84A',
   6,
   'USDC',
   'USDC'
