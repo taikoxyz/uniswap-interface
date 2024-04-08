@@ -136,12 +136,12 @@ export type SupportedL2ChainId = (typeof L2_CHAIN_IDS)[number]
 export function getChainPriority(chainId: ChainId): number {
   switch (chainId) {
     case ChainId.TAIKO_HEKLA:
+      return 0
     case ChainId.TAIKO_JOLNIR:
     case ChainId.TAIKO_KATLA:
     case ChainId.MAINNET:
     case ChainId.GOERLI:
     case ChainId.SEPOLIA:
-      return 0
     case ChainId.ARBITRUM_ONE:
     case ChainId.ARBITRUM_GOERLI:
       return 1

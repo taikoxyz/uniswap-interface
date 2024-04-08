@@ -300,7 +300,7 @@ const CHAIN_INFO: ChainInfoMap = {
     docs: 'https://docs.taiko.xyz',
     explorer: 'https://explorer.hekla.taiko.xyz/',
     infoLink: 'https://taiko.xyz',
-    label: 'Taiko Katla',
+    label: 'Taiko Hekla',
     logoUrl: taikoLogo,
     statusPage: 'https://taiko.xyz',
     circleLogoUrl: taikoLogo,
