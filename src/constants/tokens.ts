@@ -1,5 +1,4 @@
 import { ChainId, Currency, Ether, NativeCurrency, Token, UNI_ADDRESSES, WETH9 } from '@uniswap/sdk-core'
-
 import invariant from 'tiny-invariant'
 
 export const NATIVE_CHAIN_ID = 'NATIVE'
@@ -139,6 +138,37 @@ export const TTKO_TAIKO_KATLA = new Token(
 export const WETH_TAIKO_KATLA = new Token(
   ChainId.TAIKO_KATLA,
   '0x0011E559da84dde3f841e22dc33F3adbF184D84A',
+  18,
+  'WETH',
+  'WETH'
+)
+
+export const USDC_TAIKO_HEKLA = new Token(
+  ChainId.TAIKO_HEKLA,
+  '0x0011E559da84dde3f841e22dc33F3adbF184D84A'
+  6,
+  'USDC',
+  'USDC'
+)
+export const HORSE_TAIKO_HEKLA = new Token(
+  ChainId.TAIKO_HEKLA,
+  '0x2029Ca1e4A5954781a271d6Fa3598bF4434969f5',
+  18,
+  'HORSE',
+  'HORSE'
+)
+
+// export const TTKO_TAIKO_HEKLA = new Token(
+//   ChainId.TAIKO_HEKLA,
+//   '0x2a99837850543e223C134687f0c2B7E059873047',
+//   18,
+//   'TTKOk',
+//   'TTKOk'
+// )
+
+export const WETH_TAIKO_HEKLA = new Token(
+  ChainId.TAIKO_HEKLA,
+  '0xae2C46ddb314B9Ba743C6dEE4878F151881333D9',
   18,
   'WETH',
   'WETH'

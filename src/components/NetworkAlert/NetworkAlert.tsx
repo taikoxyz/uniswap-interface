@@ -41,8 +41,9 @@ const SHOULD_SHOW_ALERT = {
   // [ChainId.BNB]: true,
   // [ChainId.AVALANCHE]: true,
   // [ChainId.BASE]: true,
-  [ChainId.TAIKO_JOLNIR]: true,
-  [ChainId.TAIKO_KATLA]: true,
+  // [ChainId.TAIKO_JOLNIR]: true,
+  // [ChainId.TAIKO_KATLA]: true,
+  [ChainId.TAIKO_HEKLA]: true,
 }
 
 type NetworkAlertChains = keyof typeof SHOULD_SHOW_ALERT
@@ -51,15 +52,11 @@ const BG_COLORS_BY_DARK_MODE_AND_CHAIN_ID: {
   [darkMode in 'dark' | 'light']: { [chainId in NetworkAlertChains]: string }
 } = {
   dark: {
-    [ChainId.TAIKO_JOLNIR]:
-      'radial-gradient(100% 100% at 50% 0%, rgba(10, 41, 75, 0.7) 0%, rgba(0, 82, 255, .1) 40%, rgba(0, 82, 255, 0) 100%), rgb(13, 14, 14);',
-    [ChainId.TAIKO_KATLA]:
+    [ChainId.TAIKO_HEKLA]:
       'radial-gradient(100% 100% at 50% 0%, rgba(10, 41, 75, 0.7) 0%, rgba(0, 82, 255, .1) 40%, rgba(0, 82, 255, 0) 100%), rgb(13, 14, 14);',
   },
   light: {
-    [ChainId.TAIKO_JOLNIR]:
-      'radial-gradient(100% 100% at 50% 0%, rgba(0, 82, 255, 0.20) 0%, rgba(0, 82, 255, 0.08) 40.0%, rgba(252, 255, 82, 0.00) 100%), rgb(255, 255, 255)',
-    [ChainId.TAIKO_KATLA]:
+    [ChainId.TAIKO_HEKLA]:
       'radial-gradient(100% 100% at 50% 0%, rgba(0, 82, 255, 0.20) 0%, rgba(0, 82, 255, 0.08) 40.0%, rgba(252, 255, 82, 0.00) 100%), rgb(255, 255, 255)',
   },
 }
@@ -115,8 +112,7 @@ const StyledArrowUpRight = styled(ArrowUpRight)`
 `
 
 const TEXT_COLORS: { [chainId in NetworkAlertChains]: string } = {
-  [ChainId.TAIKO_JOLNIR]: '#e81899',
-  [ChainId.TAIKO_KATLA]: '#e81899',
+  [ChainId.TAIKO_HEKLA]: '#e81899',
 }
 
 function shouldShowAlert(chainId: number | undefined): chainId is NetworkAlertChains {
@@ -128,11 +124,11 @@ export function NetworkAlert() {
   const [darkMode] = useDarkModeManager()
 
   if (!shouldShowAlert(chainId)) {
-    const textColor = TEXT_COLORS[ChainId.TAIKO_JOLNIR]
+    const textColor = TEXT_COLORS[ChainId.TAIKO_HEKLA]
 
     return (
       <RootWrapper>
-        <ContentWrapper chainId={ChainId.TAIKO_JOLNIR} darkMode={darkMode} logoUrl="">
+        <ContentWrapper chainId={ChainId.TAIKO_HEKLA} darkMode={darkMode} logoUrl="">
           <LinkOutToBridge href="https://gov.uniswap.org/t/rfc-uniswap-v3-deployment-on-taiko/21089">
             <BodyText color={darkMode ? textColor : '#e81899'}>
               <AlertTriangle size={24} style={{ marginRight: '16px' }} />
@@ -176,7 +172,7 @@ export function NetworkAlert() {
         </LinkOutToBridge>
       </ContentWrapper>
       <div style={{ height: '16px' }} />
-      <ContentWrapper chainId={ChainId.TAIKO_JOLNIR} darkMode={darkMode} logoUrl="">
+      <ContentWrapper chainId={ChainId.TAIKO_HEKLA} darkMode={darkMode} logoUrl="">
         <LinkOutToBridge href="https://gov.uniswap.org/t/rfc-uniswap-v3-deployment-on-taiko/21089">
           <BodyText color={darkMode ? textColor : '#e81899'}>
             <AlertTriangle size={24} style={{ marginRight: '16px' }} />

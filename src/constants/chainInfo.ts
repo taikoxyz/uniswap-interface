@@ -292,6 +292,22 @@ const CHAIN_INFO: ChainInfoMap = {
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     color: darkTheme.chain_167008,
   },
+  [ChainId.TAIKO_HEKLA]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`25m`),
+    bridge: 'https://bridge.hekla.taiko.xyz',
+    defaultListUrl: BASE_LIST,
+    docs: 'https://docs.taiko.xyz',
+    explorer: 'https://explorer.hekla.taiko.xyz/',
+    infoLink: 'https://taiko.xyz',
+    label: 'Taiko Katla',
+    logoUrl: taikoLogo,
+    statusPage: 'https://taiko.xyz',
+    circleLogoUrl: taikoLogo,
+    squareLogoUrl: taikoLogo,
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    color: darkTheme.chain_167008,
+  },
 } as const
 
 export function getChainInfo(

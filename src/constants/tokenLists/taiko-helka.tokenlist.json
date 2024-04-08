@@ -1,0 +1,38 @@
+{
+  "name": "TAIKO Token List",
+  "timestamp": "2024-04-08T20:47:02.923Z",
+  "version": {
+    "major": 2,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/ttko.svg",
+  "keywords": ["taiko"],
+  "tokens": [
+    {
+      "name": "HORSE",
+      "address": "0x2029Ca1e4A5954781a271d6Fa3598bF4434969f5",
+      "symbol": "HORSE",
+      "decimals": 18,
+      "chainId": 167009,
+      "logoURI": "https://raw.githubusercontent.com/taikoxyz/taiko-mono/main/packages/branding/testnet-token-images/horse.svg"
+    },
+    {
+      "name": "Wrapped Ether",
+      "address": "0xae2C46ddb314B9Ba743C6dEE4878F151881333D9",
+      "symbol": "WETH",
+      "decimals": 18,
+      "chainId": 167009,
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+    },
+    {
+      "name": "USDC",
+      "address": "0x0011E559da84dde3f841e22dc33F3adbF184D84A",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 167009,
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+    }
+  ]
+}
