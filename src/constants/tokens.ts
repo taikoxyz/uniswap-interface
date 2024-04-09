@@ -1,4 +1,5 @@
 import { ChainId, Currency, Ether, NativeCurrency, Token, UNI_ADDRESSES, WETH9 } from '@uniswap/sdk-core'
+
 import invariant from 'tiny-invariant'
 
 export const NATIVE_CHAIN_ID = 'NATIVE'
@@ -158,13 +159,13 @@ export const HORSE_TAIKO_HEKLA = new Token(
   'HORSE'
 )
 
-// export const TTKO_TAIKO_HEKLA = new Token(
-//   ChainId.TAIKO_HEKLA,
-//   '0x2a99837850543e223C134687f0c2B7E059873047',
-//   18,
-//   'TTKOk',
-//   'TTKOk'
-// )
+export const TTKO_TAIKO_HEKLA = new Token(
+  ChainId.TAIKO_HEKLA,
+  '0xebf1f662bf092ff0d913a9fe9d7179b0efef1611',
+  18,
+  'TTKOh',
+  'TTKOh'
+)
 
 export const WETH_TAIKO_HEKLA = new Token(
   ChainId.TAIKO_HEKLA,
@@ -434,6 +435,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'WETH',
     'Wrapped ETH'
   ),
+  [ChainId.TAIKO_HEKLA]: new Token(
+    ChainId.TAIKO_HEKLA,
+    '0xae2C46ddb314B9Ba743C6dEE4878F151881333D9',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
 }
 
 export function isCelo(chainId: number): chainId is ChainId.CELO | ChainId.CELO_ALFAJORES {
@@ -573,5 +581,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in ChainId]?: s
     [ChainId.AVALANCHE]: USDC_AVALANCHE.address,
     [ChainId.TAIKO_JOLNIR]: USDC_TAIKO_JOLNIR.address,
     [ChainId.TAIKO_KATLA]: USDC_TAIKO_KATLA.address,
+    [ChainId.TAIKO_HEKLA]: USDC_TAIKO_HEKLA.address,
   },
 }

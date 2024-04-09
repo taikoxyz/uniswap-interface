@@ -23,6 +23,7 @@ import {
   OP,
   PORTAL_ETH_CELO,
   PORTAL_USDC_CELO,
+  TTKO_TAIKO_HEKLA,
   TTKO_TAIKO_JOLNIR,
   TTKO_TAIKO_KATLA,
   USDC_ARBITRUM,
@@ -143,7 +144,7 @@ export const COMMON_BASES: ChainCurrencyList = {
   [ChainId.TAIKO_HEKLA]: [
     nativeOnChain(ChainId.TAIKO_HEKLA),
     USDC_TAIKO_HEKLA,
-    // TTKO_TAIKO_HEKLA,
+    TTKO_TAIKO_HEKLA,
     HORSE_TAIKO_HEKLA,
     WETH_TAIKO_HEKLA,
   ],

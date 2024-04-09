@@ -20,7 +20,7 @@ const WRAPPED_LIST = 'wrapped.tokensoft.eth'
 const TAIKO_JOLNIR_LIST =
   'https://raw.githubusercontent.com/taikoxyz/uniswap-interface/taiko-uniswap-v3/src/constants/tokenLists/taiko-jolnir.tokenlist.json'
 const TAIKO_KATLA_LIST = 'https://nftstorage.link/ipfs/bafkreibee3rswyjgodlwioxwthun7x2wzwhicqw4n4esfvq4gs5evw47ri'
-const TAIKO_HEKLA_LIST = 'https://nftstorage.link/ipfs/bafkreibi3uinn27i3gmjeswffge3xqqslqszzimbp5anccpzate54rrvqe'
+const TAIKO_HEKLA_LIST = 'https://nftstorage.link/ipfs/bafkreifiruitl2zt5mhixnryvlkdykml6wwx4podgsjsmkfyepesqs2kky'
 
 export const OPTIMISM_LIST = 'https://static.optimism.io/optimism.tokenlist.json'
 export const ARBITRUM_LIST = 'https://bridge.arbitrum.io/token-list-42161.json'
