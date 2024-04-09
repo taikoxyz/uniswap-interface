@@ -39,6 +39,7 @@ You can block an entire list of tokens by passing in a tokenlist like [here](./s
 For steps on local deployment, development, and code contribution, please see [CONTRIBUTING](./CONTRIBUTING.md).
 
 #### PR Title
+
 Your PR title must follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary), and should start with one of the following [types](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type):
 
 - build: Changes that affect the build system or external dependencies (example scopes: yarn, eslint, typescript)
@@ -63,7 +64,6 @@ Other things to note:
 - PRs with multiple changes should use a list of verb statements
 - Add any relevant unit / integration tests
 - Changes will be previewable via vercel. Non-obvious changes should include instructions for how to reproduce them
-
 
 ## Accessing Uniswap V2
 
