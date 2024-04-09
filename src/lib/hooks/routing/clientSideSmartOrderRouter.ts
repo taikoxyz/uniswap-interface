@@ -12,6 +12,7 @@ import { transformSwapRouteToGetQuoteResult } from 'utils/transformSwapRouteToGe
 const routers = new Map<ChainId, AlphaRouter>()
 export function getRouter(chainId: ChainId): AlphaRouter {
   const router = routers.get(chainId)
+  console.log('🚀 | getRouter | router:', router)
   if (router) return router
 
   const supportedChainId = asSupportedChain(chainId)

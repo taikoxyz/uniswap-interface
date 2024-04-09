@@ -1,8 +1,7 @@
 import { Trans } from '@lingui/macro'
-import { BrowserEvent, InterfaceElementName, InterfaceSectionName, SharedEventName } from '@uniswap/analytics-events'
-import { Trace, TraceEvent } from 'analytics'
+import { InterfaceElementName, InterfaceSectionName } from '@uniswap/analytics-events'
+import { Trace } from 'analytics'
 import Column from 'components/Column'
-import { LoaderV2 } from 'components/Icons/LoadingSpinner'
 import { AutoRow } from 'components/Row'
 import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import { useIsNftPage } from 'hooks/useIsNftPage'
@@ -12,10 +11,8 @@ import { BREAKPOINTS, ThemedText } from 'theme'
 
 import { ActivityTab } from './Activity'
 import { usePendingActivity } from './Activity/hooks'
-import NFTs from './NFTs'
 import Pools from './Pools'
 import { PortfolioRowWrapper } from './PortfolioRow'
-import Tokens from './Tokens'
 
 const Wrapper = styled(Column)`
   margin-top: 28px;
@@ -112,7 +109,7 @@ export default function MiniPortfolio({ account }: { account: string }) {
   return (
     <Trace section={InterfaceSectionName.MINI_PORTFOLIO}>
       <Wrapper>
-        <Nav data-testid="mini-portfolio-navbar">
+        {/* <Nav data-testid="mini-portfolio-navbar">
           {Pages.map(({ title, loggingElementName, key }, index) => {
             if (shouldDisableNFTRoutes && loggingElementName.includes('nft')) return null
             const isUnselectedActivity = key === 'activity' && currentKey !== 'activity'
@@ -146,10 +143,10 @@ export default function MiniPortfolio({ account }: { account: string }) {
               </TraceEvent>
             )
           })}
-        </Nav>
-        <PageWrapper data-testid="mini-portfolio-page">
+        </Nav> */}
+        {/* <PageWrapper data-testid="mini-portfolio-page">
           <Page account={account} />
-        </PageWrapper>
+        </PageWrapper> */}
       </Wrapper>
     </Trace>
   )

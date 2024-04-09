@@ -33,7 +33,7 @@ index 693a671..728d0df 100644
  /**
   *  getNetwork
 diff --git a/node_modules/@ethersproject/networks/src.ts/index.ts b/node_modules/@ethersproject/networks/src.ts/index.ts
-index cb1b8e5..c75c7d4 100644
+index cb1b8e5..d9c9fee 100644
 --- a/node_modules/@ethersproject/networks/src.ts/index.ts
 +++ b/node_modules/@ethersproject/networks/src.ts/index.ts
 @@ -1,10 +1,12 @@
@@ -149,15 +149,17 @@ index cb1b8e5..c75c7d4 100644
          return etcDefaultProvider(url, network);
      };
  
-@@ -214,6 +216,7 @@ const networks: { [name: string]: Network } = {
+@@ -214,6 +216,9 @@ const networks: { [name: string]: Network } = {
  
      bnb: { chainId: 56, name: "bnb" },
      bnbt: { chainId: 97, name: "bnbt" },
-+    taiko: { chainId: 167007, name: "taiko" },
++    "taiko-jolnir": { chainId: 167007, name: "taiko-jolnir" },
++    "taiko-katla": { chainId: 167008, name: "taiko-katla" },
++    "taiko-hekla": { chainId: 167009, name: "taiko-hekla" },
  }
  
  /**
-@@ -226,7 +229,7 @@ export function getNetwork(network: Networkish): Network {
+@@ -226,7 +231,7 @@ export function getNetwork(network: Networkish): Network {
      // No network (null)
      if (network == null) { return null; }
  
@@ -166,7 +168,7 @@ index cb1b8e5..c75c7d4 100644
          for (const name in networks) {
              const standard = networks[name];
              if (standard.chainId === network) {
-@@ -245,7 +248,7 @@ export function getNetwork(network: Networkish): Network {
+@@ -245,7 +250,7 @@ export function getNetwork(network: Networkish): Network {
          };
      }
  
@@ -175,7 +177,7 @@ index cb1b8e5..c75c7d4 100644
          const standard = networks[network];
          if (standard == null) { return null; }
          return {
-@@ -256,11 +259,11 @@ export function getNetwork(network: Networkish): Network {
+@@ -256,11 +261,11 @@ export function getNetwork(network: Networkish): Network {
          };
      }
  

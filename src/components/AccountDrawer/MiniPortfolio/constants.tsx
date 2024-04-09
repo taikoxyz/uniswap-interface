@@ -1,7 +1,8 @@
-import { t } from '@lingui/macro'
 import { SwapOrderStatus, TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
-import { UniswapXOrderStatus } from 'lib/hooks/orders/types'
+
 import { TransactionType } from 'state/transactions/types'
+import { UniswapXOrderStatus } from 'lib/hooks/orders/types'
+import { t } from '@lingui/macro'
 
 // use even number because rows are in groups of 2
 export const DEFAULT_NFT_QUERY_AMOUNT = 26
@@ -232,6 +233,8 @@ export const MOONPAY_SENDER_ADDRESSES = [
 // Converts GQL backend orderStatus enum to the enum used by the frontend and UniswapX backend
 export const OrderStatusTable: { [key in SwapOrderStatus]: UniswapXOrderStatus } = {
   [SwapOrderStatus.Open]: UniswapXOrderStatus.OPEN,
+  [SwapOrderStatus.Filled]: UniswapXOrderStatus.FILLED,
+  [SwapOrderStatus.Cancelled]: UniswapXOrderStatus.CANCELLED,
   [SwapOrderStatus.Expired]: UniswapXOrderStatus.EXPIRED,
   [SwapOrderStatus.Error]: UniswapXOrderStatus.ERROR,
   [SwapOrderStatus.InsufficientFunds]: UniswapXOrderStatus.INSUFFICIENT_FUNDS,
