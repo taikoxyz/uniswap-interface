@@ -14,7 +14,7 @@ const BLOCK_EXPLORER_PREFIXES: { [chainId: number]: string } = {
   [ChainId.AVALANCHE]: 'https://snowtrace.io',
   [ChainId.BASE]: 'https://basescan.org',
   [ChainId.TAIKO_JOLNIR]: 'https://explorer.jolnir.taiko.xyz',
-  [ChainId.TAIKO_KATLA]: 'https://explorer.katla.taiko.xyz',
+  [ChainId.TAIKO_KATLA]: 'https://katla.taikoscan.network',
   [ChainId.TAIKO_HEKLA]: 'https://hekla.taikoscan.network',
 }
 
