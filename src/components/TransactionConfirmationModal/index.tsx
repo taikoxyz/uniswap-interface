@@ -233,7 +233,7 @@ function L2Content({
             <Badge>
               <RowFixed>
                 <StyledLogo src={info.logoUrl} style={{ margin: '0 8px 0 0' }} />
-                {info.label}
+                <ThemedText.SubHeaderSmall>{info.label}</ThemedText.SubHeaderSmall>
               </RowFixed>
             </Badge>
             <CloseIcon onClick={onDismiss} />
