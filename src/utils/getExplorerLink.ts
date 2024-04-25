@@ -15,7 +15,7 @@ const BLOCK_EXPLORER_PREFIXES: { [chainId: number]: string } = {
   [ChainId.BASE]: 'https://basescan.org',
   [ChainId.TAIKO_JOLNIR]: 'https://explorer.jolnir.taiko.xyz',
   [ChainId.TAIKO_KATLA]: 'https://explorer.katla.taiko.xyz',
-  [ChainId.TAIKO_HEKLA]: 'https://explorer.hekla.taiko.xyz',
+  [ChainId.TAIKO_HEKLA]: 'https://hekla.taikoscan.network',
 }
 
 export enum ExplorerDataType {
