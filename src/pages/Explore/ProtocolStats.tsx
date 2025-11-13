@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { ThemedText } from 'theme'
 import { useProtocolStatsTaiko } from 'graphql/taiko/TaikoTopPools'
 import { useMemo } from 'react'
+import { useWeb3React } from '@web3-react/core'
+import { getDefaultChainId } from 'config/chains'
 
 const StatsContainer = styled.div`
   display: grid;
@@ -60,7 +62,9 @@ function formatCount(value: number | undefined): string {
 }
 
 export function ProtocolStats() {
-  const { stats, loading } = useProtocolStatsTaiko()
+  const { chainId } = useWeb3React()
+  const activeChainId = chainId || getDefaultChainId()
+  const { stats, loading } = useProtocolStatsTaiko(activeChainId)
 
   const formattedStats = useMemo(() => {
     if (!stats) return null

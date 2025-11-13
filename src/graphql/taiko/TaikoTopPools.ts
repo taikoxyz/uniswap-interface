@@ -7,6 +7,7 @@
 import { useQuery, gql, ApolloError } from '@apollo/client'
 import { useMemo } from 'react'
 import { getClient } from '../thegraph/apollo'
+import { TAIKO_HOODI_CHAIN_ID } from 'config/chains'
 
 /**
  * Pool data structure from Goldsky V3 subgraph
@@ -197,8 +198,8 @@ export interface UseProtocolStatsTaikoResult {
 /**
  * Hook to fetch protocol-wide statistics
  */
-export function useProtocolStatsTaiko(): UseProtocolStatsTaikoResult {
-  const client = getClient(TAIKO_HOODI_CHAIN_ID)
+export function useProtocolStatsTaiko(chainId: number): UseProtocolStatsTaikoResult {
+  const client = getClient(chainId)
 
   const { data, loading, error } = useQuery<{
     factories: Array<{
