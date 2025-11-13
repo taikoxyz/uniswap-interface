@@ -2,7 +2,6 @@ import { t } from '@lingui/macro'
 import { ChainId, Currency, UNI_ADDRESSES } from '@uniswap/sdk-core'
 import UniswapXBolt from 'assets/svg/bolt.svg'
 import { NONFUNGIBLE_POSITION_MANAGER_ADDRESSES } from 'config/chains'
-import moonpayLogoSrc from 'assets/svg/moonpay.svg'
 import { nativeOnChain } from 'constants/tokens'
 import {
   ActivityType,
@@ -24,7 +23,7 @@ import { useEffect, useState } from 'react'
 import { isAddress } from 'utils'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
 
-import { MOONPAY_SENDER_ADDRESSES, OrderStatusTable, OrderTextTable } from '../constants'
+import { OrderStatusTable, OrderTextTable } from '../constants'
 import { Activity } from './types'
 
 type TransactionChanges = {
@@ -242,25 +241,13 @@ function parseSendReceive(
   }
 
   if (transfer && assetName && amount) {
-    const isMoonpayPurchase = MOONPAY_SENDER_ADDRESSES.some((address) => isSameAddress(address, transfer?.sender))
-
     if (transfer.direction === 'IN') {
-      return isMoonpayPurchase && transfer.__typename === 'TokenTransfer'
-        ? {
-            title: t`Purchased`,
-            descriptor: `${amount} ${assetName} ${t`for`} ${formatNumberOrString({
-              input: getTransactedValue(transfer.transactedValue),
-              type: NumberType.FiatTokenPrice,
-            })}`,
-            logos: [moonpayLogoSrc],
-            currencies,
-          }
-        : {
-            title: t`Received`,
-            descriptor: `${amount} ${assetName} ${t`from`} `,
-            otherAccount: isAddress(transfer.sender) || undefined,
-            currencies,
-          }
+      return {
+        title: t`Received`,
+        descriptor: `${amount} ${assetName} ${t`from`} `,
+        otherAccount: isAddress(transfer.sender) || undefined,
+        currencies,
+      }
     } else {
       return {
         title: t`Sent`,

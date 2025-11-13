@@ -35,7 +35,7 @@ export async function getApproveInfo(
     const allowance = await tokenContract.callStatic.allowance(account, PERMIT2_ADDRESS)
     if (!allowance.lt(amount)) return { needsApprove: false }
   } catch (_) {
-    // If contract lookup fails (eg if Infura goes down), then don't show gas info for approving the token
+    // If contract lookup fails (eg if RPC endpoint is unavailable), then don't show gas info for approving the token
     return { needsApprove: false }
   }
 

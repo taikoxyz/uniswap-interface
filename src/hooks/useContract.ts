@@ -2,7 +2,6 @@ import { Contract } from '@ethersproject/contracts'
 import { InterfaceEventName } from '@uniswap/analytics-events'
 import {
   ARGENT_WALLET_DETECTOR_ADDRESS,
-  ChainId,
   ENS_REGISTRAR_ADDRESSES,
   V2_ROUTER_ADDRESS,
 } from '@uniswap/sdk-core'
@@ -11,6 +10,7 @@ import {
   NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
   TICK_LENS_ADDRESSES,
   V3_MIGRATOR_ADDRESSES,
+  TAIKO_MAINNET_CHAIN_ID,
 } from 'config/chains'
 import IUniswapV2PairJson from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import IUniswapV2Router02Json from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
@@ -69,19 +69,19 @@ export function useContract<T extends Contract = Contract>(
 
 function useMainnetContract<T extends Contract = Contract>(address: string | undefined, ABI: any): T | null {
   const { chainId } = useWeb3React()
-  const isMainnet = chainId === ChainId.MAINNET
-  const contract = useContract(isMainnet ? address : undefined, ABI, false)
+  const isTaikoMainnet = chainId === TAIKO_MAINNET_CHAIN_ID
+  const contract = useContract(isTaikoMainnet ? address : undefined, ABI, false)
   return useMemo(() => {
-    if (isMainnet) return contract
+    if (isTaikoMainnet) return contract
     if (!address) return null
-    const provider = RPC_PROVIDERS[ChainId.MAINNET]
+    const provider = RPC_PROVIDERS[TAIKO_MAINNET_CHAIN_ID]
     try {
       return getContract(address, ABI, provider)
     } catch (error) {
-      console.error('Failed to get mainnet contract', error)
+      console.error('Failed to get Taiko mainnet contract', error)
       return null
     }
-  }, [address, ABI, contract, isMainnet]) as T
+  }, [address, ABI, contract, isTaikoMainnet]) as T
 }
 
 export function useV2MigratorContract() {
@@ -114,7 +114,7 @@ export function useArgentWalletDetectorContract() {
 }
 
 export function useENSRegistrarContract() {
-  return useMainnetContract<EnsRegistrar>(ENS_REGISTRAR_ADDRESSES[ChainId.MAINNET], ENS_ABI)
+  return useMainnetContract<EnsRegistrar>(ENS_REGISTRAR_ADDRESSES[TAIKO_MAINNET_CHAIN_ID], ENS_ABI)
 }
 
 export function useENSResolverContract(address: string | undefined) {
@@ -143,7 +143,7 @@ export function useInterfaceMulticall() {
 
 export function useMainnetInterfaceMulticall() {
   return useMainnetContract<UniswapInterfaceMulticall>(
-    MULTICALL_ADDRESSES[ChainId.MAINNET],
+    MULTICALL_ADDRESSES[TAIKO_MAINNET_CHAIN_ID],
     MulticallABI
   ) as UniswapInterfaceMulticall
 }

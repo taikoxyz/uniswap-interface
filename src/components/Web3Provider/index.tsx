@@ -12,6 +12,8 @@ import { useLocation } from 'react-router-dom'
 import { useConnectedWallets } from 'state/wallets/hooks'
 import { getCurrentPageFromLocation } from 'utils/urlRoutes'
 import { getWalletMeta } from 'utils/walletMeta'
+import { getDefaultChainId } from 'config/chains'
+import useSelectChain from 'hooks/useSelectChain'
 
 export default function Web3Provider({ children }: { children: ReactNode }) {
   const connectors = connections.map<[Connector, Web3ReactHooks]>(({ hooks, connector }) => [connector, hooks])
@@ -30,6 +32,25 @@ function Updater() {
   const { pathname } = useLocation()
   const currentPage = getCurrentPageFromLocation(pathname)
   const analyticsContext = useTrace()
+  const selectChain = useSelectChain()
+
+  // Auto-switch to default chain when wallet connects on wrong network
+  const defaultChainId = getDefaultChainId()
+  const previousAccount = usePrevious(account)
+  useEffect(() => {
+    // Only try to switch if we have both account and chainId
+    if (!account || !chainId) return
+
+    // When wallet first connects (account changes from undefined to defined)
+    const isNewConnection = !previousAccount
+    // And wallet is on wrong chain
+    const isWrongChain = chainId !== defaultChainId
+
+    if (isNewConnection && isWrongChain) {
+      // Use the same chain switching logic as the chain selector
+      selectChain(defaultChainId)
+    }
+  }, [account, previousAccount, chainId, defaultChainId, selectChain])
 
   // Trace RPC calls (for debugging).
   const networkProvider = isSupportedChain(chainId) ? RPC_PROVIDERS[chainId] : undefined
@@ -63,7 +84,6 @@ function Updater() {
   }, [account, chainId, connector, currentPage, previousConnectedChainId])
 
   // Send analytics events when the active account changes.
-  const previousAccount = usePrevious(account)
   const [connectedWallets, addConnectedWallet] = useConnectedWallets()
   useEffect(() => {
     if (account && account !== previousAccount) {

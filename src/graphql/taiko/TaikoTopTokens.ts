@@ -1,9 +1,7 @@
 /**
  * Taiko Top Tokens Query
  *
- * Custom implementation for querying token data from Goldsky's Taiko subgraph.
- * This is necessary because Uniswap's AWS backend doesn't support Taiko chains.
- *
+ * Queries token data from Goldsky's Taiko subgraph.
  * The Goldsky token subgraph uses The Graph's standard schema for Uniswap V3 tokens.
  */
 

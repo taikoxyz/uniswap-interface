@@ -61,7 +61,7 @@ export const TAIKO_MAINNET_ADDRESSES: ChainAddresses = {
   factory: '0x826D713e30f0bF09Dd3219494A508E6B30327d4f', // V3 Factory
 
   // Periphery Contracts
-  router: '0x1024Ea017b00F15591846f4E6E893abDe2e37cc8', // SwapRouter02
+  router: '0x1A0c3a0Cfd1791FAC7798FA2b05208B66aaadfeD', // SwapRouter (V3-only)
   positionManager: '0xf26F8d1DA08aD278D0B65403A04E918341680aDC', // NonfungiblePositionManager
   quoterV2: '0xcBa70D57be34aA26557B8E80135a9B7754680aDb', // QuoterV2
   multicall: '0x81504E4F564CC0AC5Ce35A0d79d33acE5099a59B', // UniswapInterfaceMulticall

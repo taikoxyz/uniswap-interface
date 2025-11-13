@@ -1,34 +1,17 @@
 import { ChainId } from '@uniswap/sdk-core'
-import { UNIVERSAL_ROUTER_CREATION_BLOCK } from '@uniswap/universal-router-sdk'
+import { TAIKO_HOODI_CHAIN_ID } from './src/config/chains'
 
 /* eslint-env node */
 require('dotenv').config()
 
-const forkingConfig = {
-  httpHeaders: {
-    Origin: 'localhost:3000', // infura allowlists requests by origin
-  },
-}
-
-const forks = {
-  [ChainId.MAINNET]: {
-    url: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`,
-    blockNumber: UNIVERSAL_ROUTER_CREATION_BLOCK(ChainId.MAINNET),
-    ...forkingConfig,
-  },
-  [ChainId.POLYGON]: {
-    url: `https://polygon-mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`,
-    blockNumber: UNIVERSAL_ROUTER_CREATION_BLOCK(ChainId.POLYGON),
-    ...forkingConfig,
-  },
-}
-
+/**
+ * Hardhat configuration for Taiko-only deployment.
+ * This deployment does not use network forks or external RPC endpoints.
+ */
 module.exports = {
-  forks,
   networks: {
     hardhat: {
-      chainId: ChainId.MAINNET,
-      forking: forks[ChainId.MAINNET],
+      chainId: TAIKO_HOODI_CHAIN_ID,
       accounts: {
         count: 2,
       },

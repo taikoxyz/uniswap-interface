@@ -2,7 +2,7 @@
  * Apollo Client for Taiko Goldsky Subgraphs
  *
  * This module provides GraphQL clients for querying Taiko-specific data
- * from Goldsky subgraphs, since Uniswap's AWS backend doesn't support Taiko.
+ * from Goldsky subgraphs.
  */
 
 import { ApolloClient, InMemoryCache, HttpLink, NormalizedCacheObject } from '@apollo/client'
