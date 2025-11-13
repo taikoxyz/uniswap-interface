@@ -2,6 +2,7 @@ import { ChainId, CurrencyAmount, Token } from '@uniswap/sdk-core'
 import IUniswapV3PoolStateJSON from '@uniswap/v3-core/artifacts/contracts/interfaces/pool/IUniswapV3PoolState.sol/IUniswapV3PoolState.json'
 import { computePoolAddress, Pool, Position } from '@uniswap/v3-sdk'
 import { V3_CORE_FACTORY_ADDRESSES } from 'config/chains'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains/taiko'
 import { DEFAULT_ERC20_DECIMALS } from 'constants/tokens'
 import { BigNumber } from 'ethers/lib/ethers'
 import { Interface } from 'ethers/lib/utils'
@@ -49,6 +50,8 @@ const DEFAULT_CHAINS = [
   ChainId.BNB,
   ChainId.AVALANCHE,
   ChainId.BASE,
+  TAIKO_MAINNET_CHAIN_ID,
+  TAIKO_HOODI_CHAIN_ID,
 ]
 
 type UseMultiChainPositionsData = { positions?: PositionInfo[]; loading: boolean }

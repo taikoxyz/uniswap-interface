@@ -11,9 +11,11 @@ import { AutoRow } from 'components/Row'
 import { LoadingBubble } from 'components/Tokens/loading'
 import { DeltaArrow, formatDelta } from 'components/Tokens/TokenDetails/Delta'
 import Tooltip from 'components/Tooltip'
+import { isTaikoChain } from 'config/chains/taiko'
 import { getConnection } from 'connection'
 import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import useENSName from 'hooks/useENSName'
+import { useTaikoPortfolioValue } from 'hooks/useTaikoPortfolioValue'
 import { useProfilePageState, useSellAsset, useWalletCollections } from 'nft/hooks'
 import { useIsNftClaimAvailable } from 'nft/hooks/useIsNftClaimAvailable'
 import { ProfilePageStateType } from 'nft/types'
@@ -126,7 +128,7 @@ const PortfolioDrawerContainer = styled(Column)`
 `
 
 export default function AuthenticatedHeader({ account, openSettings }: { account: string; openSettings: () => void }) {
-  const { connector } = useWeb3React()
+  const { connector, chainId } = useWeb3React()
   const { ENSName } = useENSName(account)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -138,6 +140,10 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
   const { formatNumber } = useFormatter()
 
   const shouldDisableNFTRoutes = useDisableNFTRoutes()
+  const isTaiko = chainId && isTaikoChain(chainId)
+
+  // Get Taiko portfolio value if on Taiko chains
+  const { totalValueUSD: taikoTotalValue, loading: taikoLoading } = useTaikoPortfolioValue(isTaiko ? account : undefined)
 
   const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)
   const isUnclaimed = useUserHasAvailableClaim(account)
@@ -207,7 +213,28 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
         </IconContainer>
       </HeaderWrapper>
       <PortfolioDrawerContainer>
-        {totalBalance !== undefined ? (
+        {isTaiko ? (
+          taikoLoading ? (
+            <Column gap="xs">
+              <LoadingBubble height="44px" width="170px" />
+              <LoadingBubble height="16px" width="100px" margin="4px 0 20px 0" />
+            </Column>
+          ) : (
+            <FadeInColumn gap="xs">
+              <ThemedText.HeadlineLarge fontWeight={535} data-testid="portfolio-total-balance">
+                {formatNumber({
+                  input: taikoTotalValue,
+                  type: NumberType.PortfolioBalance,
+                })}
+              </ThemedText.HeadlineLarge>
+              <AutoRow marginBottom="20px">
+                <ThemedText.BodySecondary color="neutral2">
+                  <Trans>Taiko Portfolio</Trans>
+                </ThemedText.BodySecondary>
+              </AutoRow>
+            </FadeInColumn>
+          )
+        ) : totalBalance !== undefined ? (
           <FadeInColumn gap="xs">
             <ThemedText.HeadlineLarge fontWeight={535} data-testid="portfolio-total-balance">
               {formatNumber({

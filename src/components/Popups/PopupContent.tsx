@@ -12,6 +12,7 @@ import { getChainInfo } from 'constants/chainInfo'
 import { TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
 import { useAllTokensMultichain } from 'hooks/Tokens'
 import useENSName from 'hooks/useENSName'
+import { useMemo } from 'react'
 import { X } from 'react-feather'
 import { useOrder } from 'state/signatures/hooks'
 import { useTransaction } from 'state/transactions/hooks'
@@ -19,6 +20,7 @@ import styled from 'styled-components'
 import { EllipsisStyle, ThemedText } from 'theme'
 import { useFormatter } from 'utils/formatNumbers'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { mergeTaikoTokens } from 'utils/getTaikoTokenMap'
 
 const StyledClose = styled(X)<{ $padding: number }>`
   position: absolute;
@@ -137,7 +139,8 @@ export function TransactionPopupContent({
   onClose: () => void
 }) {
   const transaction = useTransaction(hash)
-  const tokens = useAllTokensMultichain()
+  const baseTokens = useAllTokensMultichain()
+  const tokens = useMemo(() => mergeTaikoTokens(baseTokens), [baseTokens])
   const { formatNumber } = useFormatter()
   if (!transaction) return null
 
@@ -153,7 +156,8 @@ export function TransactionPopupContent({
 
 export function UniswapXOrderPopupContent({ orderHash, onClose }: { orderHash: string; onClose: () => void }) {
   const order = useOrder(orderHash)
-  const tokens = useAllTokensMultichain()
+  const baseTokens = useAllTokensMultichain()
+  const tokens = useMemo(() => mergeTaikoTokens(baseTokens), [baseTokens])
   const openOffchainActivityModal = useOpenOffchainActivityModal()
   const { formatNumber } = useFormatter()
   if (!order) return null
