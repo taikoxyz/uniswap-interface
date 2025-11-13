@@ -1,6 +1,6 @@
 import { ChainId, SUPPORTED_CHAINS, SupportedChainsType } from '@uniswap/sdk-core'
 
-import { TAIKO_HOODI_CHAIN_ID, getEnabledChainIds } from 'config/chains'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID, getEnabledChainIds } from 'config/chains'
 
 // Get enabled Taiko chains from the validated registry
 const ENABLED_TAIKO_CHAIN_IDS = getEnabledChainIds()
@@ -125,7 +125,7 @@ export const L2_CHAIN_IDS = [
   ChainId.OPTIMISM_GOERLI,
   ChainId.BASE,
   TAIKO_HOODI_CHAIN_ID,
-  // Taiko Mainnet excluded - not yet fully deployed
+  TAIKO_MAINNET_CHAIN_ID,
 ] as const
 
 export type SupportedL2ChainId = (typeof L2_CHAIN_IDS)[number]
