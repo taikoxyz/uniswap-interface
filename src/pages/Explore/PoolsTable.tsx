@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { ThemedText } from 'theme'
 import { useMemo, useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
+import { getDefaultChainId } from 'config/chains'
 
 const TableContainer = styled.div`
   background: ${({ theme }) => theme.surface1};
@@ -115,7 +117,9 @@ export function PoolsTable() {
   const [sortField, setSortField] = useState<SortField>('tvl')
   const [sortAscending, setSortAscending] = useState(false)
 
-  const { pools, loadingPools, error } = useTopPoolsTaiko(100, 'totalValueLockedUSD')
+  const { chainId } = useWeb3React()
+  const activeChainId = chainId || getDefaultChainId()
+  const { pools, loadingPools, error } = useTopPoolsTaiko(activeChainId, 100, 'totalValueLockedUSD')
 
   const sortedPools = useMemo(() => {
     if (!pools) return undefined

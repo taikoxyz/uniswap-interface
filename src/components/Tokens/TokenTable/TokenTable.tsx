@@ -90,7 +90,7 @@ export default function TokenTable() {
 
   // Use custom Taiko hook for Taiko chains, otherwise use standard hook
   const standardResult = useTopTokens(chainName)
-  const taikoResult = useTopTokensTaiko(timePeriod)
+  const taikoResult = useTopTokensTaiko(chainId || 167013, timePeriod)
 
   // Select the appropriate result based on chain
   const { tokens, tokenSortRank, loadingTokens, sparklines } = isTaiko ? taikoResult : standardResult

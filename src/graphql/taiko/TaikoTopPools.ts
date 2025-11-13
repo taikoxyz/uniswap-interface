@@ -7,7 +7,6 @@
 import { useQuery, gql, ApolloError } from '@apollo/client'
 import { useMemo } from 'react'
 import { getClient } from '../thegraph/apollo'
-import { TAIKO_HOODI_CHAIN_ID } from 'config/chains'
 
 /**
  * Pool data structure from Goldsky V3 subgraph
@@ -106,11 +105,12 @@ export interface UseTopPoolsTaikoResult {
  * Hook to fetch and normalize top pools from Taiko Goldsky V3 subgraph
  */
 export function useTopPoolsTaiko(
+  chainId: number,
   first: number = 100,
   orderBy: 'totalValueLockedUSD' | 'volumeUSD' = 'totalValueLockedUSD'
 ): UseTopPoolsTaikoResult {
-  // Get the Apollo client for Taiko Hoodi from thegraph apollo
-  const client = getClient(TAIKO_HOODI_CHAIN_ID)
+  // Get the Apollo client for the specified Taiko chain
+  const client = getClient(chainId)
 
   const { data, loading, error, refetch } = useQuery<{ pools: TaikoPool[] }>(TAIKO_TOP_POOLS_QUERY, {
     client,

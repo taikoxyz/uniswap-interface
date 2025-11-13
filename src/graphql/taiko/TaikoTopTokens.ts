@@ -7,7 +7,7 @@
 
 import { useQuery, gql, ApolloError } from '@apollo/client'
 import { useMemo } from 'react'
-import { taikoTokenClient } from './apollo'
+import { getTokenClientForChain } from './apollo'
 import { TimePeriod } from '../data/util'
 
 /**
@@ -91,18 +91,22 @@ export interface UseTopTokensTaikoResult {
 /**
  * Hook to fetch and normalize top tokens from Taiko Goldsky subgraph
  *
+ * @param chainId - Chain ID for the Taiko network
  * @param timePeriod - Time period for filtering (note: current implementation doesn't filter by time)
  * @returns Normalized token data compatible with TokenTable component
  */
-export function useTopTokensTaiko(timePeriod: TimePeriod = TimePeriod.DAY): UseTopTokensTaikoResult {
+export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = TimePeriod.DAY): UseTopTokensTaikoResult {
+  const client = getTokenClientForChain(chainId)
+
   const { data, loading, error } = useQuery<{ tokens: TaikoToken[] }>(TAIKO_TOP_TOKENS_QUERY, {
-    client: taikoTokenClient,
+    client,
     variables: {
       // Use TVL for ordering since volume may be zero on new testnets
       orderBy: 'totalValueLockedUSD',
       orderDirection: 'desc',
     },
     pollInterval: 60000, // Poll every 60 seconds
+    skip: !client, // Skip if no client available for this chain
   })
 
   // Normalize tokens to match the format expected by TokenTable
