@@ -125,6 +125,7 @@ export const L2_CHAIN_IDS = [
   ChainId.BASE,
   TAIKO_MAINNET_CHAIN_ID,
   TAIKO_HOODI_CHAIN_ID,
+  TAIKO_MAINNET_CHAIN_ID,
 ] as const
 
 export type SupportedL2ChainId = (typeof L2_CHAIN_IDS)[number]
