@@ -448,7 +448,22 @@ export function useV3DerivedMintInfo(
   }
 
   if (poolState === PoolState.INVALID) {
-    errorMessage = errorMessage ?? <Trans>Invalid pair</Trans>
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🚨 SHOWING "Invalid pair" ERROR', {
+        poolState,
+        currencyA: currencies[Field.CURRENCY_A]?.symbol,
+        currencyB: currencies[Field.CURRENCY_B]?.symbol,
+        feeAmount,
+        currencyAAddress: currencies[Field.CURRENCY_A]?.wrapped.address,
+        currencyBAddress: currencies[Field.CURRENCY_B]?.wrapped.address,
+      })
+    }
+    // Show better message when fee tier is missing
+    if (!feeAmount) {
+      errorMessage = errorMessage ?? <Trans>Select a fee tier</Trans>
+    } else {
+      errorMessage = errorMessage ?? <Trans>Invalid pair</Trans>
+    }
   }
 
   if (invalidPrice) {

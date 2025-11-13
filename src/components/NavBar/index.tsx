@@ -8,7 +8,7 @@ import { useIsNftPage } from 'hooks/useIsNftPage'
 import { useIsPoolsPage } from 'hooks/useIsPoolsPage'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
-import { UniIcon } from 'nft/components/icons'
+import { TaikoLogo } from 'components/Logo/TaikoLogo'
 import { useProfilePageState } from 'nft/hooks'
 import { ProfilePageStateType } from 'nft/types'
 import { ReactNode, useCallback } from 'react'
@@ -64,17 +64,21 @@ export const PageTabs = () => {
 
   return (
     <>
-      <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
+      <MenuItem href="/" isActive={pathname === '/'}>
         <Trans>Swap</Trans>
       </MenuItem>
+      {/* Temporarily hidden - Tokens page
       <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
         <Trans>Tokens</Trans>
       </MenuItem>
+      */}
+      {/* Temporarily hidden - NFTs page
       {!shouldDisableNFTRoutes && (
         <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
           <Trans>NFTs</Trans>
         </MenuItem>
       )}
+      */}
       <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
         <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
           <Trans>Pools</Trans>
@@ -112,10 +116,10 @@ const Navbar = ({ blur }: { blur: boolean }) => {
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
             <Box className={styles.logoContainer}>
-              <UniIcon
-                width="48"
-                height="48"
-                data-testid="uniswap-logo"
+              <TaikoLogo
+                width="125"
+                height="34"
+                data-testid="taiko-logo"
                 className={styles.logo}
                 onClick={handleUniIconClick}
               />
@@ -129,6 +133,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
               <PageTabs />
             </Row>
           </Box>
+          {/* Temporarily hidden - SearchBar
           <Box
             className={styles.searchContainer}
             {...(isNavSearchInputVisible && {
@@ -137,11 +142,14 @@ const Navbar = ({ blur }: { blur: boolean }) => {
           >
             <SearchBar />
           </Box>
+          */}
           <Box className={styles.rightSideContainer}>
             <Row gap="12">
+              {/* Temporarily hidden - SearchBar
               <Box position="relative" display={isNavSearchInputVisible ? 'none' : { sm: 'flex' }}>
                 <SearchBar />
               </Box>
+              */}
               {isNftPage && sellPageState !== ProfilePageStateType.LISTING && <Bag />}
               {!isNftPage && (
                 <Box display={{ sm: 'none', lg: 'flex' }}>

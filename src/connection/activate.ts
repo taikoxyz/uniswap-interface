@@ -2,8 +2,7 @@ import { InterfaceEventName, WalletConnectionResult } from '@uniswap/analytics-e
 import { ChainId } from '@uniswap/sdk-core'
 import { sendAnalyticsEvent } from 'analytics'
 import { Connection } from 'connection/types'
-import { atom } from 'jotai'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useAppDispatch } from 'state/hooks'
@@ -27,7 +26,7 @@ const activationStateAtom = atom<ActivationState>(IDLE_ACTIVATION_STATE)
 
 function useTryActivation() {
   const dispatch = useAppDispatch()
-  const setActivationState = useUpdateAtom(activationStateAtom)
+  const setActivationState = useSetAtom(activationStateAtom)
   const { pathname } = useLocation()
   const currentPage = getCurrentPageFromLocation(pathname)
 
@@ -76,7 +75,7 @@ function useTryActivation() {
 }
 
 function useCancelActivation() {
-  const setActivationState = useUpdateAtom(activationStateAtom)
+  const setActivationState = useSetAtom(activationStateAtom)
   return useCallback(
     () =>
       setActivationState((activationState) => {

@@ -1,9 +1,10 @@
 import { Interface } from '@ethersproject/abi'
-import { BigintIsh, Currency, Token, V3_CORE_FACTORY_ADDRESSES } from '@uniswap/sdk-core'
+import { BigintIsh, Currency, Token } from '@uniswap/sdk-core'
 import IUniswapV3PoolStateJSON from '@uniswap/v3-core/artifacts/contracts/interfaces/pool/IUniswapV3PoolState.sol/IUniswapV3PoolState.json'
 import { computePoolAddress } from '@uniswap/v3-sdk'
 import { FeeAmount, Pool } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
+import { V3_CORE_FACTORY_ADDRESSES } from 'config/chains'
 import JSBI from 'jsbi'
 import { useMultipleContractSingleData } from 'lib/hooks/multicall'
 import { useMemo } from 'react'
@@ -90,11 +91,13 @@ export function usePools(
   const poolTokens: ([Token, Token, FeeAmount] | undefined)[] = useMemo(() => {
     if (!chainId) return new Array(poolKeys.length)
 
-    return poolKeys.map(([currencyA, currencyB, feeAmount]) => {
+    return poolKeys.map(([currencyA, currencyB, feeAmount], index) => {
       if (currencyA && currencyB && feeAmount) {
         const tokenA = currencyA.wrapped
         const tokenB = currencyB.wrapped
-        if (tokenA.equals(tokenB)) return undefined
+        if (tokenA.equals(tokenB)) {
+          return undefined
+        }
 
         return tokenA.sortsBefore(tokenB) ? [tokenA, tokenB, feeAmount] : [tokenB, tokenA, feeAmount]
       }
@@ -104,6 +107,7 @@ export function usePools(
 
   const poolAddresses: (string | undefined)[] = useMemo(() => {
     const v3CoreFactoryAddress = chainId && V3_CORE_FACTORY_ADDRESSES[chainId]
+
     if (!v3CoreFactoryAddress) return new Array(poolTokens.length)
 
     return poolTokens.map((value) => value && PoolCache.getPoolAddress(v3CoreFactoryAddress, ...value))
@@ -115,16 +119,24 @@ export function usePools(
   return useMemo(() => {
     return poolKeys.map((_key, index) => {
       const tokens = poolTokens[index]
-      if (!tokens) return [PoolState.INVALID, null]
+      if (!tokens) {
+        return [PoolState.INVALID, null]
+      }
       const [token0, token1, fee] = tokens
 
-      if (!slot0s[index]) return [PoolState.INVALID, null]
+      if (!slot0s[index]) {
+        return [PoolState.INVALID, null]
+      }
       const { result: slot0, loading: slot0Loading, valid: slot0Valid } = slot0s[index]
 
-      if (!liquidities[index]) return [PoolState.INVALID, null]
+      if (!liquidities[index]) {
+        return [PoolState.INVALID, null]
+      }
       const { result: liquidity, loading: liquidityLoading, valid: liquidityValid } = liquidities[index]
 
-      if (!tokens || !slot0Valid || !liquidityValid) return [PoolState.INVALID, null]
+      if (!tokens || !slot0Valid || !liquidityValid) {
+        return [PoolState.INVALID, null]
+      }
       if (slot0Loading || liquidityLoading) return [PoolState.LOADING, null]
       if (!slot0 || !liquidity) return [PoolState.NOT_EXISTS, null]
       if (!slot0.sqrtPriceX96 || slot0.sqrtPriceX96.eq(0)) return [PoolState.NOT_EXISTS, null]

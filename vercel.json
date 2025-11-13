@@ -1,0 +1,10 @@
+{
+  "buildCommand": "yarn build",
+  "devCommand": "yarn start",
+  "installCommand": "yarn install --ignore-engines --network-timeout 100000",
+  "framework": null,
+  "outputDirectory": "build",
+  "env": {
+    "NODE_VERSION": "20.x"
+  }
+}

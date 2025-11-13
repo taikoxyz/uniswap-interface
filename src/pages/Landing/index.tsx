@@ -5,23 +5,16 @@ import { AboutFooter } from 'components/About/AboutFooter'
 import Card, { CardType } from 'components/About/Card'
 import { MAIN_CARDS, MORE_CARDS } from 'components/About/constants'
 import ProtocolBanner from 'components/About/ProtocolBanner'
-import { useAccountDrawer } from 'components/AccountDrawer'
-import { BaseButton } from 'components/Button'
-import { AppleLogo } from 'components/Logo/AppleLogo'
+import { BaseButton, ButtonPrimary } from 'components/Button'
 import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import Swap from 'pages/Swap'
-import { parse } from 'qs'
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { ArrowDownCircle } from 'react-feather'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Link as NativeLink } from 'react-router-dom'
-import { useAppSelector } from 'state/hooks'
 import styled, { css } from 'styled-components'
 import { BREAKPOINTS } from 'theme'
 import { useIsDarkMode } from 'theme/components/ThemeToggle'
-import { TRANSITION_DURATIONS } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
-import { getDownloadAppLinkProps } from 'utils/openDownloadApp'
 
 const PageContainer = styled.div`
   position: absolute;
@@ -47,10 +40,10 @@ const Gradient = styled.div<{ isDarkMode: boolean }>`
   ${({ isDarkMode }) =>
     isDarkMode
       ? css`
-          background: linear-gradient(rgba(8, 10, 24, 0) 0%, rgb(8 10 24 / 100%) 45%);
+          background: linear-gradient(rgba(8, 10, 24, 0) 0%, rgb(8 10 24 / 100%) 70%);
         `
       : css`
-          background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255 255 255 /100%) 45%);
+          background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255 255 255 /100%) 70%);
         `};
   z-index: ${Z_INDEX.under_dropdown};
   pointer-events: none;
@@ -78,13 +71,12 @@ const GlowContainer = styled.div`
 const Glow = styled.div`
   position: absolute;
   top: 68px;
-  bottom: 0;
   background: radial-gradient(72.04% 72.04% at 50% 3.99%, #ff37eb 0%, rgba(166, 151, 255, 0) 100%);
   filter: blur(72px);
   border-radius: 24px;
   max-width: 480px;
   width: 100%;
-  height: 100%;
+  height: 600px;
 `
 
 const ContentContainer = styled.div<{ isDarkMode: boolean }>`
@@ -267,18 +259,11 @@ const LandingSwapContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 1;
+  z-index: 995;
 `
 
 const SwapCss = css`
-  * {
-    pointer-events: none;
-  }
-
-  &:hover {
-    transform: translateY(-4px);
-    transition: ${({ theme }) => `transform ${theme.transition.duration.medium} ${theme.transition.timing.ease}`};
-  }
+  /* Swap is now fully interactive on the landing page */
 `
 
 const LinkCss = css`
@@ -301,42 +286,20 @@ const Link = styled(NativeLink)`
 export default function Landing() {
   const isDarkMode = useIsDarkMode()
   const cardsRef = useRef<HTMLDivElement>(null)
-  const selectedWallet = useAppSelector((state) => state.user.selectedWallet)
   const shouldDisableNFTRoutes = useDisableNFTRoutes()
   const cards = useMemo(
     () => MAIN_CARDS.filter((card) => !(shouldDisableNFTRoutes && card.to.startsWith('/nft'))),
     [shouldDisableNFTRoutes]
   )
 
-  const [accountDrawerOpen] = useAccountDrawer()
-  const navigate = useNavigate()
-  useEffect(() => {
-    if (accountDrawerOpen) {
-      setTimeout(() => {
-        navigate('/swap')
-      }, TRANSITION_DURATIONS.fast)
-    }
-  }, [accountDrawerOpen, navigate])
-
-  const location = useLocation()
-  const queryParams = parse(location.search, { ignoreQueryPrefix: true })
-  if (selectedWallet && !queryParams.intro) {
-    return <Navigate to={{ ...location, pathname: '/swap' }} replace />
-  }
+  // Landing page now includes the swap functionality directly
+  // No need to redirect to /swap anymore
 
   return (
     <Trace page={InterfacePageName.LANDING_PAGE} shouldLogImpression>
       <PageContainer data-testid="landing-page">
         <LandingSwapContainer>
-          <TraceEvent
-            events={[BrowserEvent.onClick]}
-            name={SharedEventName.ELEMENT_CLICKED}
-            element={InterfaceElementName.LANDING_PAGE_SWAP_ELEMENT}
-          >
-            <Link to="/swap">
-              <LandingSwap />
-            </Link>
-          </TraceEvent>
+          <LandingSwap />
         </LandingSwapContainer>
         <Gradient isDarkMode={isDarkMode} />
         <GlowContainer>
@@ -365,32 +328,23 @@ export default function Landing() {
               name={SharedEventName.ELEMENT_CLICKED}
               element={InterfaceElementName.CONTINUE_BUTTON}
             >
-              <ButtonCTA as={Link} to="/swap">
-                <ButtonCTAText>
-                  <Trans>Get started</Trans>
-                </ButtonCTAText>
-              </ButtonCTA>
-            </TraceEvent>
-          </ActionsContainer>
-          <LearnMoreContainer
-            onClick={() => {
+              <ButtonPrimary
+                        
+                          padding="16px 16px"
+                          width="100%"
+                          $borderRadius="12px"
+                          mt="1rem"
+                          onClick={() => {
               cardsRef?.current?.scrollIntoView({ behavior: 'smooth' })
             }}
-          >
-            <Trans>Learn more</Trans>
-            <LearnMoreArrow />
-          </LearnMoreContainer>
+                        >
+                  <Trans>Learn more</Trans>
+              </ButtonPrimary>
+            </TraceEvent>
+          </ActionsContainer>
+         
 
-          <DownloadWalletLink
-            {...getDownloadAppLinkProps({
-              // landing page specific tracking params
-              microSiteParams: `utm_source=home_page&utm_medium=webapp&utm_campaign=wallet_microsite&utm_id=1`,
-              appStoreParams: `ct=Uniswap-Home-Page&mt=8`,
-            })}
-          >
-            <AppleLogo width="20" height="20" />
-            Download the Uniswap Wallet for iOS
-          </DownloadWalletLink>
+        
         </ContentContainer>
         <AboutContentContainer isDarkMode={isDarkMode}>
           <CardGrid cols={cards.length} ref={cardsRef}>

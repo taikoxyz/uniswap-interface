@@ -1,6 +1,8 @@
 import { ChainId, Currency, Ether, NativeCurrency, Token, UNI_ADDRESSES, WETH9 } from '@uniswap/sdk-core'
 import invariant from 'tiny-invariant'
 
+import { TAIKO_HOODI_ADDRESSES, TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+
 export const NATIVE_CHAIN_ID = 'NATIVE'
 
 // When decimals are not specified for an ERC20 token
@@ -250,6 +252,50 @@ export const DAI_AVALANCHE = new Token(
   'Dai.e Token'
 )
 
+export const USDC_TAIKO_MAINNET = new Token(
+  TAIKO_MAINNET_CHAIN_ID,
+  '0x07d83526730c7438048D55A4fc0b850e2aaB6f0b',
+  6,
+  'USDC',
+  'USD Coin'
+)
+export const USDT_TAIKO_MAINNET = new Token(
+  TAIKO_MAINNET_CHAIN_ID,
+  '0x2DEF195713CF4a606B49D07E520e22C17899a736',
+  6,
+  'USDT',
+  'Tether USD'
+)
+export const TAIKO_TOKEN = new Token(
+  TAIKO_MAINNET_CHAIN_ID,
+  '0xA9d23408b9bA935c230493c40C73824Df71A0975',
+  18,
+  'TAIKO',
+  'Taiko'
+)
+
+export const USDC_TAIKO_HOODI = new Token(
+  TAIKO_HOODI_CHAIN_ID,
+  '0x18d5bB147f3D05D5f6c5E60Caf1daeeDBF5155B6',
+  6,
+  'USDC',
+  'USD Coin'
+)
+export const USDT_TAIKO_HOODI = new Token(
+  TAIKO_HOODI_CHAIN_ID,
+  '0xeb4e8Eb83d6FFBa2ce0d8F62ACe60648d1ECE116',
+  6,
+  'USDT',
+  'Tether USD'
+)
+export const WETH_TAIKO_HOODI = new Token(
+  TAIKO_HOODI_CHAIN_ID,
+  '0x3B39685B5495359c892DDD1057B5712F49976835',
+  18,
+  'WETH',
+  'Wrapped Ether'
+)
+
 export const UNI: { [chainId: number]: Token } = {
   [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESSES[ChainId.MAINNET], 18, 'UNI', 'Uniswap'),
   [ChainId.GOERLI]: new Token(ChainId.GOERLI, UNI_ADDRESSES[ChainId.GOERLI], 18, 'UNI', 'Uniswap'),
@@ -333,6 +379,21 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     18,
     'WAVAX',
     'Wrapped AVAX'
+  ),
+  // Taiko chains
+  [TAIKO_MAINNET_CHAIN_ID]: new Token(
+    TAIKO_MAINNET_CHAIN_ID,
+    '0xA51894664A773981C6C112C43ce576f315d5b1B6',
+    18,
+    'WETH',
+    'Wrapped Ether'
+  ),
+  [TAIKO_HOODI_CHAIN_ID]: new Token(
+    TAIKO_HOODI_CHAIN_ID,
+    TAIKO_HOODI_ADDRESSES.weth9,
+    18,
+    'WETH',
+    'Wrapped Ether'
   ),
 }
 

@@ -2,7 +2,8 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { t } from '@lingui/macro'
 import { SwapEventName } from '@uniswap/analytics-events'
 import { Percent } from '@uniswap/sdk-core'
-import { SwapRouter, UNIVERSAL_ROUTER_ADDRESS } from '@uniswap/universal-router-sdk'
+import { SwapRouter } from '@uniswap/universal-router-sdk'
+import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
 import { FeeOptions, toHex } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendAnalyticsEvent, useTrace } from 'analytics'
@@ -62,8 +63,12 @@ export function useUniversalRouterSwapCallback(
         if (!chainId) throw new Error('missing chainId')
         if (!provider) throw new Error('missing provider')
         if (!trade) throw new Error('missing trade')
+
         const connectedChainId = await provider.getSigner().getChainId()
-        if (chainId !== connectedChainId) throw new WrongChainError()
+
+        if (chainId !== connectedChainId) {
+          throw new WrongChainError()
+        }
 
         setTraceData('slippageTolerance', options.slippageTolerance.toFixed(2))
 
@@ -78,9 +83,11 @@ export function useUniversalRouterSwapCallback(
           fee: options.feeOptions,
         })
 
+        const routerAddress = UNIVERSAL_ROUTER_ADDRESS(chainId)
+
         const tx = {
           from: account,
-          to: UNIVERSAL_ROUTER_ADDRESS(chainId),
+          to: routerAddress,
           data,
           // TODO(https://github.com/Uniswap/universal-router-sdk/issues/113): universal-router-sdk returns a non-hexlified value.
           ...(value && !isZero(value) ? { value: toHex(value) } : {}),

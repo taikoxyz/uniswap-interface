@@ -3,11 +3,9 @@ import { TraceEvent } from 'analytics'
 import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import styled from 'styled-components'
 import { BREAKPOINTS, ExternalLink, StyledRouterLink } from 'theme'
-import { useIsDarkMode } from 'theme/components/ThemeToggle'
 
+import { TaikoLogo } from 'components/Logo/TaikoLogo'
 import { DiscordIcon, GithubIcon, TwitterIcon } from './Icons'
-import darkUnicornImgSrc from './images/unicornEmbossDark.png'
-import lightUnicornImgSrc from './images/unicornEmbossLight.png'
 
 const Footer = styled.div`
   display: flex;
@@ -25,6 +23,12 @@ const Footer = styled.div`
 const LogoSection = styled.div`
   display: flex;
   flex-direction: column;
+  width: 200px;
+  margin: 20px 0 0 0;
+
+  @media screen and (min-width: ${BREAKPOINTS.xl}px) {
+    margin: 0;
+  }
 `
 
 const LogoSectionLeft = styled(LogoSection)`
@@ -43,10 +47,12 @@ const LogoSectionBottom = styled(LogoSection)`
   }
 `
 
-const StyledLogo = styled.img`
+const StyledLogoWrapper = styled.div`
   width: 72px;
   height: 72px;
   display: none;
+  color: ${({ theme }) => theme.accent1};
+  opacity: 0.2;
 
   @media screen and (min-width: ${BREAKPOINTS.lg}px) {
     display: block;
@@ -110,13 +116,34 @@ const Copyright = styled.span`
   color: ${({ theme }) => theme.neutral3};
 `
 
+const BrandTitle = styled.h3`
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 20px;
+  margin: 16px 0 12px 0;
+  color: ${({ theme }) => theme.neutral1};
+`
+
+const BrandDescription = styled.p`
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 0 20px 0;
+  color: ${({ theme }) => theme.neutral2};
+  max-width: 300px;
+`
+
 const LogoSectionContent = () => {
-  const isDarkMode = useIsDarkMode()
   return (
     <>
-      <StyledLogo src={isDarkMode ? darkUnicornImgSrc : lightUnicornImgSrc} alt="Uniswap Logo" />
+      <StyledLogoWrapper>
+        <TaikoLogo width="72" height="72" />
+      </StyledLogoWrapper>
+      <BrandTitle>Taiko Labs</BrandTitle>
+      <BrandDescription>
+        The most developer-friendly and secure Ethereum scaling solution.
+      </BrandDescription>
       <SocialLinks>
-        <SocialLink href="https://discord.gg/FCfyBSbCU5" target="_blank" rel="noopener noreferrer">
+        <SocialLink href="https://discord.gg/taikoxyz" target="_blank" rel="noopener noreferrer">
           <DiscordIcon size={32} />
         </SocialLink>
         <TraceEvent
@@ -124,15 +151,15 @@ const LogoSectionContent = () => {
           name={SharedEventName.ELEMENT_CLICKED}
           element={InterfaceElementName.TWITTER_LINK}
         >
-          <SocialLink href="https://twitter.com/uniswap" target="_blank" rel="noopener noreferrer">
+          <SocialLink href="https://twitter.com/taikoxyz" target="_blank" rel="noopener noreferrer">
             <TwitterIcon size={32} />
           </SocialLink>
         </TraceEvent>
-        <SocialLink href="https://github.com/Uniswap" target="_blank" rel="noopener noreferrer">
+        <SocialLink href="https://github.com/taikoxyz" target="_blank" rel="noopener noreferrer">
           <GithubIcon size={32} />
         </SocialLink>
       </SocialLinks>
-      <Copyright>© {new Date().getFullYear()} Uniswap Labs</Copyright>
+      <Copyright>© {new Date().getFullYear()} Taiko Labs</Copyright>
     </>
   )
 }
@@ -147,57 +174,29 @@ export const AboutFooter = () => {
 
       <FooterLinks>
         <LinkGroup>
-          <LinkGroupTitle>App</LinkGroupTitle>
+          <LinkGroupTitle>Network</LinkGroupTitle>
           <TextLink to="/swap">Swap</TextLink>
-          <TextLink to="/tokens">Tokens</TextLink>
-          {!shouldDisableNFTRoutes && <TextLink to="/nfts">NFTs</TextLink>}
           <TextLink to="/pools">Pools</TextLink>
+          <ExternalTextLink href="https://bridge.taiko.xyz">Bridge</ExternalTextLink>
+          <ExternalTextLink href="https://hoodi.taikoscan.io">Explorer</ExternalTextLink>
         </LinkGroup>
         <LinkGroup>
-          <LinkGroupTitle>Protocol</LinkGroupTitle>
-          <ExternalTextLink href="https://uniswap.org/community">Community</ExternalTextLink>
-          <ExternalTextLink href="https://uniswap.org/governance">Governance</ExternalTextLink>
-          <ExternalTextLink href="https://uniswap.org/developers">Developers</ExternalTextLink>
+          <LinkGroupTitle>Resources</LinkGroupTitle>
+          <ExternalTextLink href="https://docs.taiko.xyz">Docs</ExternalTextLink>
+          <ExternalTextLink href="https://taiko.xyz/blog">Blog</ExternalTextLink>
+          <ExternalTextLink href="https://github.com/taikoxyz">GitHub</ExternalTextLink>
+          <ExternalTextLink href="https://taiko.xyz/brand-kit">Brand Kit</ExternalTextLink>
         </LinkGroup>
         <LinkGroup>
-          <LinkGroupTitle>Company</LinkGroupTitle>
-          <TraceEvent
-            events={[BrowserEvent.onClick]}
-            name={SharedEventName.ELEMENT_CLICKED}
-            element={InterfaceElementName.CAREERS_LINK}
-          >
-            <ExternalTextLink href="https://boards.greenhouse.io/uniswaplabs">Careers</ExternalTextLink>
-          </TraceEvent>
-          <TraceEvent
-            events={[BrowserEvent.onClick]}
-            name={SharedEventName.ELEMENT_CLICKED}
-            element={InterfaceElementName.BLOG_LINK}
-          >
-            <ExternalTextLink href="https://uniswap.org/blog">Blog</ExternalTextLink>
-          </TraceEvent>
+          <LinkGroupTitle>Community</LinkGroupTitle>
+          <ExternalTextLink href="https://discord.gg/taikoxyz">Discord</ExternalTextLink>
+          <ExternalTextLink href="https://twitter.com/taikoxyz">Twitter</ExternalTextLink>
         </LinkGroup>
         <LinkGroup>
-          <LinkGroupTitle>Get Help</LinkGroupTitle>
-          <TraceEvent
-            events={[BrowserEvent.onClick]}
-            name={SharedEventName.ELEMENT_CLICKED}
-            element={InterfaceElementName.SUPPORT_LINK}
-          >
-            <ExternalTextLink
-              href="https://support.uniswap.org/hc/en-us/requests/new"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Contact Us
-            </ExternalTextLink>
-          </TraceEvent>
-          <TraceEvent
-            events={[BrowserEvent.onClick]}
-            name={SharedEventName.ELEMENT_CLICKED}
-            element={InterfaceElementName.SUPPORT_LINK}
-          >
-            <ExternalTextLink href="https://support.uniswap.org/hc/en-us">Help Center</ExternalTextLink>
-          </TraceEvent>
+          <LinkGroupTitle>About</LinkGroupTitle>
+          <ExternalTextLink href="https://taiko.xyz">Taiko Labs</ExternalTextLink>
+          <ExternalTextLink href="https://taiko.xyz/careers">Careers</ExternalTextLink>
+          <ExternalTextLink href="https://taiko.xyz/about">About Us</ExternalTextLink>
         </LinkGroup>
       </FooterLinks>
 

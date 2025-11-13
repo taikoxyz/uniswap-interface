@@ -5,29 +5,150 @@ import styled, { css } from 'styled-components'
 import { Z_INDEX } from 'theme/zIndex'
 
 import { useIsDarkMode } from '../../theme/components/ThemeToggle'
+import meshSrc from '../About/images/Mesh.png'
 import { AutoColumn } from '../Column'
 
 export const PageWrapper = styled.div`
+  position: relative;
   padding: 68px 8px 0px;
-  max-width: 480px;
+  max-width: 520px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.md}px`}) {
     padding-top: 48px;
+    max-width: 480px;
   }
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.sm}px`}) {
     padding-top: 20px;
+    max-width: 100%;
+  }
+`
+
+// Gradient background for swap page - DISABLED to prevent darkening swap card
+export const SwapGradientBackground = styled.div<{ isDarkMode: boolean }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -2;
+  pointer-events: none;
+  /* Gradient disabled - was darkening the swap interface
+  ${({ isDarkMode }) =>
+    isDarkMode
+      ? css`
+          background: linear-gradient(rgba(8, 10, 24, 0) 0%, rgb(8 10 24 / 100%) 45%);
+        `
+      : css`
+          background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255 255 255 /100%) 45%);
+        `};
+  */
+`
+
+// Glow effect behind swap card
+export const SwapGlowContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+`
+
+export const SwapGlow = styled.div`
+  position: absolute;
+  top: 100px;
+  border-radius: 50%;
+  max-width: 700px;
+  width: 100%;
+  height: 700px;
+  animation: pulse 8s ease-in-out infinite;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* Blurred gradient layer */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(101.8% 4091.31% at 0% 0%, #E81899 0%, #FC72FF 100%);
+    border-radius: 50%;
+    filter: blur(150px);
+    opacity: 0.7;
+  }
+
+  /* Mesh texture overlay (not blurred) - prominent in center, fades to edges */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url(${meshSrc}) center center;
+    background-size: cover;
+    border-radius: 50%;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    /* Radial opacity fade: strong in center, transparent at edges */
+    mask-image: radial-gradient(circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90%);
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1) translateZ(0);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05) translateZ(0);
+    }
+  }
+
+  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.md}px`}) {
+    max-width: 500px;
+    height: 500px;
+
+    &::before {
+      filter: blur(100px);
+    }
+  }
+
+  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.sm}px`}) {
+    max-width: 350px;
+    height: 350px;
+
+    &::before {
+      filter: blur(80px);
+    }
   }
 `
 
 // Mostly copied from `AppBody` but it was getting too hard to maintain backwards compatibility.
 const SwapWrapperOuter = styled.main<{ isDark?: boolean }>`
   position: relative;
+  width: 100%;
+  max-width: 480px;
   z-index: ${Z_INDEX.default};
-  border: 1px solid ${({ theme }) => theme.surface3};
-  transition: transform 250ms ease;
+  border: 1px solid ${({ theme, isDark }) => (isDark ? 'rgba(232, 24, 153, 0.3)' : theme.surface3)};
+  transition: all 250ms ease;
   border-radius: 24px;
+  box-shadow: ${({ isDark }) =>
+    isDark
+      ? '0 0 40px rgba(232, 24, 153, 0.2), 0 0 80px rgba(252, 114, 255, 0.15)'
+      : '0 4px 12px rgba(0, 0, 0, 0.05)'};
 
   &:before {
     content: ' ';
@@ -36,12 +157,19 @@ const SwapWrapperOuter = styled.main<{ isDark?: boolean }>`
     inset: 0;
     transform: scale(1.1);
     filter: blur(50px);
-    background-color: rgba(252, 114, 255, 0.075);
+    background: ${({ isDark }) =>
+      isDark
+        ? 'radial-gradient(circle at center, rgba(232, 24, 153, 0.15), rgba(252, 114, 255, 0.08))'
+        : 'rgba(252, 114, 255, 0.075)'};
     z-index: -2;
   }
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.surface3};
+    border: 1px solid ${({ theme, isDark }) => (isDark ? 'rgba(232, 24, 153, 0.5)' : theme.surface3)};
+    box-shadow: ${({ isDark }) =>
+      isDark
+        ? '0 0 50px rgba(232, 24, 153, 0.25), 0 0 100px rgba(252, 114, 255, 0.2)'
+        : '0 4px 16px rgba(0, 0, 0, 0.08)'};
   }
 `
 

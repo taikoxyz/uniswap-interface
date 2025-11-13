@@ -245,8 +245,8 @@ export default function App() {
                     }
                   />
                   <Route path="create-proposal" element={<Navigate to="/vote/create-proposal" replace />} />
-                  <Route path="send" element={<Navigate to={{ ...location, pathname: '/swap' }} replace />} />
-                  <Route path="swap" element={<Swap />} />
+                  <Route path="send" element={<Navigate to={{ ...location, pathname: '/' }} replace />} />
+                  <Route path="swap" element={<Navigate to="/" replace />} />
 
                   <Route path="pool/v2/find" element={<PoolFinder />} />
                   <Route path="pool/v2" element={<PoolV2 />} />
@@ -262,12 +262,10 @@ export default function App() {
                     <Route path=":currencyIdA" />
                     <Route path=":currencyIdA/:currencyIdB" />
                   </Route>
-                  <Route path="add" element={<RedirectDuplicateTokenIds />}>
-                    {/* this is workaround since react-router-dom v6 doesn't support optional parameters any more */}
-                    <Route path=":currencyIdA" />
-                    <Route path=":currencyIdA/:currencyIdB" />
-                    <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
-                  </Route>
+                  <Route path="add" element={<RedirectDuplicateTokenIds />} />
+                  <Route path="add/:currencyIdA" element={<RedirectDuplicateTokenIds />} />
+                  <Route path="add/:currencyIdA/:currencyIdB" element={<RedirectDuplicateTokenIds />} />
+                  <Route path="add/:currencyIdA/:currencyIdB/:feeAmount" element={<RedirectDuplicateTokenIds />} />
 
                   <Route path="increase" element={<AddLiquidity />}>
                     <Route path=":currencyIdA" />

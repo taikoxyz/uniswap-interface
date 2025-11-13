@@ -1,7 +1,7 @@
-import { PERMIT2_ADDRESS } from '@uniswap/permit2-sdk'
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
+import { getPermit2Address } from 'constants/permit2'
 import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
 import { useRevokeTokenAllowance, useTokenAllowance, useUpdateTokenAllowance } from 'hooks/useTokenAllowance'
 import useInterval from 'lib/hooks/useInterval'
@@ -49,8 +49,9 @@ export default function usePermit2Allowance(
   spender?: string,
   tradeFillType?: TradeFillType
 ): Allowance {
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const token = amount?.currency
+  const PERMIT2_ADDRESS = getPermit2Address(chainId)
 
   const { tokenAllowance, isSyncing: isApprovalSyncing } = useTokenAllowance(token, account, PERMIT2_ADDRESS)
   const updateTokenAllowance = useUpdateTokenAllowance(amount, PERMIT2_ADDRESS)
@@ -132,9 +133,14 @@ export default function usePermit2Allowance(
 
   return useMemo(() => {
     if (token) {
-      if (!tokenAllowance || !permitAllowance) {
+      // If tokenAllowance is loading, wait for it
+      if (!tokenAllowance) {
         return { state: AllowanceState.LOADING }
-      } else if (shouldRequestSignature) {
+      }
+      // If permitAllowance is undefined (Permit2 not deployed), skip permit signature flow
+      // This allows chains without Permit2 to still work with regular ERC20 approvals
+      const permit2Available = permitAllowance !== undefined
+      if (permit2Available && shouldRequestSignature) {
         return {
           token,
           state: AllowanceState.REQUIRED,

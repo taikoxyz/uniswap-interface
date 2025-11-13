@@ -15,11 +15,13 @@ import optimismSquareLogoUrl from 'assets/svg/optimism_square_logo.svg'
 import optimismLogoUrl from 'assets/svg/optimistic_ethereum.svg'
 import polygonSquareLogoUrl from 'assets/svg/polygon_square_logo.svg'
 import polygonMaticLogo from 'assets/svg/polygon-matic-logo.svg'
+import taikoLogo from 'assets/svg/taiko_logo.svg'
 import ms from 'ms'
 import { darkTheme } from 'theme/colors'
 
 import { SupportedL1ChainId, SupportedL2ChainId } from './chains'
 import { ARBITRUM_LIST, AVALANCHE_LIST, BASE_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST } from './lists'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 export const AVERAGE_L1_BLOCK_TIME = ms(`12s`)
 
@@ -259,6 +261,38 @@ const CHAIN_INFO: ChainInfoMap = {
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     color: darkTheme.chain_84531,
   },
+  [TAIKO_MAINNET_CHAIN_ID]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`25m`),
+    bridge: 'https://bridge.taiko.xyz',
+    docs: 'https://docs.taiko.xyz/',
+    explorer: 'https://taikoscan.io/',
+    infoLink: 'https://info.uniswap.org/#/',
+    label: 'Taiko',
+    logoUrl: taikoLogo,
+    circleLogoUrl: taikoLogo,
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    statusPage: 'https://status.taiko.xyz/',
+    defaultListUrl: '', // No default token list yet
+    color: darkTheme.chain_167000,
+    backgroundColor: darkTheme.chain_167000_background,
+  },
+  [TAIKO_HOODI_CHAIN_ID]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms(`25m`),
+    bridge: 'https://bridge.taiko.xyz',
+    docs: 'https://docs.taiko.xyz/',
+    explorer: 'https://hoodi.taikoscan.io/',
+    infoLink: 'https://info.uniswap.org/#/',
+    label: 'Taiko Hoodi',
+    logoUrl: taikoLogo,
+    circleLogoUrl: taikoLogo,
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    statusPage: 'https://status.taiko.xyz/',
+    defaultListUrl: '', // No default token list yet
+    color: darkTheme.chain_167013,
+    backgroundColor: darkTheme.chain_167013_background,
+  },
 } as const
 
 export function getChainInfo(
@@ -299,7 +333,7 @@ export function getChainInfo(
   return undefined
 }
 
-const MAINNET_INFO = CHAIN_INFO[ChainId.MAINNET]
+const TAIKO_HOODI_INFO = CHAIN_INFO[TAIKO_HOODI_CHAIN_ID]
 export function getChainInfoOrDefault(chainId: number | undefined, featureFlags?: Record<number, boolean>) {
-  return getChainInfo(chainId, featureFlags) ?? MAINNET_INFO
+  return getChainInfo(chainId, featureFlags) ?? TAIKO_HOODI_INFO
 }

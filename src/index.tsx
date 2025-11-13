@@ -29,6 +29,10 @@ import OrderUpdater from './state/signatures/updater'
 import TransactionUpdater from './state/transactions/updater'
 import ThemeProvider, { ThemedGlobalStyle } from './theme'
 import RadialGradientByChainUpdater from './theme/components/RadialGradientByChainUpdater'
+import { patchUniversalRouterForTaiko } from './utils/patchUniversalRouter'
+
+// Initialize Taiko-specific patches
+patchUniversalRouterForTaiko()
 
 if (window.ethereum) {
   window.ethereum.autoRefreshOnNetworkChange = false

@@ -40,31 +40,36 @@ export function useRoutingAPIArguments({
   const isUniswapXDefaultEnabled = useUniswapXDefaultEnabled()
 
   return useMemo(
-    () =>
-      !tokenIn || !tokenOut || !amount || tokenIn.equals(tokenOut) || tokenIn.wrapped.equals(tokenOut.wrapped)
-        ? skipToken
-        : {
-            account,
-            amount: amount.quotient.toString(),
-            tokenInAddress: currencyAddressForSwapQuote(tokenIn),
-            tokenInChainId: tokenIn.chainId,
-            tokenInDecimals: tokenIn.wrapped.decimals,
-            tokenInSymbol: tokenIn.wrapped.symbol,
-            tokenOutAddress: currencyAddressForSwapQuote(tokenOut),
-            tokenOutChainId: tokenOut.wrapped.chainId,
-            tokenOutDecimals: tokenOut.wrapped.decimals,
-            tokenOutSymbol: tokenOut.wrapped.symbol,
-            routerPreference,
-            tradeType,
-            needsWrapIfUniswapX: tokenIn.isNative,
-            uniswapXForceSyntheticQuotes,
-            userDisabledUniswapX,
-            uniswapXEthOutputEnabled,
-            uniswapXExactOutputEnabled,
-            isUniswapXDefaultEnabled,
-            inputTax,
-            outputTax,
-          },
+    () => {
+      if (!tokenIn || !tokenOut || !amount || tokenIn.equals(tokenOut) || tokenIn.wrapped.equals(tokenOut.wrapped)) {
+        return skipToken
+      }
+
+      const args = {
+        account,
+        amount: amount.quotient.toString(),
+        tokenInAddress: currencyAddressForSwapQuote(tokenIn),
+        tokenInChainId: tokenIn.chainId,
+        tokenInDecimals: tokenIn.wrapped.decimals,
+        tokenInSymbol: tokenIn.wrapped.symbol,
+        tokenOutAddress: currencyAddressForSwapQuote(tokenOut),
+        tokenOutChainId: tokenOut.wrapped.chainId,
+        tokenOutDecimals: tokenOut.wrapped.decimals,
+        tokenOutSymbol: tokenOut.wrapped.symbol,
+        routerPreference,
+        tradeType,
+        needsWrapIfUniswapX: tokenIn.isNative,
+        uniswapXForceSyntheticQuotes,
+        userDisabledUniswapX,
+        uniswapXEthOutputEnabled,
+        uniswapXExactOutputEnabled,
+        isUniswapXDefaultEnabled,
+        inputTax,
+        outputTax,
+      }
+
+      return args
+    },
     [
       account,
       amount,
