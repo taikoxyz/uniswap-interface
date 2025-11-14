@@ -19,7 +19,8 @@ function usePriceHistory(tokenPriceData: TokenPriceQuery): PricePoint[] | undefi
     const priceHistory = market?.priceHistory?.filter(isPricePoint)
     const currentPrice = market?.price?.value
     if (Array.isArray(priceHistory) && currentPrice !== undefined) {
-      const timestamp = Date.now() / 1000
+      // Round timestamp to nearest minute to prevent constant re-renders
+      const timestamp = Math.floor(Date.now() / 60000) * 60
       return [...priceHistory, { timestamp, value: currentPrice }]
     }
     return priceHistory
