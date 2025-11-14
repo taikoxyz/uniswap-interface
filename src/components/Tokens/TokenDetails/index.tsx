@@ -20,12 +20,10 @@ import TokenDetailsSkeleton, {
 } from 'components/Tokens/TokenDetails/Skeleton'
 import StatsSection from 'components/Tokens/TokenDetails/StatsSection'
 import TokenSafetyMessage from 'components/TokenSafety/TokenSafetyMessage'
-import TokenSafetyModal from 'components/TokenSafety/TokenSafetyModal'
 import { NATIVE_CHAIN_ID, nativeOnChain } from 'constants/tokens'
 import { checkWarning } from 'constants/tokenSafety'
 import { TokenPriceQuery } from 'graphql/data/__generated__/types-and-hooks'
-import { Chain, TokenQuery, TokenQueryData } from 'graphql/data/Token'
-import { QueryToken } from 'graphql/data/Token'
+import { Chain, QueryToken, TokenQuery, TokenQueryData } from 'graphql/data/Token'
 import { getTokenDetailsURL, InterfaceGqlChain, supportedChainIdFromGQLChain } from 'graphql/data/util'
 import { useOnGlobalChainSwitch } from 'hooks/useGlobalChainSwitch'
 import { UNKNOWN_TOKEN_SYMBOL, useTokenFromActiveNetwork } from 'lib/hooks/useCurrency'
@@ -259,12 +257,13 @@ export default function TokenDetails({
               disableTokenInputs={pageChainId !== connectedChainId}
             />
           </div>
-          {tokenWarning && <TokenSafetyMessage tokenAddress={address} warning={tokenWarning} />}
+          {/* Token safety warning disabled for Taiko */}
+          {/* {tokenWarning && <TokenSafetyMessage tokenAddress={address} warning={tokenWarning} />} */}
           {detailedToken && <BalanceSummary token={detailedToken} />}
         </RightPanel>
         {detailedToken && <MobileBalanceSummaryFooter token={detailedToken} />}
 
-        <TokenSafetyModal
+        {/* <TokenSafetyModal
           isOpen={openTokenSafetyModal || !!continueSwap}
           tokenAddress={address}
           onContinue={() => onResolveSwap(true)}
@@ -273,7 +272,7 @@ export default function TokenDetails({
           }}
           onCancel={() => onResolveSwap(false)}
           showCancel={true}
-        />
+        /> */}
       </TokenDetailsLayout>
     </Trace>
   )

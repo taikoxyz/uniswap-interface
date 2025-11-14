@@ -33,7 +33,6 @@ import {
 } from 'components/swap/styled'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import SwapHeader from 'components/swap/SwapHeader'
-import TokenSafetyModal from 'components/TokenSafety/TokenSafetyModal'
 import { getChainInfo } from 'constants/chainInfo'
 import { asSupportedChain, isSupportedChain } from 'constants/chains'
 import { getSwapCurrencyId, TOKEN_SHORTHANDS } from 'constants/tokens'
@@ -625,14 +624,14 @@ export function Swap({
 
   const swapElement = (
     <SwapWrapper isDark={isDark} className={className} id="swap-page">
-      <TokenSafetyModal
+      {/* <TokenSafetyModal
         isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
         tokenAddress={importTokensNotInDefault[0]?.address}
         secondTokenAddress={importTokensNotInDefault[1]?.address}
         onContinue={handleConfirmTokenWarning}
         onCancel={handleDismissTokenWarning}
         showCancel={true}
-      />
+      /> */}
       <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} />
       {trade && showConfirm && allowance.state !== AllowanceState.LOADING && (
         <ConfirmSwapModal

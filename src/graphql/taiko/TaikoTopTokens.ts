@@ -7,9 +7,11 @@
 
 import { useQuery, gql, ApolloError } from '@apollo/client'
 import { useMemo } from 'react'
+import { useAtomValue } from 'jotai'
 import { getTokenClientForChain } from './apollo'
 import { TimePeriod } from '../data/util'
 import { TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID } from 'config/chains/taiko'
+import { filterStringAtom } from 'components/Tokens/state'
 
 /**
  * Token data structure from Goldsky subgraph
@@ -61,11 +63,14 @@ const TAIKO_TOP_TOKENS_QUERY = gql`
  * Token data normalized to match the interface expected by TokenTable
  */
 export interface NormalizedTaikoToken {
+  __typename?: 'Token'
+  id: string
   address: string
-  chain: 'TAIKO_HOODI'
+  chain: any  // 'TAIKO' | 'TAIKO_HOODI' - typed as any to match GraphQL Chain enum
   symbol?: string
   name?: string
   decimals?: number
+  standard?: any  // 'ERC20' - typed as any to match GraphQL TokenStandard enum
   project?: {
     logoUrl?: string
   }
@@ -134,11 +139,14 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
       const chainName = chainId === TAIKO_MAINNET_CHAIN_ID ? 'TAIKO' : 'TAIKO_HOODI'
 
       return {
+        __typename: 'Token' as const,
+        id: `${token.id.toLowerCase()}-${chainName}`,
         address: token.id.toLowerCase(),
         chain: chainName,
         symbol: token.symbol,
         name: token.name,
         decimals: parseInt(token.decimals),
+        standard: 'ERC20' as const,
         project: {
           // Token logos would need to be added separately
           logoUrl: undefined,
@@ -173,12 +181,28 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
     }, {} as Record<string, number>)
   }, [normalizedTokens])
 
+  // Apply search filter
+  const filterString = useAtomValue(filterStringAtom)
+  const lowercaseFilterString = useMemo(() => filterString.toLowerCase(), [filterString])
+
+  const filteredTokens = useMemo(() => {
+    if (!normalizedTokens) return undefined
+    if (!lowercaseFilterString) return normalizedTokens
+
+    return normalizedTokens.filter((token) => {
+      const addressIncludesFilterString = token.address.toLowerCase().includes(lowercaseFilterString)
+      const nameIncludesFilterString = token.name?.toLowerCase().includes(lowercaseFilterString)
+      const symbolIncludesFilterString = token.symbol?.toLowerCase().includes(lowercaseFilterString)
+      return nameIncludesFilterString || symbolIncludesFilterString || addressIncludesFilterString
+    })
+  }, [normalizedTokens, lowercaseFilterString])
+
   // Sparklines are not supported in the current Goldsky token subgraph
   // This would require historical price data queries
   const sparklines = useMemo(() => ({}), [])
 
   return {
-    tokens: normalizedTokens,
+    tokens: filteredTokens,
     tokenSortRank,
     loadingTokens: loading,
     sparklines,

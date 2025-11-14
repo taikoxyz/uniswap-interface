@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { PAGE_SIZE, useTopTokens } from 'graphql/data/TopTokens'
 import { validateUrlChainParam } from 'graphql/data/util'
+import { Chain } from 'graphql/data/__generated__/types-and-hooks'
 import { ReactNode } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { useParams } from 'react-router-dom'
@@ -89,7 +90,7 @@ export default function TokenTable() {
   const isTaiko = chainId && isTaikoChain(chainId)
 
   // Use custom Taiko hook for Taiko chains, otherwise use standard hook
-  const standardResult = useTopTokens(chainName)
+  const standardResult = useTopTokens(chainName as Chain)
   const taikoResult = useTopTokensTaiko(chainId || 167013, timePeriod)
 
   // Select the appropriate result based on chain
@@ -124,7 +125,7 @@ export default function TokenTable() {
                   key={token.address}
                   tokenListIndex={index}
                   tokenListLength={tokens.length}
-                  token={token}
+                  token={token as any}
                   sparklineMap={sparklines}
                   sortRank={tokenSortRank[token.address]}
                 />

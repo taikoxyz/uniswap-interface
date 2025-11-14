@@ -1,4 +1,4 @@
-import { QueryResult } from '@apollo/client'
+import { QueryResult, OperationVariables } from '@apollo/client'
 import * as Sentry from '@sentry/react'
 import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
@@ -17,7 +17,7 @@ export enum PollingInterval {
 }
 
 // Polls a query only when the current component is mounted, as useQuery's pollInterval prop will continue to poll after unmount
-export function usePollQueryWhileMounted<T, K>(queryResult: QueryResult<T, K>, interval: PollingInterval) {
+export function usePollQueryWhileMounted<T, K extends OperationVariables>(queryResult: QueryResult<T, K>, interval: PollingInterval) {
   const { startPolling, stopPolling } = queryResult
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const GQL_TESTNET_CHAINS = [Chain.EthereumGoerli, Chain.EthereumSepolia] as cons
 const UX_SUPPORTED_GQL_CHAINS = [...GQL_MAINNET_CHAINS, ...GQL_TESTNET_CHAINS] as const
 export type InterfaceGqlChain = (typeof UX_SUPPORTED_GQL_CHAINS)[number]
 
-export const CHAIN_ID_TO_BACKEND_NAME: { [key: number]: InterfaceGqlChain } = {
+export const CHAIN_ID_TO_BACKEND_NAME: { [key: number]: InterfaceGqlChain | string } = {
   [ChainId.MAINNET]: Chain.Ethereum,
   [ChainId.GOERLI]: Chain.EthereumGoerli,
   [ChainId.SEPOLIA]: Chain.EthereumSepolia,
@@ -88,6 +88,8 @@ export const CHAIN_ID_TO_BACKEND_NAME: { [key: number]: InterfaceGqlChain } = {
   [ChainId.BNB]: Chain.Bnb,
   [ChainId.AVALANCHE]: Chain.Avalanche,
   [ChainId.BASE]: Chain.Base,
+  167000: 'TAIKO',
+  167013: 'TAIKO_HOODI',
 }
 
 export function chainIdToBackendName(chainId: number | undefined) {
@@ -138,7 +140,7 @@ const URL_CHAIN_PARAM_TO_BACKEND: { [key: string]: InterfaceGqlChain | string } 
  * @param chainName parsed in chain name from url query parameter
  * @returns if chainName is a valid chain name, returns the backend chain name, otherwise returns undefined
  */
-export function getValidUrlChainName(chainName: string | undefined): Chain | undefined {
+export function getValidUrlChainName(chainName: string | undefined): Chain | string | undefined {
   const validChainName = chainName && URL_CHAIN_PARAM_TO_BACKEND[chainName]
   return validChainName ? validChainName : undefined
 }
@@ -147,14 +149,14 @@ export function getValidUrlChainName(chainName: string | undefined): Chain | und
  * @param chainName parsed in chain name from url query parameter
  * @returns if chainName is a valid chain name supported by the backend, returns the backend chain name, otherwise returns Chain.Ethereum
  */
-export function validateUrlChainParam(chainName: string | undefined) {
+export function validateUrlChainParam(chainName: string | undefined): Chain | string {
   const isValidChainName = chainName && URL_CHAIN_PARAM_TO_BACKEND[chainName]
   const isValidBackEndChain =
-    isValidChainName && (BACKEND_SUPPORTED_CHAINS as ReadonlyArray<Chain>).includes(isValidChainName)
+    isValidChainName && (BACKEND_SUPPORTED_CHAINS as ReadonlyArray<Chain | string>).includes(isValidChainName)
   return isValidBackEndChain ? URL_CHAIN_PARAM_TO_BACKEND[chainName] : Chain.Ethereum
 }
 
-const CHAIN_NAME_TO_CHAIN_ID: { [key in InterfaceGqlChain]: ChainId } = {
+const CHAIN_NAME_TO_CHAIN_ID: { [key in InterfaceGqlChain | 'TAIKO' | 'TAIKO_HOODI']: ChainId } = {
   [Chain.Ethereum]: ChainId.MAINNET,
   [Chain.EthereumGoerli]: ChainId.GOERLI,
   [Chain.EthereumSepolia]: ChainId.SEPOLIA,
@@ -165,6 +167,8 @@ const CHAIN_NAME_TO_CHAIN_ID: { [key in InterfaceGqlChain]: ChainId } = {
   [Chain.Bnb]: ChainId.BNB,
   [Chain.Avalanche]: ChainId.AVALANCHE,
   [Chain.Base]: ChainId.BASE,
+  'TAIKO': 167000,
+  'TAIKO_HOODI': 167013,
 }
 
 export function isSupportedGQLChain(chain: Chain): chain is InterfaceGqlChain {
@@ -172,9 +176,14 @@ export function isSupportedGQLChain(chain: Chain): chain is InterfaceGqlChain {
 }
 
 export function supportedChainIdFromGQLChain(chain: InterfaceGqlChain): ChainId
-export function supportedChainIdFromGQLChain(chain: Chain): ChainId | undefined
-export function supportedChainIdFromGQLChain(chain: Chain): ChainId | undefined {
-  return isSupportedGQLChain(chain) ? CHAIN_NAME_TO_CHAIN_ID[chain] : undefined
+export function supportedChainIdFromGQLChain(chain: Chain | string): ChainId | undefined
+export function supportedChainIdFromGQLChain(chain: Chain | string): ChainId | undefined {
+  // Handle Taiko string chains
+  if (chain === 'TAIKO' || chain === 'TAIKO_HOODI') {
+    return CHAIN_NAME_TO_CHAIN_ID[chain]
+  }
+  // Handle standard Chain enum values
+  return isSupportedGQLChain(chain as Chain) ? CHAIN_NAME_TO_CHAIN_ID[chain as InterfaceGqlChain] : undefined
 }
 
 export function logSentryErrorForUnsupportedChain({

@@ -7,6 +7,8 @@ import { ThemedText } from 'theme'
 import { ProtocolStats } from './ProtocolStats'
 import { PoolsTable } from './PoolsTable'
 import TokenTable from 'components/Tokens/TokenTable/TokenTable'
+import SearchBar from 'components/Tokens/TokenTable/SearchBar'
+import TimeSelector from 'components/Tokens/TokenTable/TimeSelector'
 
 const ExploreContainer = styled.div`
   width: 100%;
@@ -61,13 +63,45 @@ const ContentContainer = styled.div`
   margin: 0 auto;
 `
 
+const FiltersWrapper = styled.div`
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  gap: 8px;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoint.md}px) {
+    flex-direction: column;
+  }
+`
+
+const FiltersContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  height: 44px;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoint.md}px) {
+    order: 2;
+  }
+`
+
+const SearchContainer = styled.div`
+  display: flex;
+  flex: 1;
+  margin-left: 8px;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoint.md}px) {
+    margin: 0;
+    order: 1;
+  }
+`
+
 type ExploreTab = 'tokens' | 'pools'
 
 export default function Explore() {
   const [activeTab, setActiveTab] = useState<ExploreTab>('tokens')
 
   return (
-    <Trace page={InterfacePageName.EXPLORE_PAGE} shouldLogImpression>
+    <Trace page={InterfacePageName.TOKENS_PAGE} shouldLogImpression>
       <ExploreContainer>
         <TitleContainer>
           <ThemedText.LargeHeader>
@@ -87,6 +121,18 @@ export default function Explore() {
             <Trans>Pools</Trans>
           </Tab>
         </TabsContainer>
+
+        {/* Filters - only show for tokens tab */}
+        {activeTab === 'tokens' && (
+          <FiltersWrapper>
+            <FiltersContainer>
+              <TimeSelector />
+            </FiltersContainer>
+            <SearchContainer>
+              <SearchBar />
+            </SearchContainer>
+          </FiltersWrapper>
+        )}
 
         {/* Content */}
         <ContentContainer>

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 import { useMemo } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { isTaikoChain } from 'config/chains/taiko'
 import { useTaikoTokenPriceHistory } from 'graphql/taiko/TaikoTokenPrice'
+import { supportedChainIdFromGQLChain } from './util'
 import { useTokenPriceQuery as useGeneratedTokenPriceQuery } from './__generated__/types-and-hooks'
 import type { Chain, HistoryDuration, TokenPriceQuery } from './__generated__/types-and-hooks'
 
@@ -64,8 +64,9 @@ export function useTokenPriceQuery(options: {
   errorPolicy?: 'all' | 'none' | 'ignore'
   skip?: boolean
 }): { data: TokenPriceQuery | undefined; loading: boolean; error?: Error } {
-  const { chainId } = useWeb3React()
-  const isTaiko = chainId && isTaikoChain(chainId)
+  // Use page chain parameter, not wallet's connected chain
+  const pageChainId = supportedChainIdFromGQLChain(options.variables.chain)
+  const isTaiko = pageChainId && isTaikoChain(pageChainId)
 
   // Convert HistoryDuration to TimePeriod for Taiko hook
   const timePeriod = useMemo(() => {
@@ -88,7 +89,7 @@ export function useTokenPriceQuery(options: {
 
   // Use Taiko subgraph for Taiko chains
   const { priceHistory: taikoPrices, loading: taikoLoading } = useTaikoTokenPriceHistory(
-    chainId || 167013, // Default to Hoodi
+    pageChainId || 167013, // Default to Hoodi if pageChainId is undefined
     options.variables.address || '',
     timePeriod
   )

@@ -93,14 +93,16 @@ export default memo(function CurrencySearchModal({
     case CurrencyModalView.tokenSafety:
       modalHeight = undefined
       if (warningToken) {
-        content = (
-          <TokenSafety
-            tokenAddress={warningToken.address}
-            onContinue={() => handleCurrencySelect(warningToken)}
-            onCancel={() => setModalView(CurrencyModalView.search)}
-            showCancel={true}
-          />
-        )
+        // Token safety modal disabled for Taiko
+        content = null
+        // content = (
+        //   <TokenSafety
+        //     tokenAddress={warningToken.address}
+        //     onContinue={() => handleCurrencySelect(warningToken)}
+        //     onCancel={() => setModalView(CurrencyModalView.search)}
+        //     showCancel={true}
+        //   />
+        // )
       }
       break
   }
