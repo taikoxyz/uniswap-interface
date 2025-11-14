@@ -167,7 +167,7 @@ export function useTaikoTokenPriceHistory(
 ): UseTaikoTokenPriceHistoryResult {
   const client = getTokenClientForChain(chainId)
   const useHourlyData = shouldUseHourlyData(duration)
-  const startTime = getStartTimestamp(duration)
+  const startTime = useMemo(() => getStartTimestamp(duration), [duration])
 
   // Query for hourly data
   const {
