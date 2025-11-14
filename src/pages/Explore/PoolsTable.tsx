@@ -224,9 +224,6 @@ export function PoolsTable() {
             <TableHeaderCell $clickable onClick={() => handleSort('fees')}>
               <Trans>1D vol/TVL</Trans>
             </TableHeaderCell>
-            <TableHeaderCell>
-              <Trans>LPs</Trans>
-            </TableHeaderCell>
           </tr>
         </TableHeader>
         <tbody>
@@ -246,7 +243,6 @@ export function PoolsTable() {
               <TableCell>{formatPercent(pool.apr || 0)}</TableCell>
               <TableCell>{formatNumber(pool.volumeUSD)}</TableCell>
               <TableCell>{pool.tvlUSD > 0 ? `${((pool.volumeUSD / pool.tvlUSD) * 100).toFixed(2)}%` : '-'}</TableCell>
-              <TableCell>{pool.liquidityProviderCount}</TableCell>
             </TableRow>
           ))}
         </tbody>
