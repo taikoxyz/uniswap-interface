@@ -99,10 +99,12 @@ export function useTokenPriceQuery(options: {
     skip: isTaiko || options.skip || !options.variables.address, // Skip API query on Taiko or if no address
   })
 
+  const { address, chain } = options.variables
+
   return useMemo(() => {
     if (isTaiko) {
       // Transform Taiko data to match TokenPriceQuery format
-      if (!taikoPrices || taikoPrices.length === 0 || !options.variables.address) {
+      if (!taikoPrices || taikoPrices.length === 0 || !address) {
         return {
           data: undefined,
           loading: taikoLoading,
@@ -111,21 +113,20 @@ export function useTokenPriceQuery(options: {
 
       // Get the latest price
       const latestPrice = taikoPrices[taikoPrices.length - 1]
-      const address = options.variables.address
 
       const transformedData: TokenPriceQuery = {
         token: {
           __typename: 'Token',
-          id: `${address}-${options.variables.chain}`,
+          id: `${address}-${chain}`,
           address,
-          chain: options.variables.chain,
+          chain: chain,
           market: {
             __typename: 'TokenMarket',
-            id: `${address}-${options.variables.chain}-USD`,
+            id: `${address}-${chain}-USD`,
             price: latestPrice
               ? {
                   __typename: 'Amount',
-                  id: `${address}-${options.variables.chain}-USD-price`,
+                  id: `${address}-${chain}-USD-price`,
                   value: latestPrice.value,
                 }
               : undefined,
@@ -150,5 +151,5 @@ export function useTokenPriceQuery(options: {
       loading: apiLoading,
       error: apiError,
     }
-  }, [isTaiko, taikoPrices, taikoLoading, apiData, apiLoading, apiError, options.variables])
+  }, [isTaiko, taikoPrices, taikoLoading, apiData, apiLoading, apiError, address, chain])
 }
