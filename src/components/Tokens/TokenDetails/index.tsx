@@ -220,7 +220,12 @@ export default function TokenDetails({
                 <ShareButton currency={detailedToken} />
               </TokenActions>
             </TokenInfoContainer>
-            <ChartSection tokenPriceQuery={tokenPriceQuery} onChangeTimePeriod={onChangeTimePeriod} />
+            <ChartSection
+              tokenPriceQuery={tokenPriceQuery}
+              chainId={pageChainId}
+              tokenAddress={address}
+              onChangeTimePeriod={onChangeTimePeriod}
+            />
 
             <StatsSection
               chainId={pageChainId}
