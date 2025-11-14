@@ -23,7 +23,7 @@ const TAIKO_MAINNET_TOKEN_ADDRESSES = [
 // Common token addresses on Taiko Hoodi
 const TAIKO_HOODI_TOKEN_ADDRESSES = [
   '0x3B39685B5495359c892DDD1057B5712F49976835', // WETH
-  '0xF2382db1E08b17A81566093f59E46F8db2026202', // USDC (checksummed)
+  '0x18d5bB147f3D05D5f6c5E60Caf1daeeDBF5155B6', // USDC (correct address from taiko.tokenlist.json)
 ]
 
 export interface TokenBalance {

@@ -38,7 +38,7 @@ const TAIKO_HOODI_COMMON_TOKENS = [
     decimals: 18,
   },
   {
-    address: '0xF2382db1E08b17A81566093f59E46F8db2026202',
+    address: '0x18d5bB147f3D05D5f6c5E60Caf1daeeDBF5155B6', // Correct address from taiko.tokenlist.json
     symbol: 'USDC',
     name: 'USD Coin',
     decimals: 6,
