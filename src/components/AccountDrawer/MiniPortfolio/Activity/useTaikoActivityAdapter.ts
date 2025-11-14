@@ -1,6 +1,7 @@
 import { Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { isTaikoChain } from 'config/chains/taiko'
+import { TransactionStatus } from 'graphql/data/__generated__/types-and-hooks'
 import { useTaikoActivity } from 'graphql/taiko/TaikoActivity'
 import { useMemo } from 'react'
 
@@ -44,7 +45,7 @@ export function useTaikoActivityAdapter(account: string): {
       allActivities.push({
         hash: swap.transaction.id,
         chainId: chainId!,
-        status: 1, // Confirmed since it's from subgraph
+        status: TransactionStatus.Confirmed, // Confirmed since it's from subgraph
         timestamp: parseInt(swap.timestamp),
         from: swap.origin,
         nonce: undefined,
@@ -75,7 +76,7 @@ export function useTaikoActivityAdapter(account: string): {
       allActivities.push({
         hash: mint.transaction.id,
         chainId: chainId!,
-        status: 1,
+        status: TransactionStatus.Confirmed,
         timestamp: parseInt(mint.timestamp),
         from: mint.origin,
         nonce: undefined,
@@ -106,7 +107,7 @@ export function useTaikoActivityAdapter(account: string): {
       allActivities.push({
         hash: burn.transaction.id,
         chainId: chainId!,
-        status: 1,
+        status: TransactionStatus.Confirmed,
         timestamp: parseInt(burn.timestamp),
         from: burn.origin,
         nonce: undefined,
@@ -137,7 +138,7 @@ export function useTaikoActivityAdapter(account: string): {
       allActivities.push({
         hash: collect.transaction.id,
         chainId: chainId!,
-        status: 1,
+        status: TransactionStatus.Confirmed,
         timestamp: parseInt(collect.timestamp),
         from: collect.owner,
         nonce: undefined,

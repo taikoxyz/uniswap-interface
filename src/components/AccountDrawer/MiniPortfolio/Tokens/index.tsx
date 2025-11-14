@@ -7,7 +7,7 @@ import Row from 'components/Row'
 import { DeltaArrow, formatDelta } from 'components/Tokens/TokenDetails/Delta'
 import { isTaikoChain } from 'config/chains/taiko'
 import { TokenBalance } from 'graphql/data/__generated__/types-and-hooks'
-import { getTokenDetailsURL, gqlToCurrency, logSentryErrorForUnsupportedChain } from 'graphql/data/util'
+import { chainIdToBackendName, getTokenDetailsURL, gqlToCurrency, logSentryErrorForUnsupportedChain } from 'graphql/data/util'
 import { useAtomValue } from 'jotai'
 import { EmptyWalletModule } from 'nft/components/profile/view/EmptyWalletContent'
 import { useCallback, useMemo, useState } from 'react'
@@ -97,7 +97,9 @@ function TaikoTokenRow({ tokenBalance }: { tokenBalance: { token: Currency; bala
   const toggleWalletDrawer = useToggleAccountDrawer()
 
   const navigateToTokenDetails = useCallback(async () => {
-    navigate(getTokenDetailsURL(tokenBalance.token))
+    const chain = chainIdToBackendName(tokenBalance.token.chainId)
+    const address = tokenBalance.token.isToken ? tokenBalance.token.address : undefined
+    navigate(getTokenDetailsURL({ chain, address }))
     toggleWalletDrawer()
   }, [navigate, tokenBalance.token, toggleWalletDrawer])
 

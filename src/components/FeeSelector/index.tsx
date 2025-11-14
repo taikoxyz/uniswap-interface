@@ -68,6 +68,9 @@ export default function FeeSelector({
   // get pool data on-chain for latest states
   const pools = usePools([
     [currencyA, currencyB, FeeAmount.LOWEST],
+    [currencyA, currencyB, FeeAmount.LOW_200],
+    [currencyA, currencyB, FeeAmount.LOW_300],
+    [currencyA, currencyB, FeeAmount.LOW_400],
     [currencyA, currencyB, FeeAmount.LOW],
     [currencyA, currencyB, FeeAmount.MEDIUM],
     [currencyA, currencyB, FeeAmount.HIGH],
@@ -86,6 +89,9 @@ export default function FeeSelector({
         {
           // default all states to NOT_EXISTS
           [FeeAmount.LOWEST]: PoolState.NOT_EXISTS,
+          [FeeAmount.LOW_200]: PoolState.NOT_EXISTS,
+          [FeeAmount.LOW_300]: PoolState.NOT_EXISTS,
+          [FeeAmount.LOW_400]: PoolState.NOT_EXISTS,
           [FeeAmount.LOW]: PoolState.NOT_EXISTS,
           [FeeAmount.MEDIUM]: PoolState.NOT_EXISTS,
           [FeeAmount.HIGH]: PoolState.NOT_EXISTS,
@@ -184,7 +190,7 @@ export default function FeeSelector({
 
         {chainId && showOptions && (
           <Select>
-            {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount, i) => {
+            {[FeeAmount.LOWEST, FeeAmount.LOW_200, FeeAmount.LOW_300, FeeAmount.LOW_400, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount, i) => {
               const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
               if (supportedChains.includes(chainId)) {
                 return (

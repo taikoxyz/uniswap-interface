@@ -70,7 +70,7 @@ export function useAllActivities(account: string) {
     variables: { account },
     errorPolicy: 'all',
     fetchPolicy: 'cache-first',
-    skip: isTaiko, // Skip Uniswap API query when on Taiko
+    skip: !!isTaiko, // Skip Uniswap API query when on Taiko
   })
 
   const localMap = useLocalActivities(account)

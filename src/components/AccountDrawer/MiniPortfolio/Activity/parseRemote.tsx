@@ -363,8 +363,16 @@ function parseRemoteActivity(
       return parseUniswapXOrder(assetActivity as OrderActivity)
     }
 
+    // Skip OffRamp and OnRamp transactions as they don't have the expected TransactionDetails structure
+    if (
+      assetActivity.details.__typename === 'OffRampTransactionDetails' ||
+      assetActivity.details.__typename === 'OnRampTransactionDetails'
+    ) {
+      return undefined
+    }
+
     const changes = assetActivity.details.assetChanges.reduce(
-      (acc: TransactionChanges, assetChange) => {
+      (acc: TransactionChanges, assetChange: NonNullable<TransactionDetailsPartsFragment['assetChanges'][number]>) => {
         if (assetChange.__typename === 'NftApproval') acc.NftApproval.push(assetChange)
         else if (assetChange.__typename === 'NftApproveForAll') acc.NftApproveForAll.push(assetChange)
         else if (assetChange.__typename === 'NftTransfer') acc.NftTransfer.push(assetChange)

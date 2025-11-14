@@ -4,6 +4,7 @@ import ERC20_ABI from 'abis/erc20.json'
 import { Contract } from 'ethers'
 import { useEffect, useState } from 'react'
 import { RPC_PROVIDERS } from 'constants/providers'
+import { isSupportedChain, SupportedInterfaceChain } from 'constants/chains'
 
 export interface TaikoTokenBalance {
   token: Token
@@ -80,7 +81,8 @@ export function useTaikoTokenBalances(account: string | undefined, chainId: Chai
     const fetchBalances = async () => {
       setLoading(true)
       try {
-        const provider = walletProvider || RPC_PROVIDERS[chainId]
+        // Check if chainId is a supported chain before accessing RPC_PROVIDERS
+        const provider = walletProvider || (isSupportedChain(chainId) ? RPC_PROVIDERS[chainId as SupportedInterfaceChain] : undefined)
         if (!provider) {
           setLoading(false)
           return
