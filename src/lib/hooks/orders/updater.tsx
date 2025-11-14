@@ -6,10 +6,8 @@ import { UniswapXOrderDetails } from 'state/signatures/types'
 
 import { OrderQueryResponse, UniswapXBackendOrder } from './types'
 
-const UNISWAP_API_URL = process.env.REACT_APP_UNISWAP_API_URL
-if (UNISWAP_API_URL === undefined) {
-  throw new Error(`UNISWAP_API_URL must be a defined environment variable`)
-}
+// UniswapX orders are not supported on Taiko - this updater is not used
+const UNISWAP_API_URL = process.env.REACT_APP_UNISWAP_API_URL || 'https://api.uniswap.org'
 
 function fetchOrderStatuses(account: string, orders: UniswapXOrderDetails[]) {
   const orderHashes = orders.map((order) => order.orderHash).join(',')

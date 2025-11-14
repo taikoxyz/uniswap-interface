@@ -49,7 +49,7 @@ function computeRealizedLPFeePercent(trade: Trade<Currency, Currency, TradeType>
               pool instanceof Pair
                 ? // not currently possible given protocol check above, but not fatal
                   FeeAmount.MEDIUM
-                : pool.fee
+                : 'fee' in pool ? pool.fee : FeeAmount.MEDIUM
             return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(new Fraction(fee, 1_000_000)))
           }, ONE_HUNDRED_PERCENT)
         )
@@ -113,6 +113,6 @@ export function getPriceImpactColor(priceImpact: Percent): keyof DefaultTheme | 
     case 'warning':
       return 'deprecated_accentWarning'
     default:
-      return undefined
+      return 'neutral1' // Use readable neutral color for low price impact
   }
 }

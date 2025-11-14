@@ -267,7 +267,7 @@ export default function TokenSafety({
         </AutoColumn>
         {displayWarningLabel(displayWarning) && (
           <ShortColumn>
-            <SafetyLabel warning={displayWarning} />
+            {/* <SafetyLabel warning={displayWarning} /> */}
           </ShortColumn>
         )}
         <ShortColumn>

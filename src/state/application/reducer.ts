@@ -1,6 +1,7 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
 import { ChainId } from '@uniswap/sdk-core'
 import { DEFAULT_TXN_DISMISS_MS } from 'constants/misc'
+import { getDefaultChainId } from 'config/chains'
 
 export enum PopupType {
   Transaction = 'transaction',
@@ -29,7 +30,6 @@ export enum ApplicationModal {
   DELEGATE,
   EXECUTE,
   FEATURE_FLAGS,
-  FIAT_ONRAMP,
   MENU,
   METAMASK_CONNECTION_ERROR,
   NETWORK_FILTER,
@@ -50,14 +50,12 @@ export type PopupList = Array<{ key: string; show: boolean; content: PopupConten
 
 export interface ApplicationState {
   readonly chainId: number | null
-  readonly fiatOnramp: { available: boolean; availabilityChecked: boolean }
   readonly openModal: ApplicationModal | null
   readonly popupList: PopupList
 }
 
 const initialState: ApplicationState = {
-  fiatOnramp: { available: false, availabilityChecked: false },
-  chainId: null,
+  chainId: getDefaultChainId(),
   openModal: null,
   popupList: [],
 }
@@ -66,9 +64,6 @@ const applicationSlice = createSlice({
   name: 'application',
   initialState,
   reducers: {
-    setFiatOnrampAvailability(state, { payload: available }) {
-      state.fiatOnramp = { available, availabilityChecked: true }
-    },
     updateChainId(state, action) {
       const { chainId } = action.payload
       state.chainId = chainId
@@ -99,6 +94,6 @@ const applicationSlice = createSlice({
   },
 })
 
-export const { updateChainId, setFiatOnrampAvailability, setOpenModal, addPopup, removePopup } =
+export const { updateChainId, setOpenModal, addPopup, removePopup } =
   applicationSlice.actions
 export default applicationSlice.reducer

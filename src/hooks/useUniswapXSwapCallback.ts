@@ -20,10 +20,8 @@ type DutchAuctionOrderResponse = DutchAuctionOrderError | DutchAuctionOrderSucce
 const isErrorResponse = (res: Response, order: DutchAuctionOrderResponse): order is DutchAuctionOrderError =>
   res.status < 200 || res.status > 202
 
-const UNISWAP_API_URL = process.env.REACT_APP_UNISWAP_API_URL
-if (UNISWAP_API_URL === undefined) {
-  throw new Error(`UNISWAP_API_URL must be a defined environment variable`)
-}
+// UniswapX is not supported on Taiko - this file is not used
+const UNISWAP_API_URL = process.env.REACT_APP_UNISWAP_API_URL || 'https://api.uniswap.org'
 
 // getUpdatedNonce queries the UniswapX service for the most up-to-date nonce for a user.
 // The `nonce` exists as part of the Swap quote response already, but if a user submits back-to-back

@@ -8,7 +8,6 @@ import { AutoColumn } from 'components/Column'
 import { FlyoutAlignment, Menu } from 'components/Menu'
 import PositionList from 'components/PositionList'
 import { RowBetween, RowFixed } from 'components/Row'
-import { SwitchLocaleLink } from 'components/SwitchLocaleLink'
 import { isSupportedChain } from 'constants/chains'
 import { useFilterPossiblyMaliciousPositions } from 'hooks/useFilterPossiblyMaliciousPositions'
 import { useNetworkSupportsV2 } from 'hooks/useNetworkSupportsV2'
@@ -21,7 +20,6 @@ import styled, { css, useTheme } from 'styled-components'
 import { HideSmall, ThemedText } from 'theme'
 import { PositionDetails } from 'types/position'
 
-import CTACards from './CTACards'
 import { LoadingRows } from './styled'
 
 const PageWrapper = styled(AutoColumn)`
@@ -182,7 +180,6 @@ function WrongNetworkCard() {
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>
-      <SwitchLocaleLink />
     </>
   )
 }
@@ -325,12 +322,11 @@ export default function Pool() {
               )}
             </MainContentWrapper>
             <HideSmall>
-              <CTACards />
+              {/* <CTACards /> */}
             </HideSmall>
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>
-      <SwitchLocaleLink />
     </Trace>
   )
 }

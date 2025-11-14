@@ -39,17 +39,8 @@ if (!sentryUserId) {
 }
 Sentry.setUser({ id: sentryUserId })
 
-// Only initialize analytics if proxy URL is configured
-if (process.env.REACT_APP_AMPLITUDE_PROXY_URL) {
-  initializeAnalytics(AMPLITUDE_DUMMY_KEY, OriginApplication.INTERFACE, {
-    proxyUrl: process.env.REACT_APP_AMPLITUDE_PROXY_URL,
-    defaultEventName: SharedEventName.PAGE_VIEWED,
-    commitHash: process.env.REACT_APP_GIT_COMMIT_HASH,
-    isProductionEnv: isProductionEnv(),
-    debug: isDevelopmentEnv(),
-  })
-} else {
-  if (isDevelopmentEnv()) {
-    console.log('[Analytics] Disabled - no REACT_APP_AMPLITUDE_PROXY_URL configured')
-  }
+// Analytics disabled for Taiko deployment
+// Amplitude analytics is not configured and will not send any events
+if (isDevelopmentEnv()) {
+  console.log('[Analytics] Disabled for Taiko deployment')
 }

@@ -93,7 +93,7 @@ export default function MobileBalanceSummaryFooter({ token }: { token: Currency 
     amount: useStablecoinValue(balance),
     type: NumberType.FiatTokenStats,
   })
-  const chain = CHAIN_ID_TO_BACKEND_NAME[token.chainId].toLowerCase()
+  const chain = CHAIN_ID_TO_BACKEND_NAME[token.chainId]?.toLowerCase() || 'ethereum'
 
   return (
     <Wrapper>

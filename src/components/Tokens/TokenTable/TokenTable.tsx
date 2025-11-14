@@ -1,10 +1,17 @@
 import { Trans } from '@lingui/macro'
 import { PAGE_SIZE, useTopTokens } from 'graphql/data/TopTokens'
 import { validateUrlChainParam } from 'graphql/data/util'
+import { Chain } from 'graphql/data/__generated__/types-and-hooks'
 import { ReactNode } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
+import { isTaikoChain } from 'config/chains/taiko'
+import { useTopTokensTaiko } from 'graphql/taiko/TaikoTopTokens'
+import { TimePeriod } from 'graphql/data/util'
+import { useAtomValue } from 'jotai'
+import { filterTimeAtom } from '../state'
 
 import { MAX_WIDTH_MEDIA_BREAKPOINT } from '../constants'
 import { HeaderRow, LoadedRow, LoadingRow } from './TokenRow'
@@ -75,19 +82,31 @@ function LoadingTokenTable({ rowCount = PAGE_SIZE }: { rowCount?: number }) {
 }
 
 export default function TokenTable() {
+  const { chainId } = useWeb3React()
   const chainName = validateUrlChainParam(useParams<{ chainName?: string }>().chainName)
-  const { tokens, tokenSortRank, loadingTokens, sparklines } = useTopTokens(chainName)
+  const timePeriod = useAtomValue(filterTimeAtom)
+
+  // Check if this is a Taiko chain
+  const isTaiko = chainId && isTaikoChain(chainId)
+
+  // Use custom Taiko hook for Taiko chains, otherwise use standard hook
+  const standardResult = useTopTokens(chainName as Chain)
+  const taikoResult = useTopTokensTaiko(chainId || 167013, timePeriod)
+
+  // Select the appropriate result based on chain
+  const { tokens, tokenSortRank, loadingTokens, sparklines } = isTaiko ? taikoResult : standardResult
 
   /* loading and error state */
   if (loadingTokens && !tokens) {
     return <LoadingTokenTable rowCount={PAGE_SIZE} />
   } else if (!tokens) {
+    // Soft fail - show friendly error message if subgraph unavailable or query fails
     return (
       <NoTokensState
         message={
           <>
             <AlertTriangle size={16} />
-            <Trans>An error occurred loading tokens. Please try again.</Trans>
+            <Trans>Unable to load token data. Please try again later.</Trans>
           </>
         }
       />
@@ -106,7 +125,7 @@ export default function TokenTable() {
                   key={token.address}
                   tokenListIndex={index}
                   tokenListLength={tokens.length}
-                  token={token}
+                  token={token as any}
                   sparklineMap={sparklines}
                   sortRank={tokenSortRank[token.address]}
                 />

@@ -9,6 +9,7 @@ import { useMemo } from 'react'
 import { isOnChainOrder, useAllSignatures } from 'state/signatures/hooks'
 import { SignatureDetails, SignatureType } from 'state/signatures/types'
 import { useMultichainTransactions } from 'state/transactions/hooks'
+import { mergeTaikoTokens } from 'utils/getTaikoTokenMap'
 import {
   AddLiquidityV2PoolTransactionInfo,
   AddLiquidityV3PoolTransactionInfo,
@@ -269,7 +270,8 @@ export function signatureToActivity(
 export function useLocalActivities(account: string): ActivityMap {
   const allTransactions = useMultichainTransactions()
   const allSignatures = useAllSignatures()
-  const tokens = useAllTokensMultichain()
+  const baseTokens = useAllTokensMultichain()
+  const tokens = useMemo(() => mergeTaikoTokens(baseTokens), [baseTokens])
   const { formatNumber } = useFormatter()
 
   return useMemo(() => {

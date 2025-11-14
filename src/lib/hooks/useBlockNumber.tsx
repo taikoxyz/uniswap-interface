@@ -1,6 +1,6 @@
-import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { RPC_PROVIDERS } from 'constants/providers'
+import { TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
@@ -48,9 +48,9 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
     setChainBlock((chainBlock) => {
       if (chainBlock.chainId === chainId) {
         if (!chainBlock.block || chainBlock.block < block) {
-          return { chainId, block, mainnetBlock: chainId === ChainId.MAINNET ? block : chainBlock.mainnetBlock }
+          return { chainId, block, mainnetBlock: chainId === TAIKO_MAINNET_CHAIN_ID ? block : chainBlock.mainnetBlock }
         }
-      } else if (chainId === ChainId.MAINNET) {
+      } else if (chainId === TAIKO_MAINNET_CHAIN_ID) {
         if (!chainBlock.mainnetBlock || chainBlock.mainnetBlock < block) {
           return { ...chainBlock, mainnetBlock: block }
         }
@@ -94,12 +94,12 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (mainnetBlock === undefined) {
-      RPC_PROVIDERS[ChainId.MAINNET]
+      RPC_PROVIDERS[TAIKO_MAINNET_CHAIN_ID]
         .getBlockNumber()
         .then((block) => {
-          onChainBlock(ChainId.MAINNET, block)
+          onChainBlock(TAIKO_MAINNET_CHAIN_ID, block)
         })
-        // swallow errors - it's ok if this fails, as we'll try again if we activate mainnet
+        // swallow errors - it's ok if this fails, as we'll try again if we activate Taiko mainnet
         .catch(() => undefined)
     }
   }, [mainnetBlock, onChainBlock])

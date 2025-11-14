@@ -197,12 +197,7 @@ src/config/chains/
 **Solution**: Override `UNIVERSAL_ROUTER_ADDRESS` function to add Taiko support
 **Production Ready**: ✅ Yes
 
-#### 3. Taiko On-Chain Quoter (`src/lib/hooks/routing/taikoQuoter.ts`)
-**Why**: Uniswap Routing API doesn't support Taiko chains
-**Solution**: Direct on-chain quoter calls to deployed QuoterV1/V2 contract
-**Production Ready**: ✅ Yes
-
-#### 4. ClassicTrade InputTax/OutputTax (`src/state/routing/types.ts`)
+#### 3. ClassicTrade InputTax/OutputTax (`src/state/routing/types.ts`)
 **Why**: Override readonly properties from base Trade class
 **Solution**: Private fields with public getter overrides (proper TypeScript pattern)
 **Production Ready**: ✅ Yes
@@ -213,7 +208,7 @@ The following unnecessary workarounds were **removed** during production hardeni
 
 - ❌ **Runtime SDK Mutation** (`patchSdkAddresses.ts`): Removed dangerous Object.assign mutations
 - ❌ **Debug Logging**: All emoji-prefixed console.logs removed or wrapped in `NODE_ENV` checks
-- ❌ **Unused Code**: `taikoSimpleQuoter.ts` removed (dead code)
+- ❌ **Unused Code**: `taikoSimpleQuoter.ts` and `taikoQuoter.ts` removed (dead code, use standard routing)
 
 ## Security Considerations
 
@@ -320,9 +315,9 @@ If issues are discovered after mainnet deployment:
 **Cause**: Zero addresses or missing contracts
 **Solution**: Update all addresses in `config/chains/taiko.ts`
 
-### Issue: "QuoterV2 not found"
-**Cause**: QuoterV2 not deployed
-**Solution**: Either deploy QuoterV2 or use QuoterV1 (both compatible)
+### Issue: "No quote found"
+**Cause**: QuoterV2 not deployed or pools don't exist
+**Solution**: Ensure QuoterV2 is deployed and pools have been created with liquidity
 
 ## Performance Optimization
 

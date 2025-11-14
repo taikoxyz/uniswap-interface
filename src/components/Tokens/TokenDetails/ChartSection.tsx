@@ -1,8 +1,10 @@
 import { ParentSize } from '@visx/responsive'
 import { ChartContainer, LoadingChart } from 'components/Tokens/TokenDetails/Skeleton'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import { TokenPriceQuery } from 'graphql/data/TokenPrice'
 import { isPricePoint, PricePoint } from 'graphql/data/util'
 import { TimePeriod } from 'graphql/data/util'
+import { useTaikoTokenPriceHistory } from 'graphql/taiko/TaikoTokenPrice'
 import { useAtomValue } from 'jotai'
 import { pageTimePeriodAtom } from 'pages/TokenDetails'
 import { startTransition, Suspense, useMemo } from 'react'
@@ -17,7 +19,8 @@ function usePriceHistory(tokenPriceData: TokenPriceQuery): PricePoint[] | undefi
     const priceHistory = market?.priceHistory?.filter(isPricePoint)
     const currentPrice = market?.price?.value
     if (Array.isArray(priceHistory) && currentPrice !== undefined) {
-      const timestamp = Date.now() / 1000
+      // Round timestamp to nearest minute to prevent constant re-renders
+      const timestamp = Math.floor(Date.now() / 60000) * 60
       return [...priceHistory, { timestamp, value: currentPrice }]
     }
     return priceHistory
@@ -27,19 +30,31 @@ function usePriceHistory(tokenPriceData: TokenPriceQuery): PricePoint[] | undefi
 }
 export default function ChartSection({
   tokenPriceQuery,
+  chainId,
+  tokenAddress,
   onChangeTimePeriod,
 }: {
   tokenPriceQuery?: TokenPriceQuery
+  chainId?: number
+  tokenAddress?: string
   onChangeTimePeriod: OnChangeTimePeriod
 }) {
-  if (!tokenPriceQuery) {
+  // For Taiko chains, use Goldsky subgraph data instead of AWS backend
+  const isTaikoChain = chainId === TAIKO_HOODI_CHAIN_ID || chainId === TAIKO_MAINNET_CHAIN_ID
+
+  if (!isTaikoChain && !tokenPriceQuery) {
     return <LoadingChart />
   }
 
   return (
     <Suspense fallback={<LoadingChart />}>
       <ChartContainer>
-        <Chart tokenPriceQuery={tokenPriceQuery} onChangeTimePeriod={onChangeTimePeriod} />
+        <Chart
+          tokenPriceQuery={tokenPriceQuery}
+          chainId={chainId}
+          tokenAddress={tokenAddress}
+          onChangeTimePeriod={onChangeTimePeriod}
+        />
       </ChartContainer>
     </Suspense>
   )
@@ -48,14 +63,31 @@ export default function ChartSection({
 export type OnChangeTimePeriod = (t: TimePeriod) => void
 function Chart({
   tokenPriceQuery,
+  chainId,
+  tokenAddress,
   onChangeTimePeriod,
 }: {
-  tokenPriceQuery: TokenPriceQuery
+  tokenPriceQuery?: TokenPriceQuery
+  chainId?: number
+  tokenAddress?: string
   onChangeTimePeriod: OnChangeTimePeriod
 }) {
-  const prices = usePriceHistory(tokenPriceQuery)
   // Initializes time period to global & maintain separate time period for subsequent changes
   const timePeriod = useAtomValue(pageTimePeriodAtom)
+
+  // For Taiko chains, fetch data from Goldsky subgraph
+  const isTaikoChain = chainId === TAIKO_HOODI_CHAIN_ID || chainId === TAIKO_MAINNET_CHAIN_ID
+  const { priceHistory: taikoPriceHistory } = useTaikoTokenPriceHistory(
+    chainId ?? 0,
+    tokenAddress ?? '',
+    timePeriod
+  )
+
+  // For non-Taiko chains, use standard AWS backend price history
+  const standardPriceHistory = usePriceHistory(tokenPriceQuery ?? ({} as TokenPriceQuery))
+
+  // Use Taiko price history for Taiko chains, otherwise use standard price history
+  const prices = isTaikoChain ? taikoPriceHistory : standardPriceHistory
 
   return (
     <ChartContainer data-testid="chart-container">

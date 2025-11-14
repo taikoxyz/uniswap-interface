@@ -33,8 +33,6 @@ import {
 } from 'components/swap/styled'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import SwapHeader from 'components/swap/SwapHeader'
-import { SwitchLocaleLink } from 'components/SwitchLocaleLink'
-import TokenSafetyModal from 'components/TokenSafety/TokenSafetyModal'
 import { getChainInfo } from 'constants/chainInfo'
 import { asSupportedChain, isSupportedChain } from 'constants/chains'
 import { getSwapCurrencyId, TOKEN_SHORTHANDS } from 'constants/tokens'
@@ -69,6 +67,13 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { computeRealizedPriceImpact, warningSeverity } from 'utils/prices'
 import { didUserReject } from 'utils/swapErrorToUserReadableMessage'
 
+import {
+  isTaikoChain,
+  TAIKO_HOODI_ADDRESSES,
+  TAIKO_HOODI_CHAIN_ID,
+  TAIKO_MAINNET_ADDRESSES,
+  TAIKO_MAINNET_CHAIN_ID,
+} from 'config/chains/taiko'
 import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
 
 import { useScreenSize } from '../../hooks/useScreenSize'
@@ -169,7 +174,6 @@ export default function SwapPage({ className }: { className?: string }) {
         />
         <NetworkAlert />
       </PageWrapper>
-      {location.pathname === '/swap' && <SwitchLocaleLink />}
     </Trace>
   )
 }
@@ -423,12 +427,30 @@ export function Swap({
 
   const maximumAmountIn = useMaxAmountIn(trade, allowedSlippage)
   const universalRouterAddress = isSupportedChain(chainId) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined
+
+  // For Taiko, use SwapRouter02 address for approvals since that's what executes the swap
+  const approvalSpender = useMemo(() => {
+    if (!chainId) return universalRouterAddress
+
+    if (isTaikoChain(chainId)) {
+      // Use SwapRouter02 for Taiko chains
+      if (chainId === TAIKO_HOODI_CHAIN_ID) {
+        return TAIKO_HOODI_ADDRESSES.router
+      }
+      if (chainId === TAIKO_MAINNET_CHAIN_ID) {
+        return TAIKO_MAINNET_ADDRESSES.router
+      }
+    }
+
+    return universalRouterAddress
+  }, [chainId, universalRouterAddress])
+
   const allowance = usePermit2Allowance(
     maximumAmountIn ??
       (parsedAmounts[Field.INPUT]?.currency.isToken
         ? (parsedAmounts[Field.INPUT] as CurrencyAmount<Token>)
         : undefined),
-    universalRouterAddress,
+    approvalSpender,
     trade?.fillType
   )
 
@@ -442,11 +464,16 @@ export function Swap({
   }, [fiatValueTradeInput, fiatValueTradeOutput])
 
   // the callback to execute the swap
+  // Taiko uses SwapRouter02 which doesn't support Permit2, so don't pass permitSignature
   const swapCallback = useSwapCallback(
     trade,
     swapFiatValues,
     allowedSlippage,
-    allowance.state === AllowanceState.ALLOWED ? allowance.permitSignature : undefined
+    chainId && isTaikoChain(chainId)
+      ? undefined
+      : allowance.state === AllowanceState.ALLOWED
+        ? allowance.permitSignature
+        : undefined
   )
 
   const handleContinueToReview = useCallback(() => {
@@ -597,14 +624,14 @@ export function Swap({
 
   const swapElement = (
     <SwapWrapper isDark={isDark} className={className} id="swap-page">
-      <TokenSafetyModal
+      {/* <TokenSafetyModal
         isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
         tokenAddress={importTokensNotInDefault[0]?.address}
         secondTokenAddress={importTokensNotInDefault[1]?.address}
         onContinue={handleConfirmTokenWarning}
         onCancel={handleDismissTokenWarning}
         showCancel={true}
-      />
+      /> */}
       <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} />
       {trade && showConfirm && allowance.state !== AllowanceState.LOADING && (
         <ConfirmSwapModal

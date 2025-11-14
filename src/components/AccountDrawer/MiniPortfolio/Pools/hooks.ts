@@ -1,13 +1,9 @@
-import {
-  ChainId,
-  MULTICALL_ADDRESSES,
-  NONFUNGIBLE_POSITION_MANAGER_ADDRESSES as V3NFT_ADDRESSES,
-  Token,
-} from '@uniswap/sdk-core'
+import { ChainId, Token } from '@uniswap/sdk-core'
 import type { AddressMap } from '@uniswap/smart-order-router'
 import MulticallJSON from '@uniswap/v3-periphery/artifacts/contracts/lens/UniswapInterfaceMulticall.sol/UniswapInterfaceMulticall.json'
 import NFTPositionManagerJSON from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { useWeb3React } from '@web3-react/core'
+import { MULTICALL_ADDRESSES, NONFUNGIBLE_POSITION_MANAGER_ADDRESSES as V3NFT_ADDRESSES } from 'config/chains'
 import { isSupportedChain } from 'constants/chains'
 import { RPC_PROVIDERS } from 'constants/providers'
 import { BaseContract } from 'ethers/lib/ethers'
@@ -39,6 +35,12 @@ function useContractMultichain<T extends BaseContract>(
         .filter((chainId) => isSupportedChain(chainId))
 
     return relevantChains.reduce((acc: ContractMap<T>, chainId) => {
+      const address = addressMap[chainId]
+      // Skip if address is undefined or empty
+      if (!address || address === '') {
+        return acc
+      }
+
       const provider =
         walletProvider && walletChainId === chainId
           ? walletProvider
@@ -46,7 +48,7 @@ function useContractMultichain<T extends BaseContract>(
           ? RPC_PROVIDERS[chainId]
           : undefined
       if (provider) {
-        acc[chainId] = getContract(addressMap[chainId] ?? '', ABI, provider) as T
+        acc[chainId] = getContract(address, ABI, provider) as T
       }
       return acc
     }, {})

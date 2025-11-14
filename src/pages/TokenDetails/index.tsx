@@ -1,12 +1,13 @@
 import TokenDetails from 'components/Tokens/TokenDetails'
 import { TokenDetailsPageSkeleton } from 'components/Tokens/TokenDetails/Skeleton'
 import { NATIVE_CHAIN_ID } from 'constants/tokens'
-import { useTokenPriceQuery, useTokenQuery } from 'graphql/data/__generated__/types-and-hooks'
+import { useTokenQuery } from 'graphql/data/TokenQuery'
+import { useTokenPriceQuery } from 'graphql/data/TokenPrice'
 import { TimePeriod, toHistoryDuration, validateUrlChainParam } from 'graphql/data/util'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { getNativeTokenDBAddress } from 'utils/nativeTokens'
 
@@ -50,12 +51,6 @@ export default function TokenDetailsPage() {
     errorPolicy: 'all',
   })
 
-  // Saves already-loaded chart data into state to display while tokenPriceQuery is undefined timePeriod input changes
-  const [currentPriceQuery, setCurrentPriceQuery] = useState(tokenPriceQuery)
-  useEffect(() => {
-    if (tokenPriceQuery) setCurrentPriceQuery(tokenPriceQuery)
-  }, [setCurrentPriceQuery, tokenPriceQuery])
-
   if (!tokenQuery) return <TokenDetailsPageSkeleton />
 
   return (
@@ -63,7 +58,7 @@ export default function TokenDetailsPage() {
       urlAddress={tokenAddress}
       chain={chain}
       tokenQuery={tokenQuery}
-      tokenPriceQuery={currentPriceQuery}
+      tokenPriceQuery={tokenPriceQuery}
       onChangeTimePeriod={setTimePeriod}
       inputTokenAddress={parsedInputTokenAddress}
     />

@@ -1,7 +1,7 @@
 import { nanoid } from '@reduxjs/toolkit'
-import { ChainId } from '@uniswap/sdk-core'
 import { TokenList } from '@uniswap/token-lists'
 import { RPC_PROVIDERS } from 'constants/providers'
+import { TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import getTokenList from 'lib/hooks/useTokenList/fetchTokenList'
 import resolveENSContentHash from 'lib/utils/resolveENSContentHash'
 import { useCallback } from 'react'
@@ -18,7 +18,7 @@ export function useFetchListCallback(): (listUrl: string, skipValidation?: boole
       dispatch(fetchTokenList.pending({ requestId, url: listUrl }))
       return getTokenList(
         listUrl,
-        (ensName: string) => resolveENSContentHash(ensName, RPC_PROVIDERS[ChainId.MAINNET]),
+        (ensName: string) => resolveENSContentHash(ensName, RPC_PROVIDERS[TAIKO_MAINNET_CHAIN_ID]),
         skipValidation
       )
         .then((tokenList) => {

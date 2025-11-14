@@ -49,6 +49,7 @@ const RemoveLiquidity = lazy(() => import('pages/RemoveLiquidity'))
 const RemoveLiquidityV3 = lazy(() => import('pages/RemoveLiquidity/V3'))
 const TokenDetails = lazy(() => import('pages/TokenDetails'))
 const Tokens = lazy(() => import('pages/Tokens'))
+const Explore = lazy(() => import('pages/Explore'))
 const Vote = lazy(() => import('pages/Vote'))
 
 const BodyWrapper = styled.div`
@@ -210,7 +211,6 @@ export default function App() {
           waitForInitialization={false}
           options={{
             environment: { tier: getEnvName() },
-            api: process.env.REACT_APP_STATSIG_PROXY_URL,
           }}
         >
           <HeaderWrapper transparent={isHeaderTransparent}>
@@ -231,6 +231,7 @@ export default function App() {
                     }
                   />
 
+                  <Route path="explore" element={<Explore />} />
                   <Route path="tokens" element={<Tokens />}>
                     <Route path=":chainName" />
                   </Route>

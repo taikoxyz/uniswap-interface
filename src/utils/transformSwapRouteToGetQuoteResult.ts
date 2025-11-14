@@ -68,6 +68,10 @@ export function transformSwapRouteToGetQuoteResult(
           amountOut: edgeAmountOut,
         })
       } else {
+        // Type guard for V2 Pair with reserves
+        if (!('reserve0' in nextPool) || !('reserve1' in nextPool)) {
+          throw new Error('Expected V2 Pair with reserves')
+        }
         const reserve0 = nextPool.reserve0
         const reserve1 = nextPool.reserve1
 

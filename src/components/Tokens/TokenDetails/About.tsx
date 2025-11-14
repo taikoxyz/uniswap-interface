@@ -108,7 +108,7 @@ export function AboutSection({ address, chainId, description, homepageUrl, twitt
           name={chainId === ChainId.MAINNET ? 'Etherscan' : 'Block Explorer'}
           link={`${explorer}${address === 'NATIVE' ? '' : 'address/' + address}`}
         />
-        <Resource name="More analytics" link={`${infoLink}tokens/${address}`} />
+        {/* <Resource name="More analytics" link={`${infoLink}tokens/${address}`} /> */}
         {homepageUrl && <Resource name="Website" link={homepageUrl} />}
         {twitterName && <Resource name="Twitter" link={`https://twitter.com/${twitterName}`} />}
       </ResourcesContainer>
