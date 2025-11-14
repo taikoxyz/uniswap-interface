@@ -6,6 +6,7 @@ import { TraceEvent } from 'analytics'
 import { useToggleAccountDrawer } from 'components/AccountDrawer'
 import Row from 'components/Row'
 import { MouseoverTooltip } from 'components/Tooltip'
+import { isTaikoChain } from 'config/chains/taiko'
 import { useFilterPossiblyMaliciousPositions } from 'hooks/useFilterPossiblyMaliciousPositions'
 import { useSwitchChain } from 'hooks/useSwitchChain'
 import { EmptyWalletModule } from 'nft/components/profile/view/EmptyWalletContent'
@@ -46,6 +47,15 @@ function useFilterPossiblyMaliciousPositionInfo(positions: PositionInfo[] | unde
 }
 
 export default function Pools({ account }: { account: string }) {
+  const { chainId } = useWeb3React()
+  const isTaiko = chainId && isTaikoChain(chainId)
+  const toggleWalletDrawer = useToggleAccountDrawer()
+
+  // Hide LP positions on Taiko chains
+  if (isTaiko) {
+    return <EmptyWalletModule type="pool" onNavigateClick={toggleWalletDrawer} />
+  }
+
   const { positions, loading } = useMultiChainPositions(account)
   const filteredPositions = useFilterPossiblyMaliciousPositionInfo(positions)
   const [showClosed, toggleShowClosed] = useReducer((showClosed) => !showClosed, false)
@@ -63,8 +73,6 @@ export default function Pools({ account }: { account: string }) {
     }
     return [openPositions, closedPositions]
   }, [filteredPositions])
-
-  const toggleWalletDrawer = useToggleAccountDrawer()
 
   if (!filteredPositions || loading) {
     return <PortfolioSkeleton />

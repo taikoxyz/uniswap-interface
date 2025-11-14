@@ -31,6 +31,7 @@ export interface TaikoToken {
 /**
  * GraphQL query for top tokens on Taiko
  * Orders by volumeUSD to match the TopTokens behavior on other chains
+ * Also fetches bundle for ETH price in USD
  */
 const TAIKO_TOP_TOKENS_QUERY = gql`
   query TaikoTopTokens($orderBy: String!, $orderDirection: String!) {
@@ -48,6 +49,9 @@ const TAIKO_TOP_TOKENS_QUERY = gql`
       feesUSD
       txCount
       derivedETH
+    }
+    bundle(id: "1") {
+      ethPriceUSD
     }
   }
 `
@@ -98,25 +102,32 @@ export interface UseTopTokensTaikoResult {
 export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = TimePeriod.DAY): UseTopTokensTaikoResult {
   const client = getTokenClientForChain(chainId)
 
-  const { data, loading, error } = useQuery<{ tokens: TaikoToken[] }>(TAIKO_TOP_TOKENS_QUERY, {
-    client,
-    variables: {
-      // Use TVL for ordering since volume may be zero on new testnets
-      orderBy: 'totalValueLockedUSD',
-      orderDirection: 'desc',
-    },
-    pollInterval: 60000, // Poll every 60 seconds
-    skip: !client, // Skip if no client available for this chain
-  })
+  const { data, loading, error } = useQuery<{ tokens: TaikoToken[]; bundle: { ethPriceUSD: string } }>(
+    TAIKO_TOP_TOKENS_QUERY,
+    {
+      client,
+      variables: {
+        // Use TVL for ordering since volume may be zero on new testnets
+        orderBy: 'totalValueLockedUSD',
+        orderDirection: 'desc',
+      },
+      pollInterval: 60000, // Poll every 60 seconds
+      skip: !client, // Skip if no client available for this chain
+    }
+  )
 
   // Normalize tokens to match the format expected by TokenTable
   const normalizedTokens = useMemo(() => {
-    if (!data?.tokens) return undefined
+    if (!data?.tokens || !data?.bundle) return undefined
+
+    const ethPriceUSD = parseFloat(data.bundle.ethPriceUSD)
 
     return data.tokens.map((token): NormalizedTaikoToken => {
       const volumeUSD = parseFloat(token.volumeUSD)
       const tvlUSD = parseFloat(token.totalValueLockedUSD)
       const derivedETH = parseFloat(token.derivedETH || '0')
+      // Calculate USD price: derivedETH * ethPriceUSD
+      const priceUSD = derivedETH * ethPriceUSD
 
       return {
         address: token.id.toLowerCase(),
@@ -130,7 +141,7 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
         },
         market: {
           price: {
-            value: derivedETH, // Use derivedETH as price proxy
+            value: priceUSD, // Correct USD price calculation
           },
           pricePercentChange: {
             // Note: Goldsky token subgraph may not have historical price data
