@@ -9,6 +9,7 @@ import { useQuery, gql, ApolloError } from '@apollo/client'
 import { useMemo } from 'react'
 import { getTokenClientForChain } from './apollo'
 import { TimePeriod } from '../data/util'
+import { TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID } from 'config/chains/taiko'
 
 /**
  * Token data structure from Goldsky subgraph
@@ -129,9 +130,12 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
       // Calculate USD price: derivedETH * ethPriceUSD
       const priceUSD = derivedETH * ethPriceUSD
 
+      // Determine chain name based on chainId
+      const chainName = chainId === TAIKO_MAINNET_CHAIN_ID ? 'TAIKO' : 'TAIKO_HOODI'
+
       return {
         address: token.id.toLowerCase(),
-        chain: 'TAIKO_HOODI',
+        chain: chainName,
         symbol: token.symbol,
         name: token.name,
         decimals: parseInt(token.decimals),

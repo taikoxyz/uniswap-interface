@@ -121,7 +121,7 @@ export function gqlToCurrency(token: {
   else return new Token(chainId, token.address, token.decimals ?? 18, token.name, token.symbol)
 }
 
-const URL_CHAIN_PARAM_TO_BACKEND: { [key: string]: InterfaceGqlChain } = {
+const URL_CHAIN_PARAM_TO_BACKEND: { [key: string]: InterfaceGqlChain | string } = {
   ethereum: Chain.Ethereum,
   polygon: Chain.Polygon,
   celo: Chain.Celo,
@@ -130,6 +130,8 @@ const URL_CHAIN_PARAM_TO_BACKEND: { [key: string]: InterfaceGqlChain } = {
   bnb: Chain.Bnb,
   avalanche: Chain.Avalanche,
   base: Chain.Base,
+  taiko: 'TAIKO', // Taiko Mainnet
+  taiko_hoodi: 'TAIKO_HOODI', // Taiko Hoodi Testnet
 }
 
 /**
@@ -199,6 +201,8 @@ export const BACKEND_SUPPORTED_CHAINS = [
   // Chain.Base,
   // Chain.Bnb,
   // Chain.Celo,
+  'TAIKO',
+  'TAIKO_HOODI',
 ] as const
 export const BACKEND_NOT_YET_SUPPORTED_CHAIN_IDS = [ChainId.AVALANCHE] as const
 
