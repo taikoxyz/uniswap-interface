@@ -1,5 +1,15 @@
 import type { ExternalProvider, JsonRpcProvider, Web3Provider } from '@ethersproject/providers'
-import type WalletConnectProvider from '@walletconnect/ethereum-provider'
+
+// Inline WalletConnect provider types to avoid dependency issues
+interface WalletConnectProvider extends ExternalProvider {
+  isWalletConnect: boolean
+  peerMeta?: {
+    name?: string
+    description?: string
+    url?: string
+    icons?: string[]
+  }
+}
 
 function isWeb3Provider(provider: JsonRpcProvider): provider is Web3Provider {
   return 'provider' in provider

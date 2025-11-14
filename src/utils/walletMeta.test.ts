@@ -1,7 +1,17 @@
 import type { ExternalProvider } from '@ethersproject/providers'
 import { JsonRpcProvider } from '@ethersproject/providers'
-import type WalletConnectProvider from '@walletconnect/ethereum-provider'
 import { getWalletMeta, WalletMeta, WalletType } from 'utils/walletMeta'
+
+// Inline WalletConnect provider types to avoid dependency issues
+interface WalletConnectProvider extends ExternalProvider {
+  isWalletConnect: boolean
+  peerMeta?: {
+    name?: string
+    description?: string
+    url?: string
+    icons?: string[]
+  }
+}
 
 class MockJsonRpcProvider extends JsonRpcProvider {
   name = 'JsonRpcProvider'
