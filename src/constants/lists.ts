@@ -39,20 +39,11 @@ export const AVALANCHE_LIST =
 // Empty unsupported list URLs (disabled problematic sources)
 export const UNSUPPORTED_LIST_URLS: string[] = []
 
-// default lists to be 'active' aka searched across
-// Note: Using only reliable GitHub-based lists for now
-export const DEFAULT_ACTIVE_LIST_URLS: string[] = [COMPOUND_LIST]
+// TAIKO: No token lists - all token data comes from Goldsky subgraph
+// Token lists are for Ethereum mainnet/L2s and don't contain Taiko tokens
+export const DEFAULT_ACTIVE_LIST_URLS: string[] = []
 
-// Inactive lists - these can be enabled by users if needed
-export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
-  GEMINI_LIST,
-  SET_LIST,
-  ARBITRUM_LIST,
-  OPTIMISM_LIST,
-  CELO_LIST,
-  PLASMA_BNB_LIST,
-  BASE_LIST,
-  ...UNSUPPORTED_LIST_URLS,
-]
+// TAIKO: Inactive lists disabled - not relevant for Taiko chain
+export const DEFAULT_INACTIVE_LIST_URLS: string[] = []
 
 export const DEFAULT_LIST_OF_LISTS: string[] = [...DEFAULT_ACTIVE_LIST_URLS, ...DEFAULT_INACTIVE_LIST_URLS]
