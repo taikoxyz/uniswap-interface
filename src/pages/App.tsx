@@ -51,6 +51,8 @@ const TokenDetails = lazy(() => import('pages/TokenDetails'))
 const Tokens = lazy(() => import('pages/Tokens'))
 const Explore = lazy(() => import('pages/Explore'))
 const Vote = lazy(() => import('pages/Vote'))
+const TermsOfService = lazy(() => import('pages/TermsOfService'))
+const PrivacyPolicy = lazy(() => import('pages/PrivacyPolicy'))
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -329,6 +331,9 @@ export default function App() {
                       />
                     </>
                   )}
+
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
                   <Route path="*" element={<Navigate to="/not-found" replace />} />
                   <Route path="/not-found" element={<NotFound />} />
