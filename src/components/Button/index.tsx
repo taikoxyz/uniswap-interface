@@ -1,7 +1,7 @@
 import { darken } from 'polished'
 import { forwardRef } from 'react'
 import { Check, ChevronDown } from 'react-feather'
-import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
+import { ButtonProps as ButtonPropsOriginal, Button as RebassButton } from 'rebass/styled-components'
 import styled, { DefaultTheme, useTheme } from 'styled-components'
 
 import { RowBetween } from '../Row'
@@ -75,6 +75,7 @@ export const ButtonPrimary = styled(BaseButton)`
   color: ${({ theme }) => theme.white};
   box-shadow: 0 0 20px rgba(200, 4, 125, 0.3);
   transition: all 250ms ease;
+  border: none;
 
   &:focus {
     box-shadow: 0 0 0 2pt rgba(200, 4, 125, 0.4), 0 0 30px rgba(200, 4, 125, 0.4);
@@ -100,7 +101,7 @@ export const ButtonPrimary = styled(BaseButton)`
       altDisabledStyle ? (disabled ? theme.white : theme.neutral2) : theme.neutral2};
     cursor: auto;
     box-shadow: none;
-    border: 1px solid transparent;
+    border: none;
     outline: none;
   }
 `
@@ -274,7 +275,7 @@ const ButtonConfirmedStyle = styled(BaseButton)`
 
 const ButtonErrorStyle = styled(BaseButton)`
   background: linear-gradient(93.06deg, #C8047D 2.66%, #FC72FF 98.99%);
-  border: 1px solid rgba(200, 4, 125, 0.5);
+  border: none;
   box-shadow: 0 0 20px rgba(200, 4, 125, 0.3);
   transition: all 250ms ease;
 
@@ -296,7 +297,7 @@ const ButtonErrorStyle = styled(BaseButton)`
     cursor: auto;
     box-shadow: none;
     background: linear-gradient(93.06deg, #C8047D 2.66%, #FC72FF 98.99%);
-    border: 1px solid rgba(200, 4, 125, 0.3);
+    border: none;
   }
 `
 
