@@ -190,7 +190,7 @@ export default function FeeSelector({
 
         {chainId && showOptions && (
           <Select>
-            {[FeeAmount.LOWEST, FeeAmount.LOW_200, FeeAmount.LOW_300, FeeAmount.LOW_400, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount, i) => {
+            {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount, i) => {
               const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
               if (supportedChains.includes(chainId)) {
                 return (
