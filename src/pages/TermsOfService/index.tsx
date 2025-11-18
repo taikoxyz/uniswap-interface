@@ -114,34 +114,32 @@ export default function TermsOfService() {
             <Trans>IMPORTANT:</Trans>
           </Strong>{' '}
           <Trans>
-            This Agreement contains important information, including a binding arbitration provision and a class
-            action waiver, both of which impact your rights as to how disputes are resolved. Our Services are only
-            available to you — and you should only access any of our Services — if you agree completely with these
-            terms.
+            This Agreement contains important information, including a binding arbitration provision and a class action
+            waiver, both of which impact your rights as to how disputes are resolved. Our Services are only available to
+            you — and you should only access any of our Services — if you agree completely with these terms.
           </Trans>
         </ThemedText.SubHeader>
       </Notice>
 
       <Paragraph>
         <Trans>
-          These Terms of Service (the &quot;Agreement&quot; or &quot;Terms&quot;) explain the terms and conditions
-          by which you may access and use the Services provided in connection with{' '}
-        </Trans>
-        <ExternalLink href="https://swap.hoodi.taiko.xyz/">https://swap.hoodi.taiko.xyz/</ExternalLink>
+          These Terms of Service (the &quot;Agreement&quot; or &quot;Terms&quot;) explain the terms and conditions by
+          which you may access and use the Services provided in connection with
+        </Trans>{' '}
+        <ExternalLink href="https://swap.taiko.xyz/">https://swap.taiko.xyz/</ExternalLink>{' '}
         <Trans>
-          {' '}
           (referred to herein as &quot;Taiko DEX,&quot; &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). The
-          Services shall include the website-hosted user interface (the &quot;Interface&quot; or &quot;DEX&quot;)
-          and any other services that link to this Agreement.
+          Services shall include the website-hosted user interface (the &quot;Interface&quot; or &quot;DEX&quot;) and
+          any other services that link to this Agreement.
         </Trans>
       </Paragraph>
 
       <Paragraph>
         <Trans>
-          You must read this Agreement carefully as it governs your use of the Services. By accessing or using any
-          of the Services, you signify that you have read, understand, and agree to be bound by this Agreement in
-          its entirety. If you do not agree, you are not authorized to access or use the Services and should not use
-          the Services.
+          You must read this Agreement carefully as it governs your use of the Services. By accessing or using any of
+          the Services, you signify that you have read, understand, and agree to be bound by this Agreement in its
+          entirety. If you do not agree, you are not authorized to access or use the Services and should not use the
+          Services.
         </Trans>
       </Paragraph>
 
@@ -152,14 +150,14 @@ export default function TermsOfService() {
         <Paragraph>
           <Trans>
             The Interface provides a web-based means of access to decentralized exchange functionality on the Taiko
-            blockchain network, which allows users to swap certain compatible digital assets. The Interface is a fork
-            of the Uniswap interface, adapted for use on the Taiko network.
+            blockchain network, which allows users to swap certain compatible digital assets. The Interface is a fork of
+            the Uniswap interface, adapted for use on the Taiko network.
           </Trans>
         </Paragraph>
         <Paragraph>
           <Trans>
-            The Interface is distinct from the underlying blockchain protocols and smart contracts and is one, but
-            not the exclusive, means of accessing decentralized exchange functionality on Taiko. We do not control or
+            The Interface is distinct from the underlying blockchain protocols and smart contracts and is one, but not
+            the exclusive, means of accessing decentralized exchange functionality on Taiko. We do not control or
             operate the underlying blockchain protocols, smart contracts, or the Taiko network itself.
           </Trans>
         </Paragraph>
@@ -167,10 +165,9 @@ export default function TermsOfService() {
         <SubsectionTitle>1.2 The Taiko Network</SubsectionTitle>
         <Paragraph>
           <Trans>
-            Taiko is a fully open-source, permissionless, Ethereum-equivalent ZK-Rollup. The Taiko network operates
-            as a based rollup with decentralized sequencing. While we provide an interface to access functionality on
-            Taiko, we do not control, own, or operate the Taiko blockchain, its smart contracts, or the underlying
-            protocols.
+            Taiko is a fully open-source, permissionless, Ethereum-equivalent ZK-Rollup. The Taiko network operates as a
+            based rollup with decentralized sequencing. While we provide an interface to access functionality on Taiko,
+            we do not control, own, or operate the Taiko blockchain, its smart contracts, or the underlying protocols.
           </Trans>
         </Paragraph>
 
@@ -184,10 +181,10 @@ export default function TermsOfService() {
         </Paragraph>
         <Paragraph>
           <Trans>
-            This Agreement is not intended to, and does not, create or impose any fiduciary duties on us. To the
-            fullest extent permitted by law, you acknowledge and agree that we owe no fiduciary duties or liabilities
-            to you or any other party, and that to the extent any such duties or liabilities may exist at law or in
-            equity, those duties and liabilities are hereby irrevocably disclaimed, waived, and eliminated.
+            This Agreement is not intended to, and does not, create or impose any fiduciary duties on us. To the fullest
+            extent permitted by law, you acknowledge and agree that we owe no fiduciary duties or liabilities to you or
+            any other party, and that to the extent any such duties or liabilities may exist at law or in equity, those
+            duties and liabilities are hereby irrevocably disclaimed, waived, and eliminated.
           </Trans>
         </Paragraph>
 
@@ -195,9 +192,9 @@ export default function TermsOfService() {
         <Paragraph>
           <Trans>
             To access the Interface, you must use a non-custodial wallet software, which allows you to interact with
-            public blockchains. Your relationship with that non-custodial wallet provider is governed by the
-            applicable terms of service of that provider. We do not have custody or control over the contents of your
-            wallet and have no ability to retrieve or transfer its contents.
+            public blockchains. Your relationship with that non-custodial wallet provider is governed by the applicable
+            terms of service of that provider. We do not have custody or control over the contents of your wallet and
+            have no ability to retrieve or transfer its contents.
           </Trans>
         </Paragraph>
 
@@ -207,8 +204,8 @@ export default function TermsOfService() {
             <Trans>Transaction Fees:</Trans>
           </Strong>{' '}
           <Trans>
-            When you use the Interface to conduct transactions on the Taiko network, you will be required to pay
-            network fees (gas fees) to validators on the Taiko network.
+            When you use the Interface to conduct transactions on the Taiko network, you will be required to pay network
+            fees (gas fees) to validators on the Taiko network.
           </Trans>
         </Paragraph>
         <Paragraph>
@@ -225,8 +222,8 @@ export default function TermsOfService() {
             <Trans>Third-Party Fees:</Trans>
           </Strong>{' '}
           <Trans>
-            Third parties may charge fees for services integrated with or accessed through the Interface. You are
-            solely responsible for paying all such fees.
+            Third parties may charge fees for services integrated with or accessed through the Interface. You are solely
+            responsible for paying all such fees.
           </Trans>
         </Paragraph>
 
@@ -263,14 +260,12 @@ export default function TermsOfService() {
           </BulletItem>
           <BulletItem>
             <Trans>
-              You are not a resident, national, or agent of, or an entity organized, incorporated, or doing business
-              in any Prohibited Jurisdiction
+              You are not a resident, national, or agent of, or an entity organized, incorporated, or doing business in
+              any Prohibited Jurisdiction
             </Trans>
           </BulletItem>
           <BulletItem>
-            <Trans>
-              You are not listed on, or affiliated with any person or entity listed on, any Sanctions Lists
-            </Trans>
+            <Trans>You are not listed on, or affiliated with any person or entity listed on, any Sanctions Lists</Trans>
           </BulletItem>
           <BulletItem>
             <Trans>You do not intend to transact with any Restricted Person or Prohibited Jurisdiction</Trans>
@@ -299,9 +294,8 @@ export default function TermsOfService() {
             <Trans>
               Each of our Services and any Third-Party Services are provided on an &quot;AS IS&quot; and &quot;AS
               AVAILABLE&quot; basis. TO THE FULLEST EXTENT PERMITTED BY LAW, WE AND ANY PROVIDERS OF THIRD-PARTY
-              SERVICES DISCLAIM ANY REPRESENTATIONS AND WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR
-              STATUTORY, INCLUDING, BUT NOT LIMITED TO, THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-              PARTICULAR PURPOSE.
+              SERVICES DISCLAIM ANY REPRESENTATIONS AND WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY,
+              INCLUDING, BUT NOT LIMITED TO, THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
             </Trans>
           </Strong>
         </Paragraph>
@@ -315,17 +309,17 @@ export default function TermsOfService() {
         <Paragraph>
           <Strong>
             <Trans>
-              TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT WILL WE BE LIABLE TO YOU FOR ANY INCIDENTAL,
-              INDIRECT, SPECIAL, PUNITIVE, CONSEQUENTIAL OR SIMILAR DAMAGES OR LIABILITIES WHATSOEVER ARISING OUT OF
-              OR IN CONNECTION WITH THE SERVICES.
+              TO THE FULLEST EXTENT PERMITTED BY LAW, IN NO EVENT WILL WE BE LIABLE TO YOU FOR ANY INCIDENTAL, INDIRECT,
+              SPECIAL, PUNITIVE, CONSEQUENTIAL OR SIMILAR DAMAGES OR LIABILITIES WHATSOEVER ARISING OUT OF OR IN
+              CONNECTION WITH THE SERVICES.
             </Trans>
           </Strong>
         </Paragraph>
         <Paragraph>
           <Strong>
             <Trans>
-              OUR TOTAL LIABILITY TO YOU FOR ANY DAMAGES, LOSSES, AND CAUSES OF ACTION SHALL NOT EXCEED ONE HUNDRED
-              U.S. DOLLARS ($100).
+              OUR TOTAL LIABILITY TO YOU FOR ANY DAMAGES, LOSSES, AND CAUSES OF ACTION SHALL NOT EXCEED ONE HUNDRED U.S.
+              DOLLARS ($100).
             </Trans>
           </Strong>
         </Paragraph>
@@ -336,8 +330,8 @@ export default function TermsOfService() {
         <Notice>
           <Strong>
             <Trans>
-              PLEASE READ THIS SECTION CAREFULLY. IT REQUIRES YOU TO ARBITRATE DISPUTES WITH US AND LIMITS THE MANNER
-              IN WHICH YOU CAN SEEK RELIEF FROM US.
+              PLEASE READ THIS SECTION CAREFULLY. IT REQUIRES YOU TO ARBITRATE DISPUTES WITH US AND LIMITS THE MANNER IN
+              WHICH YOU CAN SEEK RELIEF FROM US.
             </Trans>
           </Strong>
         </Notice>
@@ -351,8 +345,8 @@ export default function TermsOfService() {
         <Paragraph>
           <Strong>
             <Trans>
-              YOU AGREE THAT, BY ENTERING INTO THIS AGREEMENT, YOU AND WE ARE EACH WAIVING THE RIGHT TO A TRIAL BY
-              JURY OR TO PARTICIPATE IN A CLASS ACTION.
+              YOU AGREE THAT, BY ENTERING INTO THIS AGREEMENT, YOU AND WE ARE EACH WAIVING THE RIGHT TO A TRIAL BY JURY
+              OR TO PARTICIPATE IN A CLASS ACTION.
             </Trans>
           </Strong>
         </Paragraph>
@@ -407,15 +401,17 @@ export default function TermsOfService() {
             <Strong>
               <Trans>Blockchain transactions are irreversible:</Trans>
             </Strong>{' '}
-            <Trans>Once a transaction is confirmed on the blockchain, it cannot be reversed, cancelled, or refunded</Trans>
+            <Trans>
+              Once a transaction is confirmed on the blockchain, it cannot be reversed, cancelled, or refunded
+            </Trans>
           </BulletItem>
           <BulletItem>
             <Strong>
               <Trans>Network congestion:</Trans>
             </Strong>{' '}
             <Trans>
-              The Taiko network and underlying blockchain infrastructure may experience periods of congestion,
-              leading to delayed transactions and higher fees
+              The Taiko network and underlying blockchain infrastructure may experience periods of congestion, leading
+              to delayed transactions and higher fees
             </Trans>
           </BulletItem>
           <BulletItem>
@@ -432,8 +428,8 @@ export default function TermsOfService() {
               <Trans>Wallet security:</Trans>
             </Strong>{' '}
             <Trans>
-              You are solely responsible for securing your wallet and private keys. Loss of private keys may result
-              in permanent loss of assets
+              You are solely responsible for securing your wallet and private keys. Loss of private keys may result in
+              permanent loss of assets
             </Trans>
           </BulletItem>
         </BulletList>
@@ -443,10 +439,10 @@ export default function TermsOfService() {
         </SubsectionTitle>
         <Paragraph>
           <Trans>
-            You are solely responsible for determining what, if any, taxes apply to your transactions and to
-            withhold, collect, report, and remit the correct amounts of taxes to the appropriate tax authorities. We
-            are not responsible for determining, withholding, collecting, reporting, or remitting the taxes that
-            apply to your transactions.
+            You are solely responsible for determining what, if any, taxes apply to your transactions and to withhold,
+            collect, report, and remit the correct amounts of taxes to the appropriate tax authorities. We are not
+            responsible for determining, withholding, collecting, reporting, or remitting the taxes that apply to your
+            transactions.
           </Trans>
         </Paragraph>
       </Section>

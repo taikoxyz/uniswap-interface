@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { ExternalLink, ThemedText } from 'theme'
+import { ExternalLink } from 'theme'
 
 const PageWrapper = styled.div`
   max-width: 800px;
@@ -114,15 +114,14 @@ export default function PrivacyPolicy() {
         </SectionTitle>
         <Paragraph>
           <Trans>
-            This Privacy Policy (the &quot;Policy&quot;) explains how the Taiko DEX interface available at{' '}
-          </Trans>
-          <ExternalLink href="https://swap.hoodi.taiko.xyz/">https://swap.hoodi.taiko.xyz/</ExternalLink>
+            This Privacy Policy (the &quot;Policy&quot;) explains how the Taiko DEX interface available at
+          </Trans>{' '}
+          <ExternalLink href="https://swap.taiko.xyz/">https://swap.taiko.xyz/</ExternalLink>{' '}
           <Trans>
-            {' '}
             (the &quot;DEX&quot;, &quot;Interface&quot;, &quot;Services&quot;, &quot;we&quot;, &quot;us&quot; or
-            &quot;our&quot;) collects, uses, and shares data in connection with your use of our decentralized
-            exchange services. Your use of the Services is subject to this Policy as well as our{' '}
-          </Trans>
+            &quot;our&quot;) collects, uses, and shares data in connection with your use of our decentralized exchange
+            services. Your use of the Services is subject to this Policy as well as our
+          </Trans>{' '}
           <Link to="/terms-of-service">
             <Trans>Terms of Service</Trans>
           </Link>
@@ -147,9 +146,9 @@ export default function PrivacyPolicy() {
             <Trans>Important Distinction:</Trans>
           </Strong>{' '}
           <Trans>
-            The Taiko DEX interface is separate from the underlying Taiko blockchain protocol and smart contracts.
-            This Policy applies only to the DEX interface. The Taiko protocol is a decentralized, permissionless
-            blockchain network that is not governed by any single entity.
+            The Taiko DEX interface is separate from the underlying Taiko blockchain protocol and smart contracts. This
+            Policy applies only to the DEX interface. The Taiko protocol is a decentralized, permissionless blockchain
+            network that is not governed by any single entity.
           </Trans>
         </Paragraph>
       </Section>
@@ -266,9 +265,8 @@ export default function PrivacyPolicy() {
         </SubsectionTitle>
         <Paragraph>
           <Trans>
-            We may receive information from third-party service providers that help us analyze blockchain data,
-            prevent fraud, and improve our Services. We do not share your data with any third parties for marketing
-            purposes.
+            We may receive information from third-party service providers that help us analyze blockchain data, prevent
+            fraud, and improve our Services. We do not share your data with any third parties for marketing purposes.
           </Trans>
         </Paragraph>
       </Section>
@@ -357,8 +355,8 @@ export default function PrivacyPolicy() {
         </BulletList>
         <Paragraph>
           <Trans>
-            These providers are contractually obligated to protect your information and use it only for the purposes
-            we specify.
+            These providers are contractually obligated to protect your information and use it only for the purposes we
+            specify.
           </Trans>
         </Paragraph>
 
@@ -367,8 +365,8 @@ export default function PrivacyPolicy() {
         </SubsectionTitle>
         <Paragraph>
           <Trans>
-            All transaction data on the Taiko blockchain is public by nature. When you conduct transactions through
-            the Services, this information is recorded on the blockchain and is publicly accessible.
+            All transaction data on the Taiko blockchain is public by nature. When you conduct transactions through the
+            Services, this information is recorded on the blockchain and is publicly accessible.
           </Trans>
         </Paragraph>
       </Section>
@@ -409,9 +407,9 @@ export default function PrivacyPolicy() {
         </SectionTitle>
         <Paragraph>
           <Trans>
-            We retain information only for as long as necessary to fulfill the purposes described in this Policy,
-            unless a longer retention period is required or permitted by law. When information is no longer needed, we
-            will delete or anonymize it.
+            We retain information only for as long as necessary to fulfill the purposes described in this Policy, unless
+            a longer retention period is required or permitted by law. When information is no longer needed, we will
+            delete or anonymize it.
           </Trans>
         </Paragraph>
       </Section>
@@ -422,9 +420,9 @@ export default function PrivacyPolicy() {
         </SectionTitle>
         <Paragraph>
           <Trans>
-            We implement reasonable security measures to protect your information from unauthorized access,
-            alteration, disclosure, or destruction. However, no method of transmission over the internet or electronic
-            storage is 100% secure. We cannot guarantee absolute security.
+            We implement reasonable security measures to protect your information from unauthorized access, alteration,
+            disclosure, or destruction. However, no method of transmission over the internet or electronic storage is
+            100% secure. We cannot guarantee absolute security.
           </Trans>
         </Paragraph>
       </Section>
@@ -509,9 +507,9 @@ export default function PrivacyPolicy() {
             <Trans>About Taiko:</Trans>
           </Strong>{' '}
           <Trans>
-            Taiko is a fully open-source, permissionless, Ethereum-equivalent ZK-Rollup designed to scale Ethereum
-            while maintaining its core principles of decentralization, security, and censorship resistance. The Taiko
-            DEX interface provides access to decentralized exchange functionality on the Taiko network.
+            Taiko is a fully open-source, permissionless, Ethereum-equivalent ZK-Rollup designed to scale Ethereum while
+            maintaining its core principles of decentralization, security, and censorship resistance. The Taiko DEX
+            interface provides access to decentralized exchange functionality on the Taiko network.
           </Trans>
         </Paragraph>
         <Paragraph>
@@ -535,7 +533,10 @@ export default function PrivacyPolicy() {
       </Section>
 
       <Paragraph style={{ marginTop: 48, fontSize: 14, fontStyle: 'italic' }}>
-        <Trans>This Privacy Policy is effective as of the date listed above and applies to all users of the Taiko DEX interface.</Trans>
+        <Trans>
+          This Privacy Policy is effective as of the date listed above and applies to all users of the Taiko DEX
+          interface.
+        </Trans>
       </Paragraph>
     </PageWrapper>
   )
