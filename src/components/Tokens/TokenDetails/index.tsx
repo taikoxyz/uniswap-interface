@@ -19,7 +19,6 @@ import TokenDetailsSkeleton, {
   TokenNameCell,
 } from 'components/Tokens/TokenDetails/Skeleton'
 import StatsSection from 'components/Tokens/TokenDetails/StatsSection'
-import TokenSafetyMessage from 'components/TokenSafety/TokenSafetyMessage'
 import { NATIVE_CHAIN_ID, nativeOnChain } from 'constants/tokens'
 import { checkWarning } from 'constants/tokenSafety'
 import { TokenPriceQuery } from 'graphql/data/__generated__/types-and-hooks'
@@ -203,7 +202,7 @@ export default function TokenDetails({
       <TokenDetailsLayout>
         {detailedToken && !isPending ? (
           <LeftPanel>
-            <BreadcrumbNavLink to={`/tokens/${chain.toLowerCase()}`}>
+            <BreadcrumbNavLink to={`/explore`}>
               <ArrowLeft data-testid="token-details-return-button" size={14} /> Tokens
             </BreadcrumbNavLink>
             <TokenInfoContainer data-testid="token-info-container">
