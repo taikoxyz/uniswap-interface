@@ -213,6 +213,7 @@ export default function App() {
           waitForInitialization={false}
           options={{
             environment: { tier: getEnvName() },
+            disableNetwork: true, // Disable analytics telemetry
           }}
         >
           <HeaderWrapper transparent={isHeaderTransparent}>
