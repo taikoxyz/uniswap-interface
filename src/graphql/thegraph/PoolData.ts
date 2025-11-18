@@ -4,6 +4,8 @@ import { useMemo } from 'react'
 
 import { usePoolDataQuery } from './__generated__/types-and-hooks'
 import { chainToApolloClient } from './apollo'
+import { getClient as getTaikoPoolClient } from '../taiko/apollo'
+import { isTaikoChain } from 'config/chains/taiko'
 
 gql`
   query PoolData($poolId: [ID!]) {
@@ -45,8 +47,27 @@ gql`
 
 export function usePoolData(poolAddress: string, chainId?: ChainId) {
   const poolId = [poolAddress]
-  const apolloClient = chainToApolloClient[chainId || ChainId.MAINNET]
-  const { data, loading } = usePoolDataQuery({ variables: { poolId }, client: apolloClient })
+
+  // Use Taiko-specific Apollo client for Taiko chains, otherwise use standard client
+  const isTaiko = chainId && isTaikoChain(chainId)
+  const apolloClient = isTaiko
+    ? getTaikoPoolClient(chainId)
+    : chainToApolloClient[chainId || ChainId.MAINNET]
+
+  const { data, loading, error } = usePoolDataQuery({ variables: { poolId }, client: apolloClient })
+
+  // Debug logging
+  console.log('usePoolData Debug:', {
+    poolAddress,
+    chainId,
+    poolId,
+    hasApolloClient: !!apolloClient,
+    loading,
+    error,
+    data,
+    poolData: data?.data?.[0],
+  })
+
   return useMemo(() => {
     return {
       data: data?.data[0],

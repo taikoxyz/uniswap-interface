@@ -13,13 +13,13 @@ import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
  * Configurable via environment variables
  */
 const TAIKO_MAINNET_SUBGRAPH_URLS = {
-  tokens: process.env.REACT_APP_TAIKO_MAINNET_SUBGRAPH_TOKENS || '',
-  pools: process.env.REACT_APP_TAIKO_MAINNET_SUBGRAPH_POOLS || '',
+  tokens: process.env.REACT_APP_TAIKO_MAINNET_SUBGRAPH_TOKENS,
+  pools: process.env.REACT_APP_TAIKO_MAINNET_SUBGRAPH_POOLS,
 } as const
 
 const TAIKO_HOODI_SUBGRAPH_URLS = {
-  tokens: process.env.REACT_APP_TAIKO_HOODI_SUBGRAPH_TOKENS || 'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/v3-tokens-taiko-hoodi-testnet/7060ecc/gn',
-  pools: process.env.REACT_APP_TAIKO_HOODI_SUBGRAPH_POOLS || 'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/uniswap-v3-taiko-hoodi-testnet/7060ecc/gn',
+  tokens: process.env.REACT_APP_TAIKO_HOODI_SUBGRAPH_TOKENS,
+  pools: process.env.REACT_APP_TAIKO_HOODI_SUBGRAPH_POOLS,
 } as const
 
 /**
@@ -55,13 +55,15 @@ export const taikoMainnetTokenClient = TAIKO_MAINNET_SUBGRAPH_URLS.tokens
 /**
  * Apollo client for Taiko Hoodi token data
  */
-export const taikoHoodiTokenClient = createTokenClient(TAIKO_HOODI_SUBGRAPH_URLS.tokens)
+export const taikoHoodiTokenClient = TAIKO_HOODI_SUBGRAPH_URLS.tokens
+  ? createTokenClient(TAIKO_HOODI_SUBGRAPH_URLS.tokens)
+  : undefined
 
 /**
- * Backward compatibility: export Hoodi client as default taikoTokenClient
- * @deprecated Use taikoHoodiTokenClient or getTokenClientForChain instead
+ * Backward compatibility: export mainnet client as default if available, otherwise hoodi
+ * @deprecated Use taikoMainnetTokenClient, taikoHoodiTokenClient or getTokenClientForChain instead
  */
-export const taikoTokenClient = taikoHoodiTokenClient
+export const taikoTokenClient = taikoMainnetTokenClient || taikoHoodiTokenClient
 
 /**
  * Map of chain IDs to their token subgraph clients
@@ -76,4 +78,44 @@ export const chainToTokenClient: Record<number, ApolloClient<NormalizedCacheObje
  */
 export function getTokenClientForChain(chainId: number): ApolloClient<NormalizedCacheObject> | undefined {
   return chainToTokenClient[chainId]
+}
+
+/**
+ * Create Apollo client for pool data
+ */
+function createPoolClient(uri: string): ApolloClient<NormalizedCacheObject> {
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link: new HttpLink({ uri }),
+  })
+}
+
+/**
+ * Apollo client for Taiko Mainnet pool data
+ */
+export const taikoMainnetPoolClient = TAIKO_MAINNET_SUBGRAPH_URLS.pools
+  ? createPoolClient(TAIKO_MAINNET_SUBGRAPH_URLS.pools)
+  : undefined
+
+/**
+ * Apollo client for Taiko Hoodi pool data
+ */
+export const taikoHoodiPoolClient = TAIKO_HOODI_SUBGRAPH_URLS.pools
+  ? createPoolClient(TAIKO_HOODI_SUBGRAPH_URLS.pools)
+  : undefined
+
+/**
+ * Map of chain IDs to their pool subgraph clients
+ */
+export const chainToPoolClient: Record<number, ApolloClient<NormalizedCacheObject> | undefined> = {
+  [TAIKO_MAINNET_CHAIN_ID]: taikoMainnetPoolClient,
+  [TAIKO_HOODI_CHAIN_ID]: taikoHoodiPoolClient,
+}
+
+/**
+ * Get pool subgraph client for a given chain
+ * Used by pool data queries and detail pages
+ */
+export function getClient(chainId: number): ApolloClient<NormalizedCacheObject> | undefined {
+  return chainToPoolClient[chainId]
 }

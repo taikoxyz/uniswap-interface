@@ -13,7 +13,7 @@ const CHAIN_SUBGRAPH_URL: Record<number, string> = {
   [ChainId.BNB]: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-bsc?source=uniswap',
   [ChainId.AVALANCHE]: 'https://api.thegraph.com/subgraphs/name/lynnshaoyu/uniswap-v3-avax?source=uniswap',
   // Taiko subgraphs configured via environment variables
-  [TAIKO_MAINNET_CHAIN_ID]: process.env.REACT_APP_TAIKO_MAINNET_SUBGRAPH_POOLS || 'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/uniswap-v3-taiko/ff3dc50/gn',
+  [TAIKO_MAINNET_CHAIN_ID]: process.env.REACT_APP_TAIKO_MAINNET_SUBGRAPH_POOLS || 'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/uniswap-v3-taiko/19044af/gn',
   [TAIKO_HOODI_CHAIN_ID]: process.env.REACT_APP_TAIKO_HOODI_SUBGRAPH_POOLS || 'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/uniswap-v3-taiko-hoodi-testnet/7060ecc/gn',
 }
 

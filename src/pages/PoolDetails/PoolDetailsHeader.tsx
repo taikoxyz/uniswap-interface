@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { ChainId, Currency } from '@uniswap/sdk-core'
 import blankTokenUrl from 'assets/svg/blank_token.svg'
+import { ButtonPrimary, ButtonSecondary } from 'components/Button'
 import Column from 'components/Column'
 import Row from 'components/Row'
 import { getChainInfo } from 'constants/chainInfo'
@@ -8,7 +9,7 @@ import { chainIdToBackendName } from 'graphql/data/util'
 import { useCurrency } from 'hooks/Tokens'
 import useTokenLogoSource from 'hooks/useAssetLogoSource'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { ClickableStyle, ThemedText } from 'theme'
 import { shortenAddress } from 'utils'
@@ -34,6 +35,11 @@ const ToggleReverseArrows = styled(ReversedArrowsIcon)`
   ${ClickableStyle}
 `
 
+const ButtonRow = styled(Row)`
+  gap: 12px;
+  margin-left: auto;
+`
+
 interface Token {
   id: string
   symbol: string
@@ -57,19 +63,31 @@ export function PoolDetailsHeader({
   toggleReversed,
 }: PoolDetailsHeaderProps) {
   const currencies = [useCurrency(token0?.id, chainId) ?? undefined, useCurrency(token1?.id, chainId) ?? undefined]
-  const chainName = chainIdToBackendName(chainId)
-  const origin = `/tokens/${chainName}`
+  const exploreOrigin = `/explore`
+  const navigate = useNavigate()
+
+  const handleSwap = () => {
+    if (token0?.id && token1?.id) {
+      navigate(`/swap?inputCurrency=${token0.id}&outputCurrency=${token1.id}`)
+    }
+  }
+
+  const handleAddLiquidity = () => {
+    if (token0?.id && token1?.id && feeTier) {
+      navigate(`/add/${token0.id}/${token1.id}/${feeTier}`)
+    }
+  }
+
   return (
     <HeaderColumn>
       <Row>
-        <StyledLink to={origin}>
+        <StyledLink to={exploreOrigin}>
           <ThemedText.BodySecondary>
             <Trans>Explore</Trans>
           </ThemedText.BodySecondary>
         </StyledLink>
         <ThemedText.BodySecondary>&nbsp;{'>'}&nbsp;</ThemedText.BodySecondary>
-        {/* TODO: When Explore Pool table is added, link directly back to it */}
-        <StyledLink to={origin}>
+        <StyledLink to={exploreOrigin}>
           <ThemedText.BodySecondary>
             <Trans>Pool</Trans>
           </ThemedText.BodySecondary>
@@ -90,6 +108,14 @@ export function PoolDetailsHeader({
         </Row>
         {!!feeTier && <FeeTier>{feeTier / 10000}%</FeeTier>}
         <ToggleReverseArrows data-testid="toggle-tokens-reverse-arrows" onClick={toggleReversed} />
+        <ButtonRow>
+          <ButtonPrimary onClick={handleSwap} padding="10px 16px" width="auto">
+            <Trans>Swap</Trans>
+          </ButtonPrimary>
+          <ButtonSecondary onClick={handleAddLiquidity} padding="10px 16px" width="auto">
+            <Trans>Add liquidity</Trans>
+          </ButtonSecondary>
+        </ButtonRow>
       </Row>
     </HeaderColumn>
   )

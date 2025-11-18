@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { ThemedText } from 'theme'
 import { useMemo, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
 import { getDefaultChainId } from 'config/chains'
+import { TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID } from 'config/chains/taiko'
+import { PortfolioLogo } from 'components/AccountDrawer/MiniPortfolio/PortfolioLogo'
+import { useCurrency } from 'hooks/Tokens'
 
 const TableContainer = styled.div`
   background: ${({ theme }) => theme.surface1};
@@ -113,12 +115,56 @@ function formatFeeTier(feeTier: number): string {
   return `${(feeTier / 10000).toFixed(2)}%`
 }
 
+/**
+ * Convert chainId to URL parameter for pool detail routes
+ * Maps Taiko chain IDs to the URL format expected by pool detail pages
+ */
+function getChainUrlParam(chainId: number): string {
+  if (chainId === TAIKO_MAINNET_CHAIN_ID) {
+    return 'taiko'
+  }
+  if (chainId === TAIKO_HOODI_CHAIN_ID) {
+    return 'taiko_hoodi'
+  }
+  return 'ethereum' // fallback
+}
+
+/**
+ * Pool row component with token logos
+ */
+function PoolRowWithLogos({
+  pool,
+  chainId,
+  chainUrlParam,
+}: {
+  pool: { token0Address: string; token1Address: string; token0Symbol: string; token1Symbol: string; id: string }
+  chainId: number
+  chainUrlParam: string
+}) {
+  const token0Currency = useCurrency(pool.token0Address, chainId)
+  const token1Currency = useCurrency(pool.token1Address, chainId)
+
+  return (
+    <>
+      <PortfolioLogo
+        chainId={chainId}
+        currencies={[token0Currency ?? undefined, token1Currency ?? undefined]}
+        size="32px"
+      />
+      <PoolLink to={`/pools/${chainUrlParam}/${pool.id}`}>
+        {pool.token0Symbol}/{pool.token1Symbol}
+      </PoolLink>
+    </>
+  )
+}
+
 export function PoolsTable() {
   const [sortField, setSortField] = useState<SortField>('tvl')
   const [sortAscending, setSortAscending] = useState(false)
 
-  const { chainId } = useWeb3React()
-  const activeChainId = chainId || getDefaultChainId()
+  // Always use the default chain configured in env, not the wallet's chain
+  const activeChainId = getDefaultChainId()
+  const chainUrlParam = getChainUrlParam(activeChainId)
   const { pools, loadingPools, error } = useTopPoolsTaiko(activeChainId, 100, 'totalValueLockedUSD')
 
   const sortedPools = useMemo(() => {
@@ -231,9 +277,7 @@ export function PoolsTable() {
             <TableRow key={pool.id}>
               <TableCell>{index + 1}</TableCell>
               <PoolCell>
-                <PoolLink to={`/pools/${pool.id}`}>
-                  {pool.token0Symbol}/{pool.token1Symbol}
-                </PoolLink>
+                <PoolRowWithLogos pool={pool} chainId={activeChainId} chainUrlParam={chainUrlParam} />
               </PoolCell>
               <TableCell>v3</TableCell>
               <TableCell>
