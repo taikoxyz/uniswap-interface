@@ -126,7 +126,7 @@ function getChainUrlParam(chainId: number): string {
   if (chainId === TAIKO_HOODI_CHAIN_ID) {
     return 'taiko_hoodi'
   }
-  return 'ethereum' // fallback
+  return 'taiko' // fallback
 }
 
 /**
