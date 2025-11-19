@@ -67,9 +67,22 @@ export enum ErrorCode {
 
 // TODO(WEB-1973): merge this function with existing didUserReject for Swap errors
 export function didUserReject(connection: Connection, error: any): boolean {
+  const errorString = error?.toString?.() || ''
+  const errorMessage = error?.message || ''
+
+  // Check for iOS Safari MetaMask deep link errors that cause infinite popup loops
+  const isIOSMetaMaskError =
+    connection.type === ConnectionType.INJECTED &&
+    (errorMessage.includes('Invalid') ||
+     errorMessage.includes('cancelled') ||
+     errorMessage.includes('canceled') ||
+     errorString.includes('Invalid') ||
+     errorString.includes('navigation'))
+
   return (
     error?.code === ErrorCode.USER_REJECTED_REQUEST ||
-    (connection.type === ConnectionType.WALLET_CONNECT_V2 && error?.toString?.() === ErrorCode.WC_V2_MODAL_CLOSED) ||
-    (connection.type === ConnectionType.COINBASE_WALLET && error?.toString?.() === ErrorCode.CB_REJECTED_REQUEST)
+    (connection.type === ConnectionType.WALLET_CONNECT_V2 && errorString === ErrorCode.WC_V2_MODAL_CLOSED) ||
+    (connection.type === ConnectionType.COINBASE_WALLET && errorString === ErrorCode.CB_REJECTED_REQUEST) ||
+    isIOSMetaMaskError
   )
 }
