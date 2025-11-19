@@ -129,6 +129,21 @@ export function CurrencyRow({
   const isBlockedToken = !!warning && !warning.canProceed
   const blockedTokenOpacity = '0.6'
 
+  const handleSelect = useCallback((e: React.MouseEvent | React.KeyboardEvent) => {
+    if (isSelected) return
+    e.preventDefault()
+    e.stopPropagation()
+    onSelect(!!warning)
+  }, [isSelected, onSelect, warning])
+
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
+    if (!isSelected && e.key === 'Enter') {
+      e.preventDefault()
+      e.stopPropagation()
+      onSelect(!!warning)
+    }
+  }, [isSelected, onSelect, warning])
+
   // only show add or remove buttons if not on selected list
   return (
     <TraceEvent
@@ -141,8 +156,8 @@ export function CurrencyRow({
         tabIndex={0}
         style={style}
         className={`token-item-${key}`}
-        onKeyPress={(e) => (!isSelected && e.key === 'Enter' ? onSelect(!!warning) : null)}
-        onClick={() => (isSelected ? null : onSelect(!!warning))}
+        onKeyPress={handleKeyPress}
+        onClick={handleSelect}
         disabled={isSelected}
         selected={otherSelected}
         dim={isBlockedToken}
