@@ -2,10 +2,10 @@ import { ChainId } from '@uniswap/sdk-core'
 import { TimePeriod } from 'graphql/data/util'
 import { useMemo } from 'react'
 
+import { isTaikoChain } from 'config/chains/taiko'
+import { getPoolClientForChain as getTaikoPoolClient } from '../taiko/apollo'
 import { usePoolDayDataQuery, usePoolHourDataQuery } from './__generated__/types-and-hooks'
 import { chainToApolloClient } from './apollo'
-import { getClient as getTaikoPoolClient } from '../taiko/apollo'
-import { isTaikoChain } from 'config/chains/taiko'
 
 export interface ChartDataPoint {
   timestamp: number

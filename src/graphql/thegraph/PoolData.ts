@@ -2,10 +2,10 @@ import { ChainId } from '@uniswap/sdk-core'
 import gql from 'graphql-tag'
 import { useMemo } from 'react'
 
+import { isTaikoChain } from 'config/chains/taiko'
+import { getPoolClientForChain as getTaikoPoolClient } from '../taiko/apollo'
 import { usePoolDataQuery } from './__generated__/types-and-hooks'
 import { chainToApolloClient } from './apollo'
-import { getClient as getTaikoPoolClient } from '../taiko/apollo'
-import { isTaikoChain } from 'config/chains/taiko'
 
 gql`
   query PoolData($poolId: [ID!]) {
