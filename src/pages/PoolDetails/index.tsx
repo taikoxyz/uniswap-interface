@@ -19,6 +19,19 @@ const PageWrapper = styled(Row)`
   width: 100%;
   gap: 24px;
   align-items: flex-start;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoint.md}px) {
+    padding: 24px 24px;
+    flex-direction: column;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoint.sm}px) {
+    padding: 16px 16px;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoint.xs}px) {
+    padding: 12px 12px;
+  }
 `
 
 const LeftColumn = styled.div`
@@ -27,6 +40,10 @@ const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoint.md}px) {
+    width: 100%;
+  }
 `
 
 const RightColumn = styled.div`
@@ -35,6 +52,10 @@ const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoint.md}px) {
+    width: 100%;
+  }
 `
 
 export default function PoolDetailsPage() {
