@@ -218,16 +218,13 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
     const now = Math.floor(Date.now() / 1000)
     const daysToLookBack = getDaysForTimePeriod(timePeriod)
     const startTime = Math.floor((now - daysToLookBack * 24 * 60 * 60) / 86400) * 86400 // Round down to start of day
-    console.log(`TaikoTopTokens [chainId: ${chainId}, timePeriod: ${timePeriod}]: dayStartTime:`, startTime, new Date(startTime * 1000).toISOString(), `(${daysToLookBack} days ago)`)
     return startTime
   }, [chainId, timePeriod])
 
   // Get token IDs for fetching day data
   const tokenIds = useMemo(() => {
-    const ids = data?.tokens?.map(t => t.id.toLowerCase()) || []
-    console.log(`TaikoTopTokens [chainId: ${chainId}]: Token IDs for day data query:`, ids.length, ids.slice(0, 3))
-    return ids
-  }, [data?.tokens, chainId])
+    return data?.tokens?.map(t => t.id.toLowerCase()) || []
+  }, [data?.tokens])
 
   // Fetch token day data for price change calculation
   // NOTE: This uses the POOL subgraph client, not the token subgraph client
@@ -241,24 +238,8 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
       },
       skip: !poolClient || tokenIds.length === 0,
       pollInterval: 60000,
-      onCompleted: (data) => {
-        console.log(`TaikoTopTokens [chainId: ${chainId}]: Day data query completed:`, data?.tokenDayDatas?.length || 0, 'entries')
-        if (data?.tokenDayDatas && data.tokenDayDatas.length > 0) {
-          console.log(`TaikoTopTokens [chainId: ${chainId}]: Sample day data:`, data.tokenDayDatas[0])
-        }
-      },
-      onError: (error) => {
-        console.error(`TaikoTopTokens [chainId: ${chainId}]: Day data query error:`, error)
-        console.error(`TaikoTopTokens [chainId: ${chainId}]: Error message:`, error.message)
-        console.error(`TaikoTopTokens [chainId: ${chainId}]: Query variables:`, { tokenIds: tokenIds.slice(0, 3), startDate: dayStartTime })
-      },
     }
   )
-
-  // Log any persistent errors
-  if (dayDataError) {
-    console.error(`TaikoTopTokens [chainId: ${chainId}]: Persistent day data error:`, dayDataError.message)
-  }
 
   // Normalize tokens to match the format expected by TokenTable
   const normalizedTokens = useMemo(() => {
@@ -269,8 +250,6 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
     // Create a map of token price changes from dayData
     const priceChangeMap = new Map<string, number>()
     if (dayData?.tokenDayDatas) {
-      console.log(`TaikoTopTokens [chainId: ${chainId}]: Received tokenDayDatas:`, dayData.tokenDayDatas.length)
-      
       // Group day data by token
       const tokenDayDataByToken = new Map<string, TaikoTokenDayData[]>()
       dayData.tokenDayDatas.forEach(dd => {
@@ -281,12 +260,9 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
         tokenDayDataByToken.get(tokenId)!.push(dd)
       })
 
-      console.log(`TaikoTopTokens [chainId: ${chainId}, timePeriod: ${timePeriod}]: Grouped data for tokens:`, tokenDayDataByToken.size)
-
       // Calculate price change for each token based on timePeriod
       tokenDayDataByToken.forEach((dayDatas, tokenId) => {
         if (dayDatas.length < 2) {
-          console.log(`TaikoTopTokens [chainId: ${chainId}]: Token ${tokenId.slice(0, 10)}... - insufficient data (${dayDatas.length} entries)`)
           return
         }
 
@@ -329,17 +305,8 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
         if (previousPrice > 0 && currentPrice > 0) {
           const percentChange = ((currentPrice - previousPrice) / previousPrice) * 100
           priceChangeMap.set(tokenId, percentChange)
-          console.log(`TaikoTopTokens [chainId: ${chainId}, timePeriod: ${timePeriod}]: Token ${tokenId.slice(0, 10)}... - change: ${percentChange.toFixed(2)}%`, {
-            current: currentPrice,
-            previous: previousPrice,
-            currentDate: mostRecentData.date,
-            previousDate: comparisonData?.date,
-            daysDiff: mostRecentData.date - (comparisonData?.date || 0)
-          })
         }
       })
-    } else {
-      console.log(`TaikoTopTokens [chainId: ${chainId}]: No tokenDayDatas available`)
     }
 
     return data.tokens.map((token): NormalizedTaikoToken => {
@@ -421,7 +388,6 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
     const map: SparklineMap = {}
     
     if (!dayData?.tokenDayDatas) {
-      console.log(`TaikoTopTokens [chainId: ${chainId}]: No tokenDayDatas for sparklines`)
       return map
     }
 
@@ -448,11 +414,9 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
       
       if (pricePoints.length > 0) {
         map[tokenId] = pricePoints
-        console.log(`TaikoTopTokens [chainId: ${chainId}]: Sparkline for token ${tokenId.slice(0, 10)}... - ${pricePoints.length} data points`)
       }
     })
 
-    console.log(`TaikoTopTokens [chainId: ${chainId}]: Built sparklines for ${Object.keys(map).length} tokens`)
     return map
   }, [dayData, chainId])
 
