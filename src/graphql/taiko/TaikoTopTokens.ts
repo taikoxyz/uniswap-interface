@@ -6,7 +6,7 @@
  */
 
 import { ApolloError, gql, useQuery } from '@apollo/client'
-import { filterStringAtom } from 'components/Tokens/state'
+import { filterStringAtom, sortAscendingAtom, sortMethodAtom, TokenSortMethod } from 'components/Tokens/state'
 import { TAIKO_MAINNET_CHAIN_ID } from 'config/chains/taiko'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -153,6 +153,39 @@ function getDaysForTimePeriod(timePeriod: TimePeriod): number {
     default:
       return 2
   }
+}
+
+/**
+ * Sort tokens based on the selected sort method and direction
+ */
+function useSortedTokens(tokens: readonly NormalizedTaikoToken[] | undefined) {
+  const sortMethod = useAtomValue(sortMethodAtom)
+  const sortAscending = useAtomValue(sortAscendingAtom)
+
+  return useMemo(() => {
+    if (!tokens) return undefined
+    let tokenArray = Array.from(tokens)
+    switch (sortMethod) {
+      case TokenSortMethod.PRICE:
+        tokenArray = tokenArray.sort((a, b) => (b?.market?.price?.value ?? 0) - (a?.market?.price?.value ?? 0))
+        break
+      case TokenSortMethod.PERCENT_CHANGE:
+        tokenArray = tokenArray.sort(
+          (a, b) => (b?.market?.pricePercentChange?.value ?? 0) - (a?.market?.pricePercentChange?.value ?? 0)
+        )
+        break
+      case TokenSortMethod.TOTAL_VALUE_LOCKED:
+        tokenArray = tokenArray.sort(
+          (a, b) => (b?.market?.totalValueLocked?.value ?? 0) - (a?.market?.totalValueLocked?.value ?? 0)
+        )
+        break
+      case TokenSortMethod.VOLUME:
+        tokenArray = tokenArray.sort((a, b) => (b?.market?.volume?.value ?? 0) - (a?.market?.volume?.value ?? 0))
+        break
+    }
+
+    return sortAscending ? tokenArray.reverse() : tokenArray
+  }, [tokens, sortMethod, sortAscending])
 }
 
 /**
@@ -354,31 +387,34 @@ export function useTopTokensTaiko(chainId: number, timePeriod: TimePeriod = Time
     })
   }, [data, dayData, chainId])
 
-  // Create token sort rank mapping (by volume)
-  const tokenSortRank = useMemo(() => {
-    if (!normalizedTokens) return {}
+  // Apply sorting based on selected sort method
+  const sortedTokens = useSortedTokens(normalizedTokens)
 
-    return normalizedTokens.reduce((acc, token, index) => {
+  // Create token sort rank mapping (based on sorted order)
+  const tokenSortRank = useMemo(() => {
+    if (!sortedTokens) return {}
+
+    return sortedTokens.reduce((acc, token, index) => {
       acc[token.address] = index + 1
       return acc
     }, {} as Record<string, number>)
-  }, [normalizedTokens])
+  }, [sortedTokens])
 
   // Apply search filter
   const filterString = useAtomValue(filterStringAtom)
   const lowercaseFilterString = useMemo(() => filterString.toLowerCase(), [filterString])
 
   const filteredTokens = useMemo(() => {
-    if (!normalizedTokens) return undefined
-    if (!lowercaseFilterString) return normalizedTokens
+    if (!sortedTokens) return undefined
+    if (!lowercaseFilterString) return sortedTokens
 
-    return normalizedTokens.filter((token) => {
+    return sortedTokens.filter((token) => {
       const addressIncludesFilterString = token.address.toLowerCase().includes(lowercaseFilterString)
       const nameIncludesFilterString = token.name?.toLowerCase().includes(lowercaseFilterString)
       const symbolIncludesFilterString = token.symbol?.toLowerCase().includes(lowercaseFilterString)
       return nameIncludesFilterString || symbolIncludesFilterString || addressIncludesFilterString
     })
-  }, [normalizedTokens, lowercaseFilterString])
+  }, [sortedTokens, lowercaseFilterString])
 
   // Build sparklines from tokenDayDatas
   const sparklines = useMemo(() => {
