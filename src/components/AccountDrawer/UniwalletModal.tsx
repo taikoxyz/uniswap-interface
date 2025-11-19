@@ -42,12 +42,17 @@ export default function UniwalletModal() {
   const { activationState, cancelActivation } = useActivationState()
   const [uri, setUri] = useState<string>()
 
+  // Disabled for Taiko - do not show Uniswap Wallet modal
+  const open = false
+
+  /* Original code disabled
   // Displays the modal if not on iOS, a Uniswap Wallet Connection is pending, & qrcode URI is available
   const open =
     !isIOS &&
     activationState.status === ActivationStatus.PENDING &&
     activationState.connection.type === ConnectionType.UNISWAP_WALLET_V2 &&
     !!uri
+  */
 
   useEffect(() => {
     const connectorV2 = uniwalletWCV2ConnectConnection.connector as WalletConnectv2
