@@ -105,14 +105,6 @@ export function CurrencySearch({
   const balances: TokenBalances = useMemo(() => {
     // For Taiko chains, use on-chain balances from multicall
     if (isTaiko) {
-      console.log('[TOKEN SELECTOR] Taiko on-chain balances:', {
-        currencyCount: taikoCurrencies.length,
-        balanceCount: onChainBalances.length,
-        balances: onChainBalances.map((b, i) => ({
-          currency: taikoCurrencies[i]?.symbol,
-          balance: b?.toExact(),
-        })),
-      })
       const balanceMap: TokenBalances = {}
       taikoCurrencies.forEach((currency, index) => {
         const balance = onChainBalances[index]
@@ -126,7 +118,6 @@ export function CurrencySearch({
           }
         }
       })
-      console.log('[TOKEN SELECTOR] Balance map:', balanceMap)
       return balanceMap
     }
 
