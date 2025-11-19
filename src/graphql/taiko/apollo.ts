@@ -5,7 +5,7 @@
  * from Goldsky subgraphs.
  */
 
-import { ApolloClient, InMemoryCache, HttpLink, NormalizedCacheObject } from '@apollo/client'
+import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 /**
@@ -116,6 +116,6 @@ export const chainToPoolClient: Record<number, ApolloClient<NormalizedCacheObjec
  * Get pool subgraph client for a given chain
  * Used by pool data queries and detail pages
  */
-export function getClient(chainId: number): ApolloClient<NormalizedCacheObject> | undefined {
+export function getPoolClientForChain(chainId: number): ApolloClient<NormalizedCacheObject> | undefined {
   return chainToPoolClient[chainId]
 }

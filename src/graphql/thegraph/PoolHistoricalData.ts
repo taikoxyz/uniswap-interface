@@ -1,11 +1,11 @@
+import { useQuery } from '@apollo/client'
 import { ChainId } from '@uniswap/sdk-core'
 import gql from 'graphql-tag'
 import { useMemo } from 'react'
-import { useQuery } from '@apollo/client'
 
-import { chainToApolloClient } from './apollo'
-import { getClient as getTaikoPoolClient } from '../taiko/apollo'
 import { isTaikoChain } from 'config/chains/taiko'
+import { getPoolClientForChain as getTaikoPoolClient } from '../taiko/apollo'
+import { chainToApolloClient } from './apollo'
 
 const POOL_HISTORICAL_DATA_QUERY = gql`
   query PoolHistoricalData($poolId: ID!, $date: Int!) {
