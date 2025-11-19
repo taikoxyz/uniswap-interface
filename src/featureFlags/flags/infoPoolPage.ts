@@ -5,5 +5,6 @@ export function useInfoPoolPageFlag(): BaseVariant {
 }
 
 export function useInfoPoolPageEnabled(): boolean {
-  return useInfoPoolPageFlag() === BaseVariant.Enabled
+  // Always enable pool detail pages for Taiko DEX
+  return true
 }

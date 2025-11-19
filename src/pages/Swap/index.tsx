@@ -75,6 +75,7 @@ import {
   TAIKO_MAINNET_CHAIN_ID,
 } from 'config/chains/taiko'
 import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
+import { WrongChainOverlay } from 'components/WrongChainOverlay'
 
 import { useScreenSize } from '../../hooks/useScreenSize'
 import { useIsDarkMode } from '../../theme/components/ThemeToggle'
@@ -623,7 +624,8 @@ export function Swap({
   const isUniswapXDefaultEnabled = useUniswapXDefaultEnabled()
 
   const swapElement = (
-    <SwapWrapper isDark={isDark} className={className} id="swap-page">
+    <SwapWrapper isDark={isDark} className={className} id="swap-page" style={{ position: 'relative' }}>
+      <WrongChainOverlay />
       {/* <TokenSafetyModal
         isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
         tokenAddress={importTokensNotInDefault[0]?.address}

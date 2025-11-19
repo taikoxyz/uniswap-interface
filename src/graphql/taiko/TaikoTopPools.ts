@@ -80,6 +80,8 @@ const TAIKO_TOP_POOLS_QUERY = gql`
  */
 export interface NormalizedTaikoPool {
   id: string
+  token0Address: string
+  token1Address: string
   token0Symbol: string
   token1Symbol: string
   token0Name: string
@@ -140,6 +142,8 @@ export function useTopPoolsTaiko(
 
       return {
         id: pool.id.toLowerCase(),
+        token0Address: pool.token0.id.toLowerCase(),
+        token1Address: pool.token1.id.toLowerCase(),
         token0Symbol: pool.token0.symbol,
         token1Symbol: pool.token1.symbol,
         token0Name: pool.token0.name,

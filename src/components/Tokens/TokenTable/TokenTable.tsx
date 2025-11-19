@@ -6,7 +6,7 @@ import { ReactNode } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
+import { getDefaultChainId } from 'config/chains'
 import { isTaikoChain } from 'config/chains/taiko'
 import { useTopTokensTaiko } from 'graphql/taiko/TaikoTopTokens'
 import { TimePeriod } from 'graphql/data/util'
@@ -82,16 +82,17 @@ function LoadingTokenTable({ rowCount = PAGE_SIZE }: { rowCount?: number }) {
 }
 
 export default function TokenTable() {
-  const { chainId } = useWeb3React()
+  // Always use the default chain configured in env, not the wallet's chain
+  const defaultChainId = getDefaultChainId()
   const chainName = validateUrlChainParam(useParams<{ chainName?: string }>().chainName)
   const timePeriod = useAtomValue(filterTimeAtom)
 
-  // Check if this is a Taiko chain
-  const isTaiko = chainId && isTaikoChain(chainId)
+  // Check if this is a Taiko chain - use default chain, not wallet chain
+  const isTaiko = isTaikoChain(defaultChainId)
 
   // Use custom Taiko hook for Taiko chains, otherwise use standard hook
   const standardResult = useTopTokens(chainName as Chain)
-  const taikoResult = useTopTokensTaiko(chainId || 167013, timePeriod)
+  const taikoResult = useTopTokensTaiko(defaultChainId, timePeriod)
 
   // Select the appropriate result based on chain
   const { tokens, tokenSortRank, loadingTokens, sparklines } = isTaiko ? taikoResult : standardResult

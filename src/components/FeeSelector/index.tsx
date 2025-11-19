@@ -41,10 +41,10 @@ const FocusedOutlineCard = styled(Card)<{ pulsing: boolean }>`
 `
 
 const Select = styled.div`
-  align-items: flex-start;
+  align-items: stretch;
   display: grid;
-  grid-auto-flow: column;
-  grid-gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
 `
 
 export default function FeeSelector({

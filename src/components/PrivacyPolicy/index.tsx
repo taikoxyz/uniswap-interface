@@ -49,34 +49,50 @@ const StyledLinkOut = styled(ArrowDown)`
 
 const EXTERNAL_APIS = [
   {
-    name: 'Auto Router',
-    description: <Trans>The app fetches the optimal trade route from a Uniswap Labs server.</Trans>,
+    name: 'Taiko Network RPC',
+    description: (
+      <Trans>
+        The app connects to the Taiko blockchain network to execute transactions and fetch on-chain data.
+      </Trans>
+    ),
   },
   {
-    name: 'Infura',
-    description: <Trans>The app fetches on-chain data and constructs contract calls with an Infura API.</Trans>,
+    name: 'Goldsky Subgraph',
+    description: (
+      <Trans>The app fetches blockchain data and token information from Goldsky subgraph indexing services.</Trans>
+    ),
   },
   {
-    name: 'TRM Labs',
+    name: 'Wallet Address Screening',
     description: (
       <>
         <Trans>
-          The app securely collects your wallet address and shares it with TRM Labs Inc. for risk and compliance
-          reasons.
+          The app collects your publicly-available blockchain wallet address to screen for prior illicit activity and
+          ensure compliance with applicable regulations.
         </Trans>{' '}
-        <ExternalLink href="https://support.uniswap.org/hc/en-us/articles/8671777747597-Address-Screening-Guide">
+        <ExternalLink href="https://docs.taiko.xyz">
           <Trans>Learn more</Trans>
         </ExternalLink>
       </>
     ),
   },
   {
-    name: 'Google Analytics & Amplitude',
-    description: <Trans>The app logs anonymized usage statistics in order to improve over time.</Trans>,
+    name: 'Web Tracking Tools',
+    description: (
+      <Trans>
+        The app uses cookies and similar technologies to collect anonymous device and browser information to improve
+        the service. No personal data or IP addresses are collected.
+      </Trans>
+    ),
   },
   {
-    name: 'The Graph',
-    description: <Trans>The app fetches blockchain data from The Graph’s hosted service.</Trans>,
+    name: 'Wallet Providers',
+    description: (
+      <Trans>
+        The app integrates with third-party non-custodial wallet providers. Your relationship with wallet providers
+        is governed by their own terms of service.
+      </Trans>
+    ),
   },
 ]
 
@@ -125,12 +141,12 @@ function PrivacyPolicy() {
       <AutoColumn gap="16px">
         <AutoColumn gap="sm" style={{ width: '100%' }}>
           <StyledExternalCard>
-            <ExternalLink href="https://uniswap.org/terms-of-service">
+            <ExternalLink href="/terms-of-service">
               <RowBetween>
                 <AutoRow gap="4px">
                   <Info size={20} />
                   <ThemedText.DeprecatedMain fontSize={14} color="accent1">
-                    <Trans>Uniswap Labs&apos; Terms of Service</Trans>
+                    <Trans>Taiko DEX Terms of Service</Trans>
                   </ThemedText.DeprecatedMain>
                 </AutoRow>
                 <StyledLinkOut size={20} />
@@ -138,7 +154,7 @@ function PrivacyPolicy() {
             </ExternalLink>
           </StyledExternalCard>
           <StyledExternalCard>
-            <ExternalLink href="https://uniswap.org/privacy-policy/">
+            <ExternalLink href="/privacy-policy">
               <RowBetween>
                 <AutoRow gap="4px">
                   <Info size={20} />
@@ -170,7 +186,7 @@ function PrivacyPolicy() {
           ))}
           <ThemedText.DeprecatedBody fontSize={12}>
             <Row justify="center" marginBottom="1rem">
-              <ExternalLink href="https://help.uniswap.org/en/articles/5675203-terms-of-service-faq">
+              <ExternalLink href="https://docs.taiko.xyz">
                 <Trans>Learn more</Trans>
               </ExternalLink>
             </Row>
