@@ -122,13 +122,13 @@ export function PrivacyPolicyModal() {
             <X size={24} />
           </HoverText>
         </RowBetween>
-        <PrivacyPolicy />
+        <PrivacyPolicy onDismiss={toggle} />
       </AutoColumn>
     </Modal>
   )
 }
 
-function PrivacyPolicy() {
+function PrivacyPolicy({ onDismiss }: { onDismiss?: () => void }) {
   return (
     <Wrapper
       draggable="true"
@@ -142,7 +142,7 @@ function PrivacyPolicy() {
       <AutoColumn gap="16px">
         <AutoColumn gap="sm" style={{ width: '100%' }}>
           <StyledExternalCard>
-            <Link to="/terms-of-service" style={{ textDecoration: 'none' }}>
+            <Link to="/terms-of-service" style={{ textDecoration: 'none' }} onClick={onDismiss}>
               <RowBetween>
                 <AutoRow gap="4px">
                   <Info size={20} />
@@ -155,7 +155,7 @@ function PrivacyPolicy() {
             </Link>
           </StyledExternalCard>
           <StyledExternalCard>
-            <Link to="/privacy-policy" style={{ textDecoration: 'none' }}>
+            <Link to="/privacy-policy" style={{ textDecoration: 'none' }} onClick={onDismiss}>
               <RowBetween>
                 <AutoRow gap="4px">
                   <Info size={20} />
