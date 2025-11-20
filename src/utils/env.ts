@@ -23,11 +23,16 @@ export function isAppUniswapStagingOrg({ hostname }: { hostname: string }): bool
   return hostname === 'app.corn-staging.com'
 }
 
+export function isTaikoDex({ hostname }: { hostname: string }): boolean {
+  return hostname === 'swap.taiko.xyz' || hostname === 'swap.hoodi.taiko.xyz'
+}
+
 export function isBrowserRouterEnabled(): boolean {
   if (isProductionEnv()) {
     if (
       isAppUniswapOrg(window.location) ||
       isAppUniswapStagingOrg(window.location) ||
+      isTaikoDex(window.location) ||
       isLocalhost(window.location) // cypress tests
     ) {
       return true
