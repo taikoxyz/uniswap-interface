@@ -14,6 +14,10 @@ import { isIOS, isMobileSafari } from 'utils/userAgent'
 import { BannerButton, BaseBackgroundImage, ButtonRow, PopupContainer, StyledXButton } from './styled'
 
 export default function BaseWalletBanner() {
+  // Disabled for Taiko - do not show Uniswap wallet banner
+  return null
+
+  /* Original code disabled
   const { chainId } = useWeb3React()
   const [hideBaseWalletBanner, toggleHideBaseWalletBanner] = useHideBaseWalletBanner()
   const location = useLocation()
@@ -89,4 +93,5 @@ export default function BaseWalletBanner() {
       </ButtonRow>
     </PopupContainer>
   )
+  */
 }

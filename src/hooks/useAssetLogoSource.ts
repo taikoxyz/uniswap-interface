@@ -1,7 +1,7 @@
 import tokenLogoLookup from 'constants/tokenLogoLookup'
 import { isCelo, nativeOnChain } from 'constants/tokens'
 import { checkWarning, WARNING_LEVEL } from 'constants/tokenSafety'
-import { chainIdToNetworkName, getNativeLogoURI } from 'lib/hooks/useCurrencyLogoURIs'
+import { getNativeLogoURI } from 'lib/hooks/useCurrencyLogoURIs'
 import uriToHttp from 'lib/utils/uriToHttp'
 import { useCallback, useEffect, useState } from 'react'
 import { isAddress } from 'utils'
@@ -46,18 +46,22 @@ function getInitialUrl(
 ) {
   if (chainId && isNative) return getNativeLogoURI(chainId)
 
-  const networkName = chainId ? chainIdToNetworkName(chainId) : 'ethereum'
-  const checksummedAddress = isAddress(address)
-
   if (chainId && isCelo(chainId) && address === nativeOnChain(chainId).wrapped.address) {
     return celoLogo
   }
 
-  if (checksummedAddress) {
-    return `https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/${networkName}/assets/${checksummedAddress}/logo.png`
-  } else {
-    return backupImg ?? undefined
+  const checksummedAddress = isAddress(address)
+
+  // Taiko-only deployment: Use tokenLogoLookup (CoinGecko URLs from tokenlists) directly
+  // Skip GitHub assets repo to avoid 404s
+  if (checksummedAddress && chainId) {
+    const uris = tokenLogoLookup.getIcons(address, chainId) ?? []
+    if (backupImg) uris.push(backupImg)
+    const tokenListIcons = prioritizeLogoSources(parseLogoSources(uris))
+    return tokenListIcons[0] ?? backupImg ?? undefined
   }
+
+  return backupImg ?? undefined
 }
 
 export default function useAssetLogoSource(

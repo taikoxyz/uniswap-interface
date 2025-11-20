@@ -39,8 +39,20 @@ if (!sentryUserId) {
 }
 Sentry.setUser({ id: sentryUserId })
 
-// Analytics disabled for Taiko deployment
-// Amplitude analytics is not configured and will not send any events
-if (isDevelopmentEnv()) {
-  console.log('[Analytics] Disabled for Taiko deployment')
+// Initialize Amplitude analytics for Taiko
+const amplitudeKey = process.env.REACT_APP_AMPLITUDE_API_KEY || AMPLITUDE_DUMMY_KEY
+if (amplitudeKey && amplitudeKey !== AMPLITUDE_DUMMY_KEY) {
+  initializeAnalytics(amplitudeKey, OriginApplication.INTERFACE, {
+    proxyUrl: undefined, // No proxy - direct to Amplitude
+    defaultEventName: SharedEventName.PAGE_VIEWED,
+    commitHash: process.env.REACT_APP_GIT_COMMIT_HASH,
+    isProductionEnv: isProductionEnv(),
+  })
+  if (isDevelopmentEnv()) {
+    console.log('[Analytics] Enabled with Amplitude API key')
+  }
+} else {
+  if (isDevelopmentEnv()) {
+    console.log('[Analytics] Disabled - no API key configured')
+  }
 }

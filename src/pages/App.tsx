@@ -214,6 +214,9 @@ export default function App() {
           options={{
             environment: { tier: getEnvName() },
             disableNetwork: true, // Disable analytics telemetry
+            disableAutoMetricsLogging: true, // Disable automatic event tracking
+            disableErrorLogging: true, // Disable error logging to Statsig
+            localMode: true, // Run in local mode - no network requests
           }}
         >
           <HeaderWrapper transparent={isHeaderTransparent}>
