@@ -1,4 +1,4 @@
-# Contributing
+https://crowdin.com/project/uniswap-interface# Contributing
 
 Thank you for your interest in contributing to the Uniswap interface! 🦄
 
