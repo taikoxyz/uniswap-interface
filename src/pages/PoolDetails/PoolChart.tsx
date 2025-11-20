@@ -66,7 +66,7 @@ export function PoolChart({ data, width, height, chartType }: PoolChartProps) {
   const xScale = useMemo(
     () =>
       scaleTime({
-        domain: [Math.min(...data.map((d) => d.timestamp)), Math.max(...data.map((d) => d.timestamp))],
+        domain: [new Date(Math.min(...data.map((d) => d.timestamp)) * 1000), new Date(Math.max(...data.map((d) => d.timestamp)) * 1000)],
         range: [0, innerWidth],
       }),
     [data, innerWidth]
@@ -80,7 +80,7 @@ export function PoolChart({ data, width, height, chartType }: PoolChartProps) {
     })
   }, [data, innerHeight, chartType])
 
-  const getX = useCallback((d: ChartDataPoint) => xScale(d.timestamp) || 0, [xScale])
+  const getX = useCallback((d: ChartDataPoint) => xScale(new Data(d.timestamp * 1000)) || 0, [xScale])
   const getY = useCallback(
     (d: ChartDataPoint) => yScale(chartType === 'VOLUME' ? d.volumeUSD : d.tvlUSD) || 0,
     [yScale, chartType]
