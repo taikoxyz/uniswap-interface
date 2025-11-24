@@ -191,16 +191,17 @@ export default function App() {
   )
 
   // redirect address to landing pages until implemented
-  const shouldRedirectToAppInstall = pathname?.startsWith('/address/')
-  useLayoutEffect(() => {
-    if (shouldRedirectToAppInstall) {
-      window.location.href = getDownloadAppLink()
-    }
-  }, [shouldRedirectToAppInstall])
+  // Disabled: Users can now access /address/ routes without being redirected
+  // const shouldRedirectToAppInstall = pathname?.startsWith('/address/')
+  // useLayoutEffect(() => {
+  //   if (shouldRedirectToAppInstall) {
+  //     window.location.href = getDownloadAppLink()
+  //   }
+  // }, [shouldRedirectToAppInstall])
 
-  if (shouldRedirectToAppInstall) {
-    return null
-  }
+  // if (shouldRedirectToAppInstall) {
+  //   return null
+  // }
 
   return (
     <ErrorBoundary>
