@@ -80,7 +80,7 @@ export function PoolChart({ data, width, height, chartType }: PoolChartProps) {
     })
   }, [data, innerHeight, chartType])
 
-  const getX = useCallback((d: ChartDataPoint) => xScale(new Data(d.timestamp * 1000)) || 0, [xScale])
+  const getX = useCallback((d: ChartDataPoint) => xScale(new Date(d.timestamp * 1000)) || 0, [xScale])
   const getY = useCallback(
     (d: ChartDataPoint) => yScale(chartType === 'VOLUME' ? d.volumeUSD : d.tvlUSD) || 0,
     [yScale, chartType]
