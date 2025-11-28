@@ -1,10 +1,12 @@
 import { Trans } from '@lingui/macro'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { ExternalLink, ThemedText } from 'theme'
+import { ThemedText } from 'theme'
 
-const StyledLink = styled(ExternalLink)`
+const StyledLink = styled(Link)`
   font-weight: 535;
   color: ${({ theme }) => theme.neutral2};
+  text-decoration: none;
 `
 
 const LastUpdatedText = styled.span`
@@ -17,11 +19,11 @@ export default function PrivacyPolicyNotice() {
   return (
     <ThemedText.BodySmall color="neutral2">
       <Trans>By connecting a wallet, you agree to Taiko DEX&apos;s</Trans>{' '}
-      <StyledLink href="/terms-of-service">
+      <StyledLink to="/terms-of-service">
         <Trans>Terms of Service</Trans>{' '}
       </StyledLink>
       <Trans>and consent to its</Trans>{' '}
-      <StyledLink href="/privacy-policy">
+      <StyledLink to="/privacy-policy">
         <Trans>Privacy Policy.</Trans>
       </StyledLink>
       <LastUpdatedText>

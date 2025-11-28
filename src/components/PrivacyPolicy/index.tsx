@@ -5,6 +5,7 @@ import Card, { DarkGrayCard } from 'components/Card'
 import Row, { AutoRow, RowBetween } from 'components/Row'
 import { useEffect, useRef } from 'react'
 import { ArrowDown, Info, X } from 'react-feather'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { ExternalLink, ThemedText } from 'theme'
 import { isMobile } from 'utils/userAgent'
@@ -121,13 +122,13 @@ export function PrivacyPolicyModal() {
             <X size={24} />
           </HoverText>
         </RowBetween>
-        <PrivacyPolicy />
+        <PrivacyPolicy onDismiss={toggle} />
       </AutoColumn>
     </Modal>
   )
 }
 
-function PrivacyPolicy() {
+function PrivacyPolicy({ onDismiss }: { onDismiss?: () => void }) {
   return (
     <Wrapper
       draggable="true"
@@ -141,7 +142,7 @@ function PrivacyPolicy() {
       <AutoColumn gap="16px">
         <AutoColumn gap="sm" style={{ width: '100%' }}>
           <StyledExternalCard>
-            <ExternalLink href="/terms-of-service">
+            <Link to="/terms-of-service" style={{ textDecoration: 'none' }} onClick={onDismiss}>
               <RowBetween>
                 <AutoRow gap="4px">
                   <Info size={20} />
@@ -151,10 +152,10 @@ function PrivacyPolicy() {
                 </AutoRow>
                 <StyledLinkOut size={20} />
               </RowBetween>
-            </ExternalLink>
+            </Link>
           </StyledExternalCard>
           <StyledExternalCard>
-            <ExternalLink href="/privacy-policy">
+            <Link to="/privacy-policy" style={{ textDecoration: 'none' }} onClick={onDismiss}>
               <RowBetween>
                 <AutoRow gap="4px">
                   <Info size={20} />
@@ -164,7 +165,7 @@ function PrivacyPolicy() {
                 </AutoRow>
                 <StyledLinkOut size={20} />
               </RowBetween>
-            </ExternalLink>
+            </Link>
           </StyledExternalCard>
         </AutoColumn>
         <ThemedText.DeprecatedMain fontSize={14}>
