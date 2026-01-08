@@ -628,7 +628,7 @@ export function Swap({
   const swapContent = (
     <>
       <WrongChainOverlay />
-      <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} />
+      <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} compact={compact} />
       {trade && showConfirm && allowance.state !== AllowanceState.LOADING && (
         <ConfirmSwapModal
           trade={trade}
