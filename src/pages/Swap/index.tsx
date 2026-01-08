@@ -193,6 +193,7 @@ export function Swap({
   chainId,
   onCurrencyChange,
   disableTokenInputs = false,
+  compact = false,
 }: {
   className?: string
   initialInputCurrencyId?: string | null
@@ -200,6 +201,7 @@ export function Swap({
   chainId?: ChainId
   onCurrencyChange?: (selected: Pick<SwapState, Field.INPUT | Field.OUTPUT>) => void
   disableTokenInputs?: boolean
+  compact?: boolean
 }) {
   const { account, chainId: connectedChainId, connector } = useWeb3React()
   const trace = useTrace()
@@ -623,17 +625,9 @@ export function Swap({
   const isDark = useIsDarkMode()
   const isUniswapXDefaultEnabled = useUniswapXDefaultEnabled()
 
-  const swapElement = (
-    <SwapWrapper isDark={isDark} className={className} id="swap-page" style={{ position: 'relative' }}>
+  const swapContent = (
+    <>
       <WrongChainOverlay />
-      {/* <TokenSafetyModal
-        isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
-        tokenAddress={importTokensNotInDefault[0]?.address}
-        secondTokenAddress={importTokensNotInDefault[1]?.address}
-        onContinue={handleConfirmTokenWarning}
-        onCancel={handleDismissTokenWarning}
-        showCancel={true}
-      /> */}
       <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} />
       {trade && showConfirm && allowance.state !== AllowanceState.LOADING && (
         <ConfirmSwapModal
@@ -850,6 +844,16 @@ export function Swap({
         </div>
       </AutoColumn>
       {!showOptInSmall && !isUniswapXDefaultEnabled && <UniswapXOptIn isSmall={false} swapInfo={swapInfo} />}
+    </>
+  )
+
+  const swapElement = compact ? (
+    <div className={className} id="swap-page" style={{ position: 'relative', width: '100%', height: '100%' }}>
+      {swapContent}
+    </div>
+  ) : (
+    <SwapWrapper isDark={isDark} className={className} id="swap-page" style={{ position: 'relative' }}>
+      {swapContent}
     </SwapWrapper>
   )
 
