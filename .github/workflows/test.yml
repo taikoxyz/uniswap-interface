@@ -92,7 +92,7 @@ jobs:
           key: ${{ runner.os }}-swc-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-swc-
       - run: yarn build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: build
           path: build
@@ -139,7 +139,7 @@ jobs:
           yarn cypress install
           yarn cypress info
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: build
           path: build
@@ -179,18 +179,19 @@ jobs:
           name: Cypress tests
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST_REPORTER_WEBHOOK }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: hardhat-cache
+          name: hardhat-cache-${{ matrix.containers }}
           path: cache
 
   hardhat-cache:
     needs: [cypress-test-matrix]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: hardhat-cache
+          pattern: hardhat-cache-*
+          merge-multiple: true
           path: cache
       - uses: actions/cache/save@v3
         with:
