@@ -2,12 +2,12 @@ import { InterfacePageName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
 import { Trace } from 'analytics'
 import { asSupportedChain } from 'constants/chains'
+import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch } from 'state/swap/hooks'
 import styled, { ThemeProvider } from 'styled-components'
 import { getTheme } from 'theme'
 
 import { Swap } from '../Swap'
-import { Field } from 'state/swap/actions'
 
 // Full-window wrapper for iframe embedding - no background, no decorations
 const WidgetWrapper = styled.div`
