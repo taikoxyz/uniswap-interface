@@ -5,7 +5,6 @@
 This guide provides step-by-step instructions for deploying the Uniswap Interface to Taiko Mainnet (Chain ID: 167000). The interface has been thoroughly tested on Taiko Hoodi testnet and is production-ready.
 
 ## Prerequisites
-
 ### Required Contract Deployments
 
 Before enabling the interface on Taiko Mainnet, ensure the following contracts are deployed and verified:
