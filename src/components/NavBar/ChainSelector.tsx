@@ -3,12 +3,12 @@ import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { showTestnetsAtom } from 'components/AccountDrawer/TestnetsToggle'
 import { MouseoverTooltip } from 'components/Tooltip'
-import { getEnabledChainIds } from 'config/chains'
 import { getConnection } from 'connection'
 import { ConnectionType } from 'connection/types'
 import { WalletConnectV2 } from 'connection/WalletConnectV2'
 import { getChainInfo } from 'constants/chainInfo'
-import { getChainPriority, TESTNET_CHAIN_IDS } from 'constants/chains'
+import { getChainPriority, L1_CHAIN_IDS, L2_CHAIN_IDS, TESTNET_CHAIN_IDS } from 'constants/chains'
+import { getEnabledChainIds } from 'config/chains'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import useSelectChain from 'hooks/useSelectChain'
 import useSyncChainQuery from 'hooks/useSyncChainQuery'
@@ -19,8 +19,7 @@ import { Column, Row } from 'nft/components/Flex'
 import { useIsMobile } from 'nft/hooks'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
-import styled, { ThemeProvider, useTheme } from 'styled-components'
-import { getTheme } from 'theme'
+import { useTheme } from 'styled-components'
 import { getSupportedChainIdsFromWalletConnectSession } from 'utils/getSupportedChainIdsFromWalletConnectSession'
 
 import * as styles from './ChainSelector.css'
@@ -29,29 +28,7 @@ import { NavDropdown } from './NavDropdown'
 
 interface ChainSelectorProps {
   leftAlign?: boolean
-  forceLight?: boolean
 }
-
-// Light theme for styled-components
-const lightTheme = getTheme(false)
-
-// Styled dropdown container for light theme (replaces NavDropdown which uses vanilla-extract)
-const LightDropdownContainer = styled.div<{ top?: string; left?: string; right?: string }>`
-  position: absolute;
-  top: ${({ top }) => top ?? '56'}px;
-  left: ${({ left }) => left ?? 'auto'};
-  right: ${({ right }) => right ?? '0'};
-  background: ${({ theme }) => theme.surface2};
-  border: 1px solid ${({ theme }) => theme.surface3};
-  border-radius: 12px;
-  padding: 8px 0;
-  box-shadow: 0px 4px 12px 0px #00000026;
-  z-index: 1000;
-`
-
-const LightDropdownColumn = styled.div`
-  padding: 0 8px;
-`
 
 function useWalletSupportedChains(): ChainId[] {
   const { connector } = useWeb3React()
@@ -62,17 +39,16 @@ function useWalletSupportedChains(): ChainId[] {
 
   switch (connectionType) {
     case ConnectionType.WALLET_CONNECT_V2:
-    case ConnectionType.UNISWAP_WALLET_V2: {
+    case ConnectionType.UNISWAP_WALLET_V2:
       const wcChains = getSupportedChainIdsFromWalletConnectSession((connector as WalletConnectV2).provider?.session)
       // Filter WalletConnect chains to only include enabled ones
-      return wcChains.filter((chainId) => enabledChains.includes(chainId))
-    }
+      return wcChains.filter(chainId => enabledChains.includes(chainId))
     default:
       return enabledChains
   }
 }
 
-export const ChainSelector = ({ leftAlign, forceLight }: ChainSelectorProps) => {
+export const ChainSelector = ({ leftAlign }: ChainSelectorProps) => {
   const { chainId } = useWeb3React()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const isMobile = useIsMobile()
@@ -132,48 +108,29 @@ export const ChainSelector = ({ leftAlign, forceLight }: ChainSelectorProps) => 
 
   const isSupported = !!info
 
-  const dropdownContent = (
-    <>
-      {supportedChains.map((selectorChain) => (
-        <ChainSelectorRow
-          disabled={!walletSupportsChain.includes(selectorChain)}
-          onSelectChain={onSelectChain}
-          targetChain={selectorChain}
-          key={selectorChain}
-          isPending={selectorChain === pendingChainId}
-        />
-      ))}
-      {unsupportedChains.map((selectorChain) => (
-        <ChainSelectorRow
-          disabled
-          onSelectChain={() => undefined}
-          targetChain={selectorChain}
-          key={selectorChain}
-          isPending={false}
-        />
-      ))}
-    </>
-  )
-
   const dropdown = (
     <NavDropdown top="56" left={leftAlign ? '0' : 'auto'} right={leftAlign ? 'auto' : '0'} ref={modalRef}>
       <Column paddingX="8" data-testid="chain-selector-options">
-        {dropdownContent}
+        {supportedChains.map((selectorChain) => (
+          <ChainSelectorRow
+            disabled={!walletSupportsChain.includes(selectorChain)}
+            onSelectChain={onSelectChain}
+            targetChain={selectorChain}
+            key={selectorChain}
+            isPending={selectorChain === pendingChainId}
+          />
+        ))}
+        {unsupportedChains.map((selectorChain) => (
+          <ChainSelectorRow
+            disabled
+            onSelectChain={() => undefined}
+            targetChain={selectorChain}
+            key={selectorChain}
+            isPending={false}
+          />
+        ))}
       </Column>
     </NavDropdown>
-  )
-
-  const lightDropdown = (
-    <ThemeProvider theme={lightTheme}>
-      <LightDropdownContainer
-        top="56"
-        left={leftAlign ? '0' : undefined}
-        right={leftAlign ? undefined : '0'}
-        ref={modalRef}
-      >
-        <LightDropdownColumn data-testid="chain-selector-options">{dropdownContent}</LightDropdownColumn>
-      </LightDropdownContainer>
-    </ThemeProvider>
   )
 
   const chevronProps = {
@@ -201,8 +158,7 @@ export const ChainSelector = ({ leftAlign, forceLight }: ChainSelectorProps) => 
           {isOpen ? <ChevronUp {...chevronProps} /> : <ChevronDown {...chevronProps} />}
         </Row>
       </MouseoverTooltip>
-      {isOpen &&
-        (isMobile ? <Portal>{forceLight ? lightDropdown : dropdown}</Portal> : forceLight ? lightDropdown : dropdown)}
+      {isOpen && (isMobile ? <Portal>{dropdown}</Portal> : <>{dropdown}</>)}
     </Box>
   )
 }

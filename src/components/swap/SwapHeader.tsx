@@ -6,6 +6,7 @@ import { ThemedText } from 'theme'
 
 import { RowBetween, RowFixed } from '../Row'
 import SettingsTab from '../Settings'
+import SwapBuyFiatButton from './SwapBuyFiatButton'
 
 const StyledSwapHeader = styled(RowBetween)`
   margin-bottom: 10px;
@@ -17,20 +18,14 @@ const HeaderButtonContainer = styled(RowFixed)`
   gap: 16px;
 `
 
-const RightContainer = styled(RowFixed)`
-  gap: 8px;
-`
-
 export default function SwapHeader({
   autoSlippage,
   chainId,
   trade,
-  compact,
 }: {
   autoSlippage: Percent
   chainId?: number
   trade?: InterfaceTrade
-  compact?: boolean
 }) {
   return (
     <StyledSwapHeader>
@@ -38,26 +33,11 @@ export default function SwapHeader({
         <ThemedText.SubHeader>
           <Trans>Swap</Trans>
         </ThemedText.SubHeader>
+        {/* <SwapBuyFiatButton /> */}
       </HeaderButtonContainer>
-      <RightContainer>
-        {compact && <CompactWalletStatus />}
+      <RowFixed>
         <SettingsTab autoSlippage={autoSlippage} chainId={chainId} trade={trade} />
-      </RightContainer>
+      </RowFixed>
     </StyledSwapHeader>
-  )
-}
-
-// Lazy import to avoid circular dependencies
-function CompactWalletStatus() {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { ChainSelector } = require('components/NavBar/ChainSelector')
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const Web3Status = require('components/Web3Status').default
-
-  return (
-    <>
-      <ChainSelector forceLight />
-      <Web3Status />
-    </>
   )
 }

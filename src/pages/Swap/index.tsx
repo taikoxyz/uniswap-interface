@@ -33,14 +33,6 @@ import {
 } from 'components/swap/styled'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import SwapHeader from 'components/swap/SwapHeader'
-import { WrongChainOverlay } from 'components/WrongChainOverlay'
-import {
-  isTaikoChain,
-  TAIKO_HOODI_ADDRESSES,
-  TAIKO_HOODI_CHAIN_ID,
-  TAIKO_MAINNET_ADDRESSES,
-  TAIKO_MAINNET_CHAIN_ID,
-} from 'config/chains/taiko'
 import { getChainInfo } from 'constants/chainInfo'
 import { asSupportedChain, isSupportedChain } from 'constants/chains'
 import { getSwapCurrencyId, TOKEN_SHORTHANDS } from 'constants/tokens'
@@ -72,9 +64,18 @@ import { maybeLogFirstSwapAction } from 'tracing/swapFlowLoggers'
 import { computeFiatValuePriceImpact } from 'utils/computeFiatValuePriceImpact'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
 import { computeRealizedPriceImpact, warningSeverity } from 'utils/prices'
 import { didUserReject } from 'utils/swapErrorToUserReadableMessage'
+
+import {
+  isTaikoChain,
+  TAIKO_HOODI_ADDRESSES,
+  TAIKO_HOODI_CHAIN_ID,
+  TAIKO_MAINNET_ADDRESSES,
+  TAIKO_MAINNET_CHAIN_ID,
+} from 'config/chains/taiko'
+import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
+import { WrongChainOverlay } from 'components/WrongChainOverlay'
 
 import { useScreenSize } from '../../hooks/useScreenSize'
 import { useIsDarkMode } from '../../theme/components/ThemeToggle'
@@ -192,7 +193,6 @@ export function Swap({
   chainId,
   onCurrencyChange,
   disableTokenInputs = false,
-  compact = false,
 }: {
   className?: string
   initialInputCurrencyId?: string | null
@@ -200,7 +200,6 @@ export function Swap({
   chainId?: ChainId
   onCurrencyChange?: (selected: Pick<SwapState, Field.INPUT | Field.OUTPUT>) => void
   disableTokenInputs?: boolean
-  compact?: boolean
 }) {
   const { account, chainId: connectedChainId, connector } = useWeb3React()
   const trace = useTrace()
@@ -474,8 +473,8 @@ export function Swap({
     chainId && isTaikoChain(chainId)
       ? undefined
       : allowance.state === AllowanceState.ALLOWED
-      ? allowance.permitSignature
-      : undefined
+        ? allowance.permitSignature
+        : undefined
   )
 
   const handleContinueToReview = useCallback(() => {
@@ -624,10 +623,18 @@ export function Swap({
   const isDark = useIsDarkMode()
   const isUniswapXDefaultEnabled = useUniswapXDefaultEnabled()
 
-  const swapContent = (
-    <>
+  const swapElement = (
+    <SwapWrapper isDark={isDark} className={className} id="swap-page" style={{ position: 'relative' }}>
       <WrongChainOverlay />
-      <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} compact={compact} />
+      {/* <TokenSafetyModal
+        isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
+        tokenAddress={importTokensNotInDefault[0]?.address}
+        secondTokenAddress={importTokensNotInDefault[1]?.address}
+        onContinue={handleConfirmTokenWarning}
+        onCancel={handleDismissTokenWarning}
+        showCancel={true}
+      /> */}
+      <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} />
       {trade && showConfirm && allowance.state !== AllowanceState.LOADING && (
         <ConfirmSwapModal
           trade={trade}
@@ -843,16 +850,6 @@ export function Swap({
         </div>
       </AutoColumn>
       {!showOptInSmall && !isUniswapXDefaultEnabled && <UniswapXOptIn isSmall={false} swapInfo={swapInfo} />}
-    </>
-  )
-
-  const swapElement = compact ? (
-    <div className={className} id="swap-page" style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {swapContent}
-    </div>
-  ) : (
-    <SwapWrapper isDark={isDark} className={className} id="swap-page" style={{ position: 'relative' }}>
-      {swapContent}
     </SwapWrapper>
   )
 
