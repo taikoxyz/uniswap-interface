@@ -26,6 +26,7 @@ import { getCLS, getFCP, getFID, getLCP, Metric } from 'web-vitals'
 
 // High-traffic pages (index and /swap) should not be lazy-loaded.
 import Landing from './Landing'
+import Swap from './Swap'
 import Widget from './Widget'
 
 const AppChrome = lazy(() => import('./AppChrome'))
