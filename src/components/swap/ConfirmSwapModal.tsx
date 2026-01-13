@@ -274,6 +274,7 @@ export default function ConfirmSwapModal({
   swapResult,
   fiatValueInput,
   fiatValueOutput,
+  compact = false,
 }: {
   trade: InterfaceTrade
   inputCurrency?: Currency
@@ -288,6 +289,7 @@ export default function ConfirmSwapModal({
   onCurrencySelection: (field: Field, currency: Currency) => void
   fiatValueInput: { data?: number; isLoading: boolean }
   fiatValueOutput: { data?: number; isLoading: boolean }
+  compact?: boolean
 }) {
   const { chainId } = useWeb3React()
   const doesTradeDiffer = originalTrade && tradeMeaningfullyDiffers(trade, originalTrade, allowedSlippage)
@@ -414,7 +416,7 @@ export default function ConfirmSwapModal({
 
   return (
     <Trace modal={InterfaceModalName.CONFIRM_SWAP}>
-      <Modal isOpen $scrollOverlay onDismiss={onModalDismiss} maxHeight={90}>
+      <Modal isOpen $scrollOverlay onDismiss={onModalDismiss} maxHeight={90} compact={compact}>
         {approvalError || swapFailed ? (
           <ErrorModalContent
             errorType={approvalError ?? PendingModalError.CONFIRMATION_ERROR}
@@ -427,6 +429,7 @@ export default function ConfirmSwapModal({
             topContent={modalHeader}
             bottomContent={modalBottom}
             headerContent={l2Badge}
+            compact={compact}
           />
         )}
       </Modal>

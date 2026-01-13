@@ -22,17 +22,17 @@ import Modal from '../Modal'
 import Row, { RowBetween, RowFixed } from '../Row'
 import AnimatedConfirmation from './AnimatedConfirmation'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ $compact?: boolean }>`
   background-color: ${({ theme }) => theme.surface1};
-  border-radius: 20px;
-  outline: 1px solid ${({ theme }) => theme.surface3};
+  border-radius: ${({ $compact }) => ($compact ? '0' : '20px')};
+  outline: ${({ $compact, theme }) => ($compact ? 'none' : `1px solid ${theme.surface3}`)};
   width: 100%;
   padding: 16px;
 `
 
-const BottomSection = styled(AutoColumn)`
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+const BottomSection = styled(AutoColumn)<{ $compact?: boolean }>`
+  border-bottom-left-radius: ${({ $compact }) => ($compact ? '0' : '20px')};
+  border-bottom-right-radius: ${({ $compact }) => ($compact ? '0' : '20px')};
 `
 
 const ConfirmedIcon = styled(ColumnCenter)<{ inline?: boolean }>`
@@ -174,15 +174,17 @@ export function ConfirmationModalContent({
   onDismiss,
   topContent,
   headerContent,
+  compact = false,
 }: {
   title: ReactNode
   onDismiss: () => void
   topContent: () => ReactNode
   bottomContent?: () => ReactNode
   headerContent?: () => ReactNode
+  compact?: boolean
 }) {
   return (
-    <Wrapper>
+    <Wrapper $compact={compact}>
       <AutoColumn gap="sm">
         <Row>
           {headerContent?.()}
@@ -193,7 +195,7 @@ export function ConfirmationModalContent({
         </Row>
         {topContent()}
       </AutoColumn>
-      {bottomContent && <BottomSection gap="12px">{bottomContent()}</BottomSection>}
+      {bottomContent && <BottomSection $compact={compact} gap="12px">{bottomContent()}</BottomSection>}
     </Wrapper>
   )
 }

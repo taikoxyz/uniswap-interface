@@ -652,6 +652,7 @@ export function Swap({
           onDismiss={handleConfirmDismiss}
           fiatValueInput={fiatValueTradeInput}
           fiatValueOutput={fiatValueTradeOutput}
+          compact={compact}
         />
       )}
       {showPriceImpactModal && showPriceImpactWarning && (
