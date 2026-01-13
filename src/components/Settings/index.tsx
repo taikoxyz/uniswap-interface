@@ -39,24 +39,33 @@ const Menu = styled.div`
   position: relative;
 `
 
-const MenuFlyout = styled(AutoColumn)`
-  min-width: 20.125rem;
+const MenuFlyout = styled(AutoColumn)<{ $compact?: boolean }>`
+  min-width: ${({ $compact }) => ($compact ? '100%' : '20.125rem')};
   background-color: ${({ theme }) => theme.surface1};
-  border: 1px solid ${({ theme }) => theme.surface3};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
-  border-radius: 12px;
-  position: absolute;
-  top: 100%;
-  margin-top: 10px;
-  right: 0;
-  z-index: 100;
+  border: ${({ $compact, theme }) => ($compact ? 'none' : `1px solid ${theme.surface3}`)};
+  box-shadow: ${({ $compact }) =>
+    $compact
+      ? 'none'
+      : '0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 24px 32px rgba(0, 0, 0, 0.01)'};
+  border-radius: ${({ $compact }) => ($compact ? '0' : '12px')};
+  position: ${({ $compact }) => ($compact ? 'fixed' : 'absolute')};
+  top: ${({ $compact }) => ($compact ? '0' : '100%')};
+  left: ${({ $compact }) => ($compact ? '0' : 'auto')};
+  right: ${({ $compact }) => ($compact ? '0' : '0')};
+  bottom: ${({ $compact }) => ($compact ? '0' : 'auto')};
+  margin-top: ${({ $compact }) => ($compact ? '0' : '10px')};
+  z-index: ${({ $compact }) => ($compact ? Z_INDEX.modal : '100')};
   color: ${({ theme }) => theme.neutral1};
-  ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
+  ${({ theme, $compact }) =>
+    !$compact &&
+    theme.deprecated_mediaWidth.deprecated_upToMedium`
     min-width: 18.125rem;
   `};
   user-select: none;
   padding: 16px;
+  justify-content: flex-start;
+  align-items: ${({ $compact }) => ($compact ? 'stretch' : 'initial')};
+  height: ${({ $compact }) => ($compact ? 'auto' : 'initial')};
 `
 
 const ExpandColumn = styled(AutoColumn)`
@@ -101,10 +110,12 @@ export default function SettingsTab({
   autoSlippage,
   chainId,
   trade,
+  compact,
 }: {
   autoSlippage: Percent
   chainId?: number
   trade?: InterfaceTrade
+  compact?: boolean
 }) {
   const { chainId: connectedChainId } = useWeb3React()
   const showDeadlineSettings = Boolean(chainId && !L2_CHAIN_IDS.includes(chainId))
@@ -150,7 +161,23 @@ export default function SettingsTab({
   return (
     <Menu ref={node}>
       <MenuButton disabled={!isChainSupported || chainId !== connectedChainId} isActive={isOpen} onClick={toggleMenu} />
-      {isOpenDesktop && <MenuFlyout>{Settings}</MenuFlyout>}
+      {isOpenDesktop && (
+        <MenuFlyout $compact={compact}>
+          {compact && (
+            <MobileMenuHeader padding="8px 0px 4px">
+              <CloseButton data-testid="compact-settings-close" onClick={closeMenu}>
+                <X size={24} />
+              </CloseButton>
+              <Row padding="0px 24px 0px 0px" justify="center">
+                <ThemedText.SubHeader>
+                  <Trans>Settings</Trans>
+                </ThemedText.SubHeader>
+              </Row>
+            </MobileMenuHeader>
+          )}
+          {Settings}
+        </MenuFlyout>
+      )}
       {isOpenMobile && (
         <Portal>
           <MobileMenuContainer data-testid="mobile-settings-menu">
