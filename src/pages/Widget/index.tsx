@@ -19,7 +19,7 @@ const WidgetWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background: #ffffff;
   overflow: auto;
 `

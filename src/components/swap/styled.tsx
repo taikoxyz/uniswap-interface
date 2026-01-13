@@ -137,22 +137,25 @@ export const SwapGlow = styled.div`
 `
 
 // Mostly copied from `AppBody` but it was getting too hard to maintain backwards compatibility.
-const SwapWrapperOuter = styled.main<{ isDark?: boolean }>`
+const SwapWrapperOuter = styled.main<{ isDark?: boolean; compact?: boolean }>`
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: ${({ compact }) => (compact ? '100%' : '480px')};
   z-index: ${Z_INDEX.default};
-  border: 1px solid ${({ theme, isDark }) => (isDark ? 'rgba(232, 24, 153, 0.3)' : theme.surface3)};
+  border: ${({ compact, theme, isDark }) =>
+    compact ? 'none' : `1px solid ${isDark ? 'rgba(232, 24, 153, 0.3)' : theme.surface3}`};
   transition: all 250ms ease;
-  border-radius: 24px;
-  box-shadow: ${({ isDark }) =>
-    isDark
-      ? '0 0 40px rgba(232, 24, 153, 0.2), 0 0 80px rgba(252, 114, 255, 0.15)'
-      : '0 4px 12px rgba(0, 0, 0, 0.05)'};
+  border-radius: ${({ compact }) => (compact ? '0' : '24px')};
+  box-shadow: ${({ compact, isDark }) =>
+    compact
+      ? 'none'
+      : isDark
+        ? '0 0 40px rgba(232, 24, 153, 0.2), 0 0 80px rgba(252, 114, 255, 0.15)'
+        : '0 4px 12px rgba(0, 0, 0, 0.05)'};
 
   &:before {
     content: ' ';
-    display: flex;
+    display: ${({ compact }) => (compact ? 'none' : 'flex')};
     position: absolute;
     inset: 0;
     transform: scale(1.1);
@@ -165,24 +168,27 @@ const SwapWrapperOuter = styled.main<{ isDark?: boolean }>`
   }
 
   &:hover {
-    border: 1px solid ${({ theme, isDark }) => (isDark ? 'rgba(232, 24, 153, 0.5)' : theme.surface3)};
-    box-shadow: ${({ isDark }) =>
-      isDark
-        ? '0 0 50px rgba(232, 24, 153, 0.25), 0 0 100px rgba(252, 114, 255, 0.2)'
-        : '0 4px 16px rgba(0, 0, 0, 0.08)'};
+    border: ${({ compact, theme, isDark }) =>
+      compact ? 'none' : `1px solid ${isDark ? 'rgba(232, 24, 153, 0.5)' : theme.surface3}`};
+    box-shadow: ${({ compact, isDark }) =>
+      compact
+        ? 'none'
+        : isDark
+          ? '0 0 50px rgba(232, 24, 153, 0.25), 0 0 100px rgba(252, 114, 255, 0.2)'
+          : '0 4px 16px rgba(0, 0, 0, 0.08)'};
   }
 `
 
-export const SwapWrapper = (props: React.ComponentProps<typeof SwapWrapperOuter>) => {
+export const SwapWrapper = (props: React.ComponentProps<typeof SwapWrapperOuter> & { compact?: boolean }) => {
   return (
     <SwapWrapperOuter {...props}>
-      <SwapWrapperInner>{props.children}</SwapWrapperInner>
+      <SwapWrapperInner compact={props.compact}>{props.children}</SwapWrapperInner>
     </SwapWrapperOuter>
   )
 }
 
-const SwapWrapperInner = styled.div`
-  border-radius: 24px;
+const SwapWrapperInner = styled.div<{ compact?: boolean }>`
+  border-radius: ${({ compact }) => (compact ? '0' : '24px')};
   background: ${({ theme }) => theme.surface1};
   z-index: -1;
   padding: 8px;
