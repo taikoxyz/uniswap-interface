@@ -20,6 +20,7 @@ const TableContainer = styled.div`
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 `
 
 const TableHeader = styled.thead`
@@ -55,6 +56,10 @@ const TableRow = styled.tr`
 const TableCell = styled.td`
   padding: 16px;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
 `
 
 const PoolCell = styled(TableCell)`

@@ -33,6 +33,9 @@ const StatLabel = styled(ThemedText.BodySecondary)`
 const StatValue = styled(ThemedText.HeadlineLarge)`
   font-size: 28px;
   font-weight: 535;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const StatChange = styled.span<{ $positive?: boolean }>`
