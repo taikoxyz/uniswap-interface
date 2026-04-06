@@ -60,3 +60,4 @@ cypress/screenshots
 # Git worktrees (Crystal)
 /worktrees/
 /worktree-*/
+.gstack/

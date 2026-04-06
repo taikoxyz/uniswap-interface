@@ -102,17 +102,21 @@ const LoadingContainer = styled(NoPoolsContainer)``
 type SortField = 'tvl' | 'volume' | 'fees' | 'apr'
 
 function formatNumber(value: number): string {
-  if (value >= 1_000_000) {
-    return `$${(value / 1_000_000).toFixed(2)}M`
-  }
-  if (value >= 1_000) {
-    return `$${(value / 1_000).toFixed(2)}K`
-  }
-  return `$${value.toFixed(2)}`
+  if (value === 0) return '$0.00'
+  if (value >= 1e15) return '>$999T'
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    notation: 'compact',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value)
 }
 
 function formatPercent(value: number): string {
   if (value === 0) return '-'
+  if (value >= 1e10) return '>999%'
   return `${value.toFixed(2)}%`
 }
 
@@ -291,7 +295,7 @@ export function PoolsTable() {
               <TableCell>{formatNumber(pool.tvlUSD)}</TableCell>
               <TableCell>{formatPercent(pool.apr || 0)}</TableCell>
               <TableCell>{formatNumber(pool.volumeUSD)}</TableCell>
-              <TableCell>{pool.tvlUSD > 0 ? `${((pool.volumeUSD / pool.tvlUSD) * 100).toFixed(2)}%` : '-'}</TableCell>
+              <TableCell>{pool.tvlUSD > 0 ? formatPercent((pool.volumeUSD / pool.tvlUSD) * 100) : '-'}</TableCell>
             </TableRow>
           ))}
         </tbody>
