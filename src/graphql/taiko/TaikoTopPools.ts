@@ -131,8 +131,12 @@ export function useTopPoolsTaiko(
 
     return data.pools.map((pool): NormalizedTaikoPool => {
       const tvlUSD = parseFloat(pool.totalValueLockedUSD)
-      const volumeUSD = parseFloat(pool.volumeUSD)
-      const feesUSD = parseFloat(pool.feesUSD)
+      // Cap corrupted pool volumes: USDC/TAIKO 0.3% pool has $8.1e+32 phantom volume
+      // from two bad subgraph events. TODO: Remove after subgraph reindex.
+      const rawVolumeUSD = parseFloat(pool.volumeUSD)
+      const rawFeesUSD = parseFloat(pool.feesUSD)
+      const volumeUSD = rawVolumeUSD > 1e9 ? 0 : rawVolumeUSD
+      const feesUSD = rawFeesUSD > 1e9 ? 0 : rawFeesUSD
       const feeTier = parseInt(pool.feeTier)
 
       // Calculate APR: (annual fees / TVL) * 100
@@ -171,19 +175,36 @@ export function useTopPoolsTaiko(
 
 /**
  * Query for protocol-wide TVL stats
+ *
+ * Fetches both factory totals and individual pool data. Factory cumulative
+ * volumeUSD/feesUSD are corrupted by two bad swap events (Feb 17 & Mar 2 2026)
+ * on the USDC/TAIKO 0.3% pool that recorded ~$8.1e+32 in phantom volume.
+ * We compute corrected totals from individual pool volumes, capping each pool
+ * at a reasonable maximum. TVL, txCount, and poolCount are unaffected.
+ *
+ * TODO: Remove this workaround after the subgraph is reindexed with the
+ * volume sanity cap fix (taikoxyz/uniswap-v3-subgraph).
  */
 const TAIKO_PROTOCOL_STATS_QUERY = gql`
   query TaikoProtocolStats {
     factories(first: 1) {
       id
-      totalVolumeUSD
       totalValueLockedUSD
-      totalFeesUSD
       txCount
       poolCount
     }
+    pools(first: 100) {
+      volumeUSD
+      feesUSD
+    }
   }
 `
+
+// Per-pool volume cap: any pool reporting more than $100M cumulative volume
+// is almost certainly corrupted given Taiko's current liquidity (~$5.6M TVL).
+// Corrupted values are zeroed (not capped) since the real value can't be
+// recovered from the pool entity — it requires summing daily data.
+const MAX_POOL_VOLUME_USD = 1e8
 
 export interface TaikoProtocolStats {
   totalVolumeUSD: number
@@ -207,11 +228,13 @@ export function useProtocolStatsTaiko(chainId: number): UseProtocolStatsTaikoRes
 
   const { data, loading, error } = useQuery<{
     factories: Array<{
-      totalVolumeUSD: string
       totalValueLockedUSD: string
-      totalFeesUSD: string
       txCount: string
       poolCount: string
+    }>
+    pools: Array<{
+      volumeUSD: string
+      feesUSD: string
     }>
   }>(TAIKO_PROTOCOL_STATS_QUERY, {
     client,
@@ -222,10 +245,22 @@ export function useProtocolStatsTaiko(chainId: number): UseProtocolStatsTaikoRes
     if (!data?.factories?.[0]) return undefined
 
     const factory = data.factories[0]
+
+    // Sum volume/fees from individual pools, zeroing corrupted entries
+    const totalVolumeUSD = (data.pools || []).reduce((sum, pool) => {
+      const vol = parseFloat(pool.volumeUSD)
+      return sum + (vol > MAX_POOL_VOLUME_USD ? 0 : vol)
+    }, 0)
+
+    const totalFeesUSD = (data.pools || []).reduce((sum, pool) => {
+      const fees = parseFloat(pool.feesUSD)
+      return sum + (fees > MAX_POOL_VOLUME_USD ? 0 : fees)
+    }, 0)
+
     return {
-      totalVolumeUSD: parseFloat(factory.totalVolumeUSD),
+      totalVolumeUSD,
       totalValueLockedUSD: parseFloat(factory.totalValueLockedUSD),
-      totalFeesUSD: parseFloat(factory.totalFeesUSD),
+      totalFeesUSD,
       txCount: parseInt(factory.txCount),
       poolCount: parseInt(factory.poolCount),
     }
