@@ -110,6 +110,10 @@ const ClickableContent = styled.div<{ gap?: number }>`
   color: ${({ theme }) => theme.neutral1};
   align-items: center;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 `
 const ClickableName = styled(ClickableContent)`
   gap: 8px;
@@ -148,6 +152,7 @@ const ListNumberCell = styled(Cell)<{ header: boolean }>`
 const DataCell = styled(Cell)<{ sortable: boolean }>`
   justify-content: flex-end;
   min-width: 80px;
+  overflow: hidden;
   user-select: ${({ sortable }) => (sortable ? 'none' : 'unset')};
   transition: ${({
     theme: {
