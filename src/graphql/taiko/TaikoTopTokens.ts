@@ -273,11 +273,7 @@ function normalizeTokens(
     const tvl = parseFloat(token.totalValueLockedUSD)
     return tvl >= 1000
   }).map((token): NormalizedTaikoToken => {
-    // Cap volume: token-level volumeUSD is corrupted for USDC and TAIKO due to
-    // bad subgraph data (two swaps with phantom $8.1e+32 volume).
-    // TODO: Remove after subgraph reindex.
-    const rawVolumeUSD = parseFloat(token.volumeUSD)
-    const volumeUSD = rawVolumeUSD > 1e9 ? 0 : rawVolumeUSD
+    const volumeUSD = parseFloat(token.volumeUSD)
     const tvlUSD = parseFloat(token.totalValueLockedUSD)
     const derivedETH = parseFloat(token.derivedETH || '0')
     const priceUSD = derivedETH * ethPriceUSD
