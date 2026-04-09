@@ -16,9 +16,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: node_modules/.cache
           key: ${{ runner.os }}-eslint-${{ github.run_id }}
@@ -33,9 +33,9 @@ jobs:
   typecheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: node_modules/.cache
           key: ${{ runner.os }}-tsc-${{ github.run_id }}
@@ -50,7 +50,7 @@ jobs:
   deps-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       - run: yarn yarn-deduplicate --strategy=highest --list --fail
       - if: failure() && github.ref_name == 'main'
@@ -62,9 +62,9 @@ jobs:
   unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: node_modules/.cache
           key: ${{ runner.os }}-jest-${{ github.run_id }}
@@ -84,15 +84,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: node_modules/.swc
           key: ${{ runner.os }}-swc-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-swc-
       - run: yarn build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: build
           path: build
@@ -101,9 +101,9 @@ jobs:
   cypress-typecheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: node_modules/.cache
           key: ${{ runner.os }}-cypress-tsc-${{ github.run_id }}
@@ -129,9 +129,9 @@ jobs:
       matrix:
         containers: [1, 2, 3, 4]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: /root/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/node_modules/cypress/package.json') }}
@@ -139,7 +139,7 @@ jobs:
           yarn cypress install
           yarn cypress info
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: build
           path: build
@@ -179,7 +179,7 @@ jobs:
           name: Cypress tests
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST_REPORTER_WEBHOOK }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: hardhat-cache
           path: cache
@@ -188,7 +188,7 @@ jobs:
     needs: [cypress-test-matrix]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: hardhat-cache
           path: cache
@@ -200,9 +200,9 @@ jobs:
   cloud-typecheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: node_modules/.cache
           key: ${{ runner.os }}-cloud-tsc-${{ github.run_id }}
@@ -217,9 +217,9 @@ jobs:
   cloud-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: node_modules/.cache
           key: ${{ runner.os }}-cloud-jest-${{ github.run_id }}

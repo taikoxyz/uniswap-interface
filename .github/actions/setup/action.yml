@@ -4,15 +4,15 @@ description: checkout repo, setup node, and install node_modules
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: 18
         registry-url: https://registry.npmjs.org
         # cache is intentionally omitted, as it is faster with yarn v1 to cache node_modules.
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v5
       id: install-cache
       with:
         # node_modules/.cache is intentionally omitted, as this is used for build tool caches.
@@ -29,7 +29,7 @@ runs:
       shell: bash
 
     # Contracts are compiled from source. If source hasn't changed, the contracts do not need to be re-compiled.
-    - uses: actions/cache@v3
+    - uses: actions/cache@v5
       id: contracts-cache
       with:
         path: |
