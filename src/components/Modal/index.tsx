@@ -11,21 +11,31 @@ export const MODAL_TRANSITION_DURATION = 200
 
 const AnimatedDialogOverlay = animated(DialogOverlay)
 
-const StyledDialogOverlay = styled(AnimatedDialogOverlay)<{ $scrollOverlay?: boolean }>`
+const StyledDialogOverlay = styled(AnimatedDialogOverlay)<{ $scrollOverlay?: boolean; $compact?: boolean }>`
   &[data-reach-dialog-overlay] {
     z-index: ${Z_INDEX.modalBackdrop};
     background-color: transparent;
     overflow: hidden;
 
     display: flex;
-    align-items: center;
+    align-items: ${({ $compact }) => ($compact ? 'flex-start' : 'center')};
     @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}px) {
-      align-items: flex-end;
+      align-items: ${({ $compact }) => ($compact ? 'flex-start' : 'flex-end')};
     }
-    overflow-y: ${({ $scrollOverlay }) => $scrollOverlay && 'scroll'};
-    justify-content: center;
+    overflow-y: ${({ $scrollOverlay, $compact }) => ($compact ? 'hidden' : $scrollOverlay && 'scroll')};
+    justify-content: ${({ $compact }) => ($compact ? 'flex-start' : 'center')};
 
-    background-color: ${({ theme }) => theme.scrim};
+    background-color: ${({ $compact, theme }) => ($compact ? 'transparent' : theme.scrim)};
+
+    ${({ $compact }) =>
+      $compact &&
+      css`
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      `}
   }
 `
 
@@ -35,44 +45,59 @@ type StyledDialogProps = {
   $scrollOverlay?: boolean
   $hideBorder?: boolean
   $maxWidth: number
+  $compact?: boolean
 }
 
 const AnimatedDialogContent = animated(DialogContent)
 const StyledDialogContent = styled(AnimatedDialogContent)<StyledDialogProps>`
-  overflow-y: auto;
+  overflow-y: ${({ $compact }) => ($compact ? 'auto' : 'auto')};
 
   &[data-reach-dialog-content] {
-    margin: auto;
+    margin: ${({ $compact }) => ($compact ? '0' : 'auto')};
     background-color: ${({ theme }) => theme.surface2};
-    border: ${({ theme, $hideBorder }) => !$hideBorder && `1px solid ${theme.surface3}`};
-    box-shadow: ${({ theme }) => theme.deprecated_deepShadow};
+    border: ${({ theme, $hideBorder, $compact }) => ($compact || $hideBorder) ? 'none' : `1px solid ${theme.surface3}`};
+    box-shadow: ${({ theme, $compact }) => ($compact ? 'none' : theme.deprecated_deepShadow)};
     padding: 0px;
-    width: 50vw;
+    width: ${({ $compact }) => ($compact ? '100vw' : '50vw')};
     overflow-y: auto;
     overflow-x: hidden;
-    max-width: ${({ $maxWidth }) => $maxWidth}px;
-    ${({ $maxHeight }) =>
-      $maxHeight &&
+    max-width: ${({ $maxWidth, $compact }) => ($compact ? '100vw' : `${$maxWidth}px`)};
+    ${({ $maxHeight, $compact }) =>
+      !$compact && $maxHeight &&
       css`
         max-height: ${$maxHeight}vh;
       `}
-    ${({ $minHeight }) =>
-      $minHeight &&
+    ${({ $minHeight, $compact }) =>
+      !$compact && $minHeight &&
       css`
         min-height: ${$minHeight}vh;
       `}
-    display: ${({ $scrollOverlay }) => ($scrollOverlay ? 'inline-table' : 'flex')};
-    border-radius: 20px;
+    ${({ $compact }) =>
+      $compact &&
+      css`
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        min-height: 100vh;
+        max-height: 100vh;
+      `}
+    display: ${({ $scrollOverlay, $compact }) => ($compact ? 'flex' : $scrollOverlay ? 'inline-table' : 'flex')};
+    border-radius: ${({ $compact }) => ($compact ? '0' : '20px')};
 
     @media screen and (max-width: ${({ theme }) => theme.breakpoint.md}px) {
-      width: 65vw;
+      width: ${({ $compact }) => ($compact ? '100vw' : '65vw')};
     }
     @media screen and (max-width: ${({ theme }) => theme.breakpoint.sm}px) {
       margin: 0;
       width: 100vw;
-      border-radius: 20px;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+      border-radius: ${({ $compact }) => ($compact ? '0' : '20px')};
+      ${({ $compact }) =>
+        !$compact &&
+        css`
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        `}
     }
   }
 `
@@ -89,6 +114,7 @@ interface ModalProps {
   children?: React.ReactNode
   $scrollOverlay?: boolean
   hideBorder?: boolean
+  compact?: boolean
 }
 
 export default function Modal({
@@ -103,6 +129,7 @@ export default function Modal({
   onSwipe = onDismiss,
   $scrollOverlay,
   hideBorder = false,
+  compact = false,
 }: ModalProps) {
   const fadeTransition = useTransition(isOpen, {
     config: { duration: MODAL_TRANSITION_DURATION },
@@ -134,9 +161,10 @@ export default function Modal({
               initialFocusRef={initialFocusRef}
               unstable_lockFocusAcrossFrames={false}
               $scrollOverlay={$scrollOverlay}
+              $compact={compact}
             >
               <StyledDialogContent
-                {...(isMobile
+                {...(isMobile && !compact
                   ? {
                       ...bind(),
                       style: { transform: y.interpolate((y) => `translateY(${(y as number) > 0 ? y : 0}px)`) },
@@ -148,6 +176,7 @@ export default function Modal({
                 $scrollOverlay={$scrollOverlay}
                 $hideBorder={hideBorder}
                 $maxWidth={maxWidth}
+                $compact={compact}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
                 {!initialFocusRef && isMobile ? <div tabIndex={1} /> : null}

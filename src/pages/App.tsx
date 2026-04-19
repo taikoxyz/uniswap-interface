@@ -8,7 +8,7 @@ import { useFeatureFlagsIsLoaded } from 'featureFlags'
 import { useInfoPoolPageEnabled } from 'featureFlags/flags/infoPoolPage'
 import { useAtom } from 'jotai'
 import { useBag } from 'nft/hooks/useBag'
-import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
 import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
 import { useRouterPreference } from 'state/user/hooks'
@@ -21,13 +21,13 @@ import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 import { STATSIG_DUMMY_KEY } from 'tracing'
 import { getEnvName, isBrowserRouterEnabled } from 'utils/env'
-import { getDownloadAppLink } from 'utils/openDownloadApp'
 import { getCurrentPageFromLocation } from 'utils/urlRoutes'
 import { getCLS, getFCP, getFID, getLCP, Metric } from 'web-vitals'
 
 // High-traffic pages (index and /swap) should not be lazy-loaded.
 import Landing from './Landing'
 import Swap from './Swap'
+import Widget from './Widget'
 
 const AppChrome = lazy(() => import('./AppChrome'))
 const NftExplore = lazy(() => import('nft/pages/explore'))
@@ -119,6 +119,7 @@ export default function App() {
   const { hash, pathname } = location
   const currentPage = getCurrentPageFromLocation(pathname)
   const isDarkMode = useIsDarkMode()
+  const isWidgetPage = pathname === '/widget'
   const [routerPreference] = useRouterPreference()
   const [scrolledState, setScrolledState] = useState(false)
   const infoPoolPageEnabled = useInfoPoolPageEnabled()
@@ -202,6 +203,34 @@ export default function App() {
   // if (shouldRedirectToAppInstall) {
   //   return null
   // }
+
+  // Widget page renders without the app shell (no header, footer, etc.) for iframe embedding
+  if (isWidgetPage) {
+    return (
+      <ErrorBoundary>
+        <DarkModeQueryParamReader />
+        <Trace page={currentPage}>
+          <StatsigProvider
+            user={statsigUser}
+            sdkKey={STATSIG_DUMMY_KEY}
+            waitForInitialization={false}
+            options={{
+              environment: { tier: getEnvName() },
+              disableNetwork: true,
+              disableAutoMetricsLogging: true,
+              disableErrorLogging: true,
+              localMode: true,
+            }}
+          >
+            <Suspense>
+              <AppChrome />
+            </Suspense>
+            <Suspense fallback={<Loader />}>{isLoaded ? <Widget /> : <Loader />}</Suspense>
+          </StatsigProvider>
+        </Trace>
+      </ErrorBoundary>
+    )
+  }
 
   return (
     <ErrorBoundary>

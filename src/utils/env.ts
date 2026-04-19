@@ -33,6 +33,7 @@ export function isBrowserRouterEnabled(): boolean {
       isAppUniswapOrg(window.location) ||
       isAppUniswapStagingOrg(window.location) ||
       isTaikoDex(window.location) ||
+      isVercelPreview(window.location) ||
       isLocalhost(window.location) // cypress tests
     ) {
       return true
@@ -44,6 +45,10 @@ export function isBrowserRouterEnabled(): boolean {
 
 function isLocalhost({ hostname }: { hostname: string }): boolean {
   return hostname === 'localhost'
+}
+
+function isVercelPreview({ hostname }: { hostname: string }): boolean {
+  return hostname.endsWith('.vercel.app')
 }
 
 export function isSentryEnabled(): boolean {
