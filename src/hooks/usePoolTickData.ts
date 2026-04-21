@@ -2,6 +2,7 @@ import { ChainId, Currency } from '@uniswap/sdk-core'
 import { FeeAmount, nearestUsableTick, Pool, TICK_SPACINGS, tickToPrice } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { V3_CORE_FACTORY_ADDRESSES } from 'config/chains'
+import { AVERAGE_L1_BLOCK_TIME, getAverageBlockTime } from 'constants/chainInfo'
 import { ZERO_ADDRESS } from 'constants/misc'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'constants/taiko'
 import { useAllV3TicksQuery } from 'graphql/thegraph/__generated__/types-and-hooks'
@@ -31,8 +32,6 @@ export interface TickProcessed {
   liquidityNet: JSBI
   price0: string
 }
-
-const REFRESH_FREQUENCY = { blocksPerFetch: 2 }
 
 const getActiveTick = (tickCurrent: number | undefined, feeAmount: FeeAmount | undefined) =>
   tickCurrent && feeAmount ? Math.floor(tickCurrent / TICK_SPACINGS[feeAmount]) * TICK_SPACINGS[feeAmount] : undefined
@@ -95,11 +94,15 @@ function useTicksFromTickLens(
   )
 
   const tickLens = useTickLens()
+  const refreshFrequency = useMemo(
+    () => ({ blocksPerFetch: Math.max(1, Math.round((AVERAGE_L1_BLOCK_TIME / getAverageBlockTime(chainId)) * 2)) }),
+    [chainId]
+  )
   const callStates = useSingleContractMultipleData(
     tickLensArgs.length > 0 ? tickLens : undefined,
     'getPopulatedTicksInWord',
     tickLensArgs,
-    REFRESH_FREQUENCY
+    refreshFrequency
   )
 
   const isError = useMemo(() => callStates.some(({ error }) => error), [callStates])

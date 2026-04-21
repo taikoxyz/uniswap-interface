@@ -24,6 +24,7 @@ import { ARBITRUM_LIST, AVALANCHE_LIST, BASE_LIST, CELO_LIST, OPTIMISM_LIST, PLA
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 export const AVERAGE_L1_BLOCK_TIME = ms(`12s`)
+export const AVERAGE_L2_BLOCK_TIME = ms(`2s`)
 
 export enum NetworkType {
   L1,
@@ -31,6 +32,7 @@ export enum NetworkType {
 }
 interface BaseChainInfo {
   readonly networkType: NetworkType
+  readonly averageBlockTimeMs: number
   readonly blockWaitMsBeforeWarning?: number
   readonly docs: string
   readonly bridge?: string
@@ -69,6 +71,7 @@ type ChainInfoMap = { readonly [chainId: number]: L1ChainInfo | L2ChainInfo } & 
 const CHAIN_INFO: ChainInfoMap = {
   [ChainId.MAINNET]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     docs: 'https://docs.uniswap.org/',
     explorer: 'https://etherscan.io/',
     infoLink: 'https://info.uniswap.org/#/',
@@ -79,6 +82,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.GOERLI]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     docs: 'https://docs.uniswap.org/',
     explorer: 'https://goerli.etherscan.io/',
     infoLink: 'https://info.uniswap.org/#/',
@@ -89,6 +93,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.SEPOLIA]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     docs: 'https://docs.uniswap.org/',
     explorer: 'https://sepolia.etherscan.io/',
     infoLink: 'https://info.uniswap.org/#/',
@@ -99,6 +104,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.OPTIMISM]: {
     networkType: NetworkType.L2,
+    averageBlockTimeMs: AVERAGE_L2_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`25m`),
     bridge: 'https://app.optimism.io/bridge',
     defaultListUrl: OPTIMISM_LIST,
@@ -118,6 +124,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.OPTIMISM_GOERLI]: {
     networkType: NetworkType.L2,
+    averageBlockTimeMs: AVERAGE_L2_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`25m`),
     bridge: 'https://app.optimism.io/bridge',
     defaultListUrl: OPTIMISM_LIST,
@@ -133,6 +140,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.ARBITRUM_ONE]: {
     networkType: NetworkType.L2,
+    averageBlockTimeMs: AVERAGE_L2_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://bridge.arbitrum.io/',
     docs: 'https://offchainlabs.com/',
@@ -149,6 +157,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.ARBITRUM_GOERLI]: {
     networkType: NetworkType.L2,
+    averageBlockTimeMs: AVERAGE_L2_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://bridge.arbitrum.io/',
     docs: 'https://offchainlabs.com/',
@@ -163,6 +172,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.POLYGON]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://wallet.polygon.technology/polygon/bridge',
     docs: 'https://polygon.io/',
@@ -178,6 +188,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.POLYGON_MUMBAI]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://wallet.polygon.technology/polygon/bridge/deposit',
     docs: 'https://polygon.io/',
@@ -189,6 +200,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.CELO]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://www.portalbridge.com/#/transfer',
     docs: 'https://docs.celo.org/',
@@ -203,6 +215,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.CELO_ALFAJORES]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://www.portalbridge.com/#/transfer',
     docs: 'https://docs.celo.org/',
@@ -215,6 +228,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.BNB]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://cbridge.celer.network/1/56',
     docs: 'https://docs.bnbchain.org/',
@@ -231,6 +245,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.AVALANCHE]: {
     networkType: NetworkType.L1,
+    averageBlockTimeMs: AVERAGE_L1_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://core.app/bridge/',
     docs: 'https://docs.avax.network/',
@@ -247,6 +262,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [ChainId.BASE]: {
     networkType: NetworkType.L2,
+    averageBlockTimeMs: AVERAGE_L2_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`25m`),
     bridge: 'https://bridge.base.org/deposit',
     defaultListUrl: BASE_LIST,
@@ -263,6 +279,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [TAIKO_MAINNET_CHAIN_ID]: {
     networkType: NetworkType.L2,
+    averageBlockTimeMs: AVERAGE_L2_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`25m`),
     bridge: 'https://bridge.taiko.xyz',
     docs: 'https://docs.taiko.xyz/',
@@ -279,6 +296,7 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [TAIKO_HOODI_CHAIN_ID]: {
     networkType: NetworkType.L2,
+    averageBlockTimeMs: AVERAGE_L2_BLOCK_TIME,
     blockWaitMsBeforeWarning: ms(`25m`),
     bridge: 'https://bridge.taiko.xyz',
     docs: 'https://docs.taiko.xyz/',
@@ -336,4 +354,9 @@ export function getChainInfo(
 const TAIKO_HOODI_INFO = CHAIN_INFO[TAIKO_HOODI_CHAIN_ID]
 export function getChainInfoOrDefault(chainId: number | undefined, featureFlags?: Record<number, boolean>) {
   return getChainInfo(chainId, featureFlags) ?? TAIKO_HOODI_INFO
+}
+
+export function getAverageBlockTime(chainId: number | undefined): number {
+  const info = chainId ? CHAIN_INFO[chainId as ChainId] : undefined
+  return info?.averageBlockTimeMs ?? AVERAGE_L1_BLOCK_TIME
 }

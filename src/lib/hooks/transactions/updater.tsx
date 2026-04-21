@@ -1,10 +1,11 @@
 import { TransactionReceipt } from '@ethersproject/abstract-provider'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
+import { AVERAGE_L1_BLOCK_TIME, getAverageBlockTime } from 'constants/chainInfo'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import useBlockNumber, { useFastForwardBlockNumber } from 'lib/hooks/useBlockNumber'
 import ms from 'ms'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useTransactionRemover } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/types'
 
@@ -16,18 +17,20 @@ interface Transaction {
   lastCheckedBlockNumber?: number
 }
 
-export function shouldCheck(lastBlockNumber: number, tx: Transaction): boolean {
+export function shouldCheck(chainId: number | undefined, lastBlockNumber: number, tx: Transaction): boolean {
   if (tx.receipt) return false
   if (!tx.lastCheckedBlockNumber) return true
   const blocksSinceCheck = lastBlockNumber - tx.lastCheckedBlockNumber
   if (blocksSinceCheck < 1) return false
+  // Scale block-count thresholds so each gate fires at roughly the same wall-clock cadence across chains.
+  const scale = AVERAGE_L1_BLOCK_TIME / getAverageBlockTime(chainId)
   const minutesPending = (new Date().getTime() - tx.addedTime) / ms(`1m`)
   if (minutesPending > 60) {
-    // every 10 blocks if pending longer than an hour
-    return blocksSinceCheck > 9
+    // every ~10 L1-equivalent blocks if pending longer than an hour
+    return blocksSinceCheck > Math.round(9 * scale)
   } else if (minutesPending > 5) {
-    // every 3 blocks if pending longer than 5 minutes
-    return blocksSinceCheck > 2
+    // every ~3 L1-equivalent blocks if pending longer than 5 minutes
+    return blocksSinceCheck > Math.round(2 * scale)
   } else {
     // otherwise every block
     return true
@@ -55,6 +58,10 @@ export default function Updater({ pendingTransactions, onCheck, onReceipt }: Upd
   const fastForwardBlockNumber = useFastForwardBlockNumber()
   const removeTransaction = useTransactionRemover()
   const blockTimestamp = useCurrentBlockTimestamp()
+
+  // Hash -> cancel callback for in-flight receipt requests. Prevents cancel/retry
+  // on every new block when block time is short (e.g. Taiko 1-2s).
+  const inflight = useRef<Map<string, () => void>>(new Map())
 
   const getReceipt = useCallback(
     (hash: string) => {
@@ -89,26 +96,33 @@ export default function Updater({ pendingTransactions, onCheck, onReceipt }: Upd
   useEffect(() => {
     if (!chainId || !provider || !lastBlockNumber) return
 
-    const cancels = Object.keys(pendingTransactions)
-      .filter((hash) => shouldCheck(lastBlockNumber, pendingTransactions[hash]))
-      .map((hash) => {
-        const { promise, cancel } = getReceipt(hash)
-        promise
-          .then((receipt) => {
-            fastForwardBlockNumber(receipt.blockNumber)
-            onReceipt({ chainId, hash, receipt })
-          })
-          .catch((error) => {
-            if (error instanceof CanceledError) return
-            onCheck({ chainId, hash, blockNumber: lastBlockNumber })
-          })
-        return cancel
-      })
-
-    return () => {
-      cancels.forEach((cancel) => cancel())
-    }
+    Object.keys(pendingTransactions).forEach((hash) => {
+      if (inflight.current.has(hash)) return
+      if (!shouldCheck(chainId, lastBlockNumber, pendingTransactions[hash])) return
+      const { promise, cancel } = getReceipt(hash)
+      inflight.current.set(hash, cancel)
+      promise
+        .then((receipt) => {
+          fastForwardBlockNumber(receipt.blockNumber)
+          onReceipt({ chainId, hash, receipt })
+        })
+        .catch((error) => {
+          if (error instanceof CanceledError) return
+          onCheck({ chainId, hash, blockNumber: lastBlockNumber })
+        })
+        .finally(() => {
+          inflight.current.delete(hash)
+        })
+    })
   }, [chainId, provider, lastBlockNumber, getReceipt, onReceipt, onCheck, pendingTransactions, fastForwardBlockNumber])
+
+  useEffect(() => {
+    const inflightMap = inflight.current
+    return () => {
+      inflightMap.forEach((cancel) => cancel())
+      inflightMap.clear()
+    }
+  }, [chainId, provider])
 
   return null
 }

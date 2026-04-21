@@ -1,6 +1,6 @@
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
+import { getAverageBlockTime } from 'constants/chainInfo'
 import { getPermit2Address } from 'constants/permit2'
 import { isTaikoChain } from 'config/chains/taiko'
 import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
@@ -91,10 +91,11 @@ export default function usePermit2Allowance(
 
   // Signature and PermitAllowance will expire, so they should be rechecked at an interval.
   // Calculate now such that the signature will still be valid for the submitting block.
-  const [now, setNow] = useState(Date.now() + AVERAGE_L1_BLOCK_TIME)
+  const blockTime = getAverageBlockTime(chainId)
+  const [now, setNow] = useState(Date.now() + blockTime)
   useInterval(
-    useCallback(() => setNow((Date.now() + AVERAGE_L1_BLOCK_TIME) / 1000), []),
-    AVERAGE_L1_BLOCK_TIME
+    useCallback(() => setNow((Date.now() + blockTime) / 1000), [blockTime]),
+    blockTime
   )
 
   const [signature, setSignature] = useState<PermitSignature>()

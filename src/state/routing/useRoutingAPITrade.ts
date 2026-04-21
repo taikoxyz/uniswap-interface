@@ -1,6 +1,7 @@
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core'
-import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
+import { useWeb3React } from '@web3-react/core'
+import { getAverageBlockTime } from 'constants/chainInfo'
 import { ZERO_PERCENT } from 'constants/misc'
 import { useRoutingAPIArguments } from 'lib/hooks/routing/useRoutingAPIArguments'
 import ms from 'ms'
@@ -71,6 +72,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
   method?: QuoteMethod
   swapQuoteLatency?: number
 } {
+  const { chainId } = useWeb3React()
   const [currencyIn, currencyOut]: [Currency | undefined, Currency | undefined] = useMemo(
     () =>
       tradeType === TradeType.EXACT_INPUT
@@ -93,7 +95,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
   const { isError, data: tradeResult, error, currentData } = useGetQuoteQueryState(queryArgs)
   useGetQuoteQuery(skipFetch ? skipToken : queryArgs, {
     // Price-fetching is informational and costly, so it's done less frequently.
-    pollingInterval: routerPreference === INTERNAL_ROUTER_PREFERENCE_PRICE ? ms(`1m`) : AVERAGE_L1_BLOCK_TIME,
+    pollingInterval: routerPreference === INTERNAL_ROUTER_PREFERENCE_PRICE ? ms(`1m`) : getAverageBlockTime(chainId),
     // If latest quote from cache was fetched > 2m ago, instantly repoll for another instead of waiting for next poll period
     refetchOnMountOrArgChange: 2 * 60,
   })
