@@ -16,11 +16,8 @@ const defaultState = {
     version: 0,
   },
   application: {
-    chainId: null,
-    fiatOnramp: {
-      availabilityChecked: false,
-      available: false,
-    },
+    // Taiko fork defaults the active chain to Taiko Mainnet; upstream used null.
+    chainId: 167000,
     openModal: null,
     popupList: [],
   },

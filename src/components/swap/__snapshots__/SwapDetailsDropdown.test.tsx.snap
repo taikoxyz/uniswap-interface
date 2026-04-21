@@ -300,7 +300,7 @@ exports[`SwapDetailsDropdown.tsx renders a trade 1`] = `
                   <div
                     class="c14 css-142zc9n"
                   >
-                    Network fees
+                    Network fee
                   </div>
                 </div>
               </div>

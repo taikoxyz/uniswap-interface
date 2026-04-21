@@ -6,14 +6,28 @@ function concat(strings: TemplateStringsArray | string, values: any[]): string {
   return String(strings)
 }
 
-export function t(strings: any, ...values: any[]): string {
+export function t(...args: any[]): any {
+  // Curry form t(i18n)`...`: first call passes an i18n instance (opaque object
+  // without `message`/template-strings shape); return a tagged-template fn.
+  if (
+    args.length === 1 &&
+    args[0] &&
+    typeof args[0] === 'object' &&
+    !Array.isArray(args[0]) &&
+    !('message' in args[0])
+  ) {
+    return (strings: any, ...vs: any[]) => concat(strings, vs)
+  }
+  const [strings, ...values] = args
   if (strings && typeof strings === 'object' && !Array.isArray(strings) && 'message' in strings) {
     return (strings as { message?: string; id?: string }).message ?? (strings as { id?: string }).id ?? ''
   }
   return concat(strings, values)
 }
 
-export function plural(_value: any, options: Record<string, string>): string {
+export function plural(value: any, options: Record<string, string>): string {
+  if (Number(value) === 1 && options.one != null) return options.one
+  if (options[String(value)] != null) return options[String(value)]
   return options.other ?? ''
 }
 
@@ -35,6 +49,8 @@ export const Trans: React.FC<{ id?: string; message?: string; children?: React.R
   message,
 }) => <>{children ?? message ?? id ?? ''}</>
 
-export const Plural: React.FC<Record<string, any>> = ({ value, other, ...forms }) => (
-  <>{forms[value] ?? forms._1 ?? other ?? ''}</>
-)
+export const Plural: React.FC<Record<string, any>> = ({ value, other, one, ...forms }) => {
+  const n = Number(value)
+  const pick = n === 1 && one != null ? one : forms[String(value)] ?? other ?? ''
+  return <>{pick}</>
+}

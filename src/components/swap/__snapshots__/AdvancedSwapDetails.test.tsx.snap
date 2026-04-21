@@ -88,7 +88,7 @@ exports[`AdvancedSwapDetails.tsx matches base snapshot 1`] = `
           <div
             class="c6 css-142zc9n"
           >
-            Network fees
+            Network fee
           </div>
         </div>
       </div>

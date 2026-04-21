@@ -111,7 +111,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
               class="c2 c8 css-142zc9n"
               cursor="help"
             >
-              Network fees
+              Network fee
             </div>
           </div>
         </div>
