@@ -16,15 +16,15 @@ import optimismLogoUrl from 'assets/svg/optimistic_ethereum.svg'
 import polygonSquareLogoUrl from 'assets/svg/polygon_square_logo.svg'
 import polygonMaticLogo from 'assets/svg/polygon-matic-logo.svg'
 import taikoLogo from 'assets/svg/taiko_logo.svg'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import ms from 'ms'
 import { darkTheme } from 'theme/colors'
 
 import { SupportedL1ChainId, SupportedL2ChainId } from './chains'
 import { ARBITRUM_LIST, AVALANCHE_LIST, BASE_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST } from './lists'
-import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 export const AVERAGE_L1_BLOCK_TIME = ms(`12s`)
-export const AVERAGE_L2_BLOCK_TIME = ms(`2s`)
+const AVERAGE_L2_BLOCK_TIME = ms(`2s`)
 
 export enum NetworkType {
   L1,

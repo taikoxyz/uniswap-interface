@@ -3,11 +3,11 @@ import { deepCopy } from '@ethersproject/properties'
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import { isPlain } from '@reduxjs/toolkit'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 import { getAverageBlockTime } from './chainInfo'
 import { CHAIN_IDS_TO_NAMES, SupportedInterfaceChain } from './chains'
 import { RPC_URLS } from './networks'
-import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 class AppJsonRpcProvider extends StaticJsonRpcProvider {
   private _blockCache = new Map<string, Promise<any>>()

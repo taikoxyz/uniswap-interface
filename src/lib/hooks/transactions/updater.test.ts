@@ -18,12 +18,18 @@ describe('transactions updater', () => {
     })
     it('returns false if checked in last 3 blocks and greater than 20 minutes old', () => {
       expect(
-        shouldCheck(ChainId.MAINNET, 10, { addedTime: new Date().getTime() - 21 * 60 * 1000, lastCheckedBlockNumber: 8 })
+        shouldCheck(ChainId.MAINNET, 10, {
+          addedTime: new Date().getTime() - 21 * 60 * 1000,
+          lastCheckedBlockNumber: 8,
+        })
       ).toEqual(false)
     })
     it('returns true if not checked in last 5 blocks and greater than 20 minutes old', () => {
       expect(
-        shouldCheck(ChainId.MAINNET, 10, { addedTime: new Date().getTime() - 21 * 60 * 1000, lastCheckedBlockNumber: 5 })
+        shouldCheck(ChainId.MAINNET, 10, {
+          addedTime: new Date().getTime() - 21 * 60 * 1000,
+          lastCheckedBlockNumber: 5,
+        })
       ).toEqual(true)
     })
     it('returns false if checked in last 10 blocks and greater than 60 minutes old', () => {
