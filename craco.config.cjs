@@ -59,6 +59,8 @@ module.exports = {
           // wasm with a pinned swc_core ABI and crash the current @swc/core.
           // Tests don't need either plugin.
           '\\.(t|j)sx?$': ['@swc/jest', {
+            swcrc: false,
+            configFile: false,
             jsc: {
               target: 'es2020',
               keepClassNames: true,
@@ -71,6 +73,10 @@ module.exports = {
         transformIgnorePatterns: ['d3-array'],
         moduleNameMapper: {
           'd3-array': 'd3-array/dist/d3-array.min.js',
+          // @lingui/macro is compile-time only (normally via @lingui/swc-plugin).
+          // Jest skips that plugin (see transform above), so route the macros
+          // through a runtime mock to avoid "t is not a function" at eval time.
+          '^@lingui/macro$': '<rootDir>/src/test-utils/lingui-macro-mock.tsx',
         },
       })
     },
