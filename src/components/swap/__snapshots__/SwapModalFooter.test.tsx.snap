@@ -27,7 +27,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 }
 
 .c2 {
-  color: #222222;
+  color: #FFFFFF;
 }
 
 .c0 {
@@ -51,13 +51,13 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 }
 
 .c5 {
-  color: #7D7D7D;
+  color: #9B9B9B;
   margin-right: 8px;
 }
 
 .c8 {
   cursor: help;
-  color: #7D7D7D;
+  color: #9B9B9B;
   margin-right: 8px;
 }
 
@@ -68,6 +68,12 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 .c6 {
   text-align: right;
   overflow-wrap: break-word;
+}
+
+.c9 {
+  text-align: right;
+  overflow-wrap: break-word;
+  color: #FFFFFF;
 }
 
 <div
@@ -105,7 +111,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
               class="c2 c8 css-142zc9n"
               cursor="help"
             >
-              Network fee
+              Network fees
             </div>
           </div>
         </div>
@@ -141,7 +147,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
           </div>
         </div>
         <div
-          class="c2 c6 css-142zc9n"
+          class="c2 c9 css-142zc9n"
         >
           105566.373%
         </div>
@@ -242,7 +248,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
   border-radius: 16px;
   outline: none;
   border: 1px solid transparent;
-  color: #222222;
+  color: #FFFFFF;
   -webkit-text-decoration: none;
   text-decoration: none;
   display: -webkit-box;
@@ -291,33 +297,41 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 }
 
 .c5 {
-  background-color: #FC72FF;
+  background: linear-gradient(93.06deg,#C8047D 2.66%,#FC72FF 98.99%);
   font-size: 20px;
   font-weight: 535;
   padding: 16px;
   color: #FFFFFF;
+  box-shadow: 0 0 20px rgba(200,4,125,0.3);
+  -webkit-transition: all 250ms ease;
+  transition: all 250ms ease;
+  border: none;
 }
 
 .c5:focus {
-  box-shadow: 0 0 0 1pt #fb58ff;
-  background-color: #fb58ff;
+  box-shadow: 0 0 0 2pt rgba(200,4,125,0.4),0 0 30px rgba(200,4,125,0.4);
+  background: linear-gradient(93.06deg,#B00370 2.66%,#E865F0 98.99%);
 }
 
 .c5:hover {
-  background-color: #fb58ff;
+  background: linear-gradient(93.06deg,#B00370 2.66%,#E865F0 98.99%);
+  box-shadow: 0 0 30px rgba(200,4,125,0.5);
+  -webkit-transform: translateY(-1px);
+  -ms-transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .c5:active {
-  box-shadow: 0 0 0 1pt #fb3fff;
-  background-color: #fb3fff;
+  box-shadow: 0 0 0 2pt rgba(200,4,125,0.5),0 0 35px rgba(200,4,125,0.5);
+  background: linear-gradient(93.06deg,#A00268 2.66%,#D655E0 98.99%);
 }
 
 .c5:disabled {
-  background-color: #22222212;
-  color: #7D7D7D;
+  background: #FFFFFF12;
+  color: #9B9B9B;
   cursor: auto;
   box-shadow: none;
-  border: 1px solid transparent;
+  border: none;
   outline: none;
 }
 

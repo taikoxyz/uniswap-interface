@@ -3,7 +3,7 @@
 exports[`SwapSkeleton.tsx renders a skeleton 1`] = `
 <DocumentFragment>
   .c2 {
-  color: #222222;
+  color: #FFFFFF;
 }
 
 .c9 {
@@ -15,9 +15,9 @@ exports[`SwapSkeleton.tsx renders a skeleton 1`] = `
   margin-bottom: -18px;
   margin-left: auto;
   margin-right: auto;
-  background-color: #F9F9F9;
+  background-color: #1B1B1B;
   border: 4px solid;
-  border-color: #FFFFFF;
+  border-color: #131313;
   z-index: 2;
 }
 
@@ -61,34 +61,34 @@ exports[`SwapSkeleton.tsx renders a skeleton 1`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
-  border: 1px solid #22222212;
+  border: 1px solid #FFFFFF12;
   border-radius: 16px;
-  background-color: #FFFFFF;
+  background-color: #131313;
 }
 
 .c5 {
-  background-color: #F9F9F9;
+  background-color: #1B1B1B;
   border-radius: 4px;
   height: 56px;
   width: 60px;
 }
 
 .c7 {
-  background-color: #F9F9F9;
+  background-color: #1B1B1B;
   border-radius: 16px;
   height: 56px;
   width: 100px;
 }
 
 .c12 {
-  background-color: #F9F9F9;
+  background-color: #1B1B1B;
   border-radius: 16px;
   height: 56px;
   width: 100%;
 }
 
 .c6 {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
   height: 36px;
 }
 
@@ -119,7 +119,7 @@ exports[`SwapSkeleton.tsx renders a skeleton 1`] = `
   -webkit-flex-flow: column;
   -ms-flex-flow: column;
   flex-flow: column;
-  background-color: #F9F9F9;
+  background-color: #1B1B1B;
   border-radius: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -174,7 +174,7 @@ exports[`SwapSkeleton.tsx renders a skeleton 1`] = `
           <svg
             fill="none"
             height="16"
-            stroke="#CECECE"
+            stroke="#5E5E5E"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"

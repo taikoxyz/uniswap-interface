@@ -9,7 +9,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 1 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -27,7 +27,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 1 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -110,7 +110,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 5 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -128,7 +128,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 5 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -195,7 +195,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 10 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -213,7 +213,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 10 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -280,7 +280,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 56 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -298,7 +298,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 56 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -365,7 +365,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 137 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -383,7 +383,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 137 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -450,7 +450,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 420 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -468,7 +468,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 420 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -535,7 +535,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 8453 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -553,7 +553,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 8453 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -620,7 +620,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 42161 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -638,7 +638,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 42161 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -705,7 +705,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 42220 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -723,7 +723,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 42220 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -790,7 +790,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 43114 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -808,7 +808,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 43114 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -875,7 +875,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 44787 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -893,7 +893,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 44787 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -960,7 +960,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 80001 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -978,7 +978,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 80001 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -1036,7 +1036,9 @@ exports[`ChainSelectorRow should match snapshot for chainId 80001 1`] = `
 </div>
 `;
 
-exports[`ChainSelectorRow should match snapshot for chainId 84531 1`] = `
+exports[`ChainSelectorRow should match snapshot for chainId 84531 1`] = `<div />`;
+
+exports[`ChainSelectorRow should match snapshot for chainId 167000 1`] = `
 .c0 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1045,7 +1047,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 84531 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -1063,10 +1065,17 @@ exports[`ChainSelectorRow should match snapshot for chainId 84531 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
-.c1 {
+.c2 {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 16px;
+  font-weight: 485;
+}
+
+.c3 {
   grid-column: 3;
   grid-row: 1;
   display: -webkit-box;
@@ -1080,6 +1089,12 @@ exports[`ChainSelectorRow should match snapshot for chainId 84531 1`] = `
   width: 20px;
 }
 
+.c1 {
+  height: 20px;
+  width: 20px;
+  margin-right: 12px;
+}
+
 @media only screen and (max-width:640px) {
   .c0 {
     width: 100%;
@@ -1089,10 +1104,105 @@ exports[`ChainSelectorRow should match snapshot for chainId 84531 1`] = `
 <div>
   <button
     class="c0"
-    data-testid="undefined-selector"
+    data-testid="Taiko-selector"
   >
-    <div
+    <img
+      alt="Taiko"
       class="c1"
+      src="taiko_logo.svg"
+    />
+    <div
+      class="c2"
+    >
+      Taiko
+    </div>
+    <div
+      class="c3"
+    />
+  </button>
+</div>
+`;
+
+exports[`ChainSelectorRow should match snapshot for chainId 167013 1`] = `
+.c0 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: min-content 1fr min-content;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  line-height: 20px;
+  opacity: 1;
+  padding: 10px 8px;
+  text-align: left;
+  -webkit-transition: 250ms ease background-color;
+  transition: 250ms ease background-color;
+  width: 240px;
+}
+
+.c0:hover {
+  background-color: #FFFFFF12;
+}
+
+.c2 {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 16px;
+  font-weight: 485;
+}
+
+.c3 {
+  grid-column: 3;
+  grid-row: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 20px;
+}
+
+.c1 {
+  height: 20px;
+  width: 20px;
+  margin-right: 12px;
+}
+
+@media only screen and (max-width:640px) {
+  .c0 {
+    width: 100%;
+  }
+}
+
+<div>
+  <button
+    class="c0"
+    data-testid="Taiko Hoodi-selector"
+  >
+    <img
+      alt="Taiko Hoodi"
+      class="c1"
+      src="taiko_logo.svg"
+    />
+    <div
+      class="c2"
+    >
+      Taiko Hoodi
+    </div>
+    <div
+      class="c3"
     />
   </button>
 </div>
@@ -1107,7 +1217,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 421613 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -1125,7 +1235,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 421613 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -1192,7 +1302,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 11155111 1`] = `
   background: none;
   border: none;
   border-radius: 12px;
-  color: #222222;
+  color: #FFFFFF;
   cursor: pointer;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
@@ -1210,7 +1320,7 @@ exports[`ChainSelectorRow should match snapshot for chainId 11155111 1`] = `
 }
 
 .c0:hover {
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {

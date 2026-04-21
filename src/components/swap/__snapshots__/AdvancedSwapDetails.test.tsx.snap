@@ -39,17 +39,17 @@ exports[`AdvancedSwapDetails.tsx matches base snapshot 1`] = `
 }
 
 .c6 {
-  color: #7D7D7D;
+  color: #9B9B9B;
 }
 
 .c7 {
-  color: #222222;
+  color: #FFFFFF;
 }
 
 .c1 {
   width: 100%;
   height: 1px;
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c0 {
@@ -88,7 +88,7 @@ exports[`AdvancedSwapDetails.tsx matches base snapshot 1`] = `
           <div
             class="c6 css-142zc9n"
           >
-            Network fee
+            Network fees
           </div>
         </div>
       </div>

@@ -27,19 +27,19 @@ exports[`SwapModalHeader.tsx matches base snapshot, test trade exact input 1`] =
 }
 
 .c6 {
-  color: #7D7D7D;
+  color: #9B9B9B;
 }
 
 .c8 {
-  color: #222222;
+  color: #FFFFFF;
 }
 
-.c13 {
+.c12 {
   width: 100%;
   height: 1px;
   border-width: 0;
   margin: 0;
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -78,23 +78,29 @@ exports[`SwapModalHeader.tsx matches base snapshot, test trade exact input 1`] =
   grid-row-gap: 8px;
 }
 
-.c12 {
-  opacity: 0;
-  -webkit-transition: opacity 250ms ease-in;
-  transition: opacity 250ms ease-in;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-}
-
 .c11 {
-  width: 36px;
+  --size: 36px;
+  border-radius: 100px;
+  color: #FFFFFF;
+  background-color: #FFFFFF12;
+  font-size: calc(var(--size) / 3);
+  font-weight: 535;
   height: 36px;
-  background: #22222212;
-  -webkit-transition: background-color 250ms ease-in;
-  transition: background-color 250ms ease-in;
-  box-shadow: 0 0 1px white;
-  border-radius: 50%;
+  line-height: 36px;
+  text-align: center;
+  width: 36px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .c10 {
@@ -112,11 +118,11 @@ exports[`SwapModalHeader.tsx matches base snapshot, test trade exact input 1`] =
 
 .c9 {
   cursor: help;
-  color: #7D7D7D;
+  color: #9B9B9B;
   margin-right: 8px;
 }
 
-.c14 {
+.c13 {
   margin: 16px 2px 24px 2px;
 }
 
@@ -170,11 +176,7 @@ exports[`SwapModalHeader.tsx matches base snapshot, test trade exact input 1`] =
           <div
             class="c11"
           >
-            <img
-              alt="ABC logo"
-              class="c12"
-              src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x0000000000000000000000000000000000000001/logo.png"
-            />
+            ABC
           </div>
         </div>
       </div>
@@ -218,17 +220,13 @@ exports[`SwapModalHeader.tsx matches base snapshot, test trade exact input 1`] =
           <div
             class="c11"
           >
-            <img
-              alt="DEF logo"
-              class="c12"
-              src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x0000000000000000000000000000000000000002/logo.png"
-            />
+            DEF
           </div>
         </div>
       </div>
     </div>
     <div
-      class="c13 c14"
+      class="c12 c13"
     />
   </div>
 </DocumentFragment>
@@ -261,19 +259,19 @@ exports[`SwapModalHeader.tsx renders ETH input token for an ETH input UniswapX s
 }
 
 .c6 {
-  color: #7D7D7D;
+  color: #9B9B9B;
 }
 
 .c8 {
-  color: #222222;
+  color: #FFFFFF;
 }
 
-.c13 {
+.c14 {
   width: 100%;
   height: 1px;
   border-width: 0;
   margin: 0;
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -312,6 +310,31 @@ exports[`SwapModalHeader.tsx renders ETH input token for an ETH input UniswapX s
   grid-row-gap: 8px;
 }
 
+.c13 {
+  --size: 36px;
+  border-radius: 100px;
+  color: #FFFFFF;
+  background-color: #FFFFFF12;
+  font-size: calc(var(--size) / 3);
+  font-weight: 535;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  width: 36px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 .c12 {
   opacity: 0;
   -webkit-transition: opacity 250ms ease-in;
@@ -324,7 +347,7 @@ exports[`SwapModalHeader.tsx renders ETH input token for an ETH input UniswapX s
 .c11 {
   width: 36px;
   height: 36px;
-  background: #22222212;
+  background: #FFFFFF12;
   -webkit-transition: background-color 250ms ease-in;
   transition: background-color 250ms ease-in;
   box-shadow: 0 0 1px white;
@@ -346,11 +369,11 @@ exports[`SwapModalHeader.tsx renders ETH input token for an ETH input UniswapX s
 
 .c9 {
   cursor: help;
-  color: #7D7D7D;
+  color: #9B9B9B;
   margin-right: 8px;
 }
 
-.c14 {
+.c15 {
   margin: 16px 2px 24px 2px;
 }
 
@@ -450,19 +473,15 @@ exports[`SwapModalHeader.tsx renders ETH input token for an ETH input UniswapX s
           style="height: 36px; width: 36px;"
         >
           <div
-            class="c11"
+            class="c13"
           >
-            <img
-              alt="DEF logo"
-              class="c12"
-              src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x0000000000000000000000000000000000000002/logo.png"
-            />
+            DEF
           </div>
         </div>
       </div>
     </div>
     <div
-      class="c13 c14"
+      class="c14 c15"
     />
   </div>
 </DocumentFragment>
@@ -495,19 +514,19 @@ exports[`SwapModalHeader.tsx test trade exact output, no recipient 1`] = `
 }
 
 .c6 {
-  color: #7D7D7D;
+  color: #9B9B9B;
 }
 
 .c8 {
-  color: #222222;
+  color: #FFFFFF;
 }
 
-.c13 {
+.c12 {
   width: 100%;
   height: 1px;
   border-width: 0;
   margin: 0;
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c2 {
@@ -546,23 +565,29 @@ exports[`SwapModalHeader.tsx test trade exact output, no recipient 1`] = `
   grid-row-gap: 8px;
 }
 
-.c12 {
-  opacity: 0;
-  -webkit-transition: opacity 250ms ease-in;
-  transition: opacity 250ms ease-in;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-}
-
 .c11 {
-  width: 36px;
+  --size: 36px;
+  border-radius: 100px;
+  color: #FFFFFF;
+  background-color: #FFFFFF12;
+  font-size: calc(var(--size) / 3);
+  font-weight: 535;
   height: 36px;
-  background: #22222212;
-  -webkit-transition: background-color 250ms ease-in;
-  transition: background-color 250ms ease-in;
-  box-shadow: 0 0 1px white;
-  border-radius: 50%;
+  line-height: 36px;
+  text-align: center;
+  width: 36px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .c10 {
@@ -580,11 +605,11 @@ exports[`SwapModalHeader.tsx test trade exact output, no recipient 1`] = `
 
 .c9 {
   cursor: help;
-  color: #7D7D7D;
+  color: #9B9B9B;
   margin-right: 8px;
 }
 
-.c14 {
+.c13 {
   margin: 16px 2px 24px 2px;
 }
 
@@ -638,11 +663,7 @@ exports[`SwapModalHeader.tsx test trade exact output, no recipient 1`] = `
           <div
             class="c11"
           >
-            <img
-              alt="ABC logo"
-              class="c12"
-              src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x0000000000000000000000000000000000000001/logo.png"
-            />
+            ABC
           </div>
         </div>
       </div>
@@ -686,17 +707,13 @@ exports[`SwapModalHeader.tsx test trade exact output, no recipient 1`] = `
           <div
             class="c11"
           >
-            <img
-              alt="GHI logo"
-              class="c12"
-              src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0x0000000000000000000000000000000000000003/logo.png"
-            />
+            GHI
           </div>
         </div>
       </div>
     </div>
     <div
-      class="c13 c14"
+      class="c12 c13"
     />
   </div>
 </DocumentFragment>

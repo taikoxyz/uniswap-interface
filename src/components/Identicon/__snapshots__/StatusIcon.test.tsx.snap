@@ -46,9 +46,9 @@ exports[`StatusIcon with account renders children in correct order 1`] = `
   bottom: -4px;
   right: -4px;
   border-radius: 50%;
-  outline: 2px solid #FFFFFF;
+  outline: 2px solid #131313;
   outline-offset: -0.1px;
-  background-color: #FFFFFF;
+  background-color: #131313;
   overflow: hidden;
 }
 
@@ -71,9 +71,9 @@ exports[`StatusIcon with account renders children in correct order 1`] = `
   bottom: -4px;
   left: -4px;
   border-radius: 50%;
-  outline: 2px solid #FFFFFF;
+  outline: 2px solid #131313;
   outline-offset: -0.1px;
-  background-color: #FFFFFF;
+  background-color: #131313;
   overflow: hidden;
 }
 
@@ -174,9 +174,9 @@ exports[`StatusIcon with no account renders children in correct order 1`] = `
   bottom: -4px;
   right: -4px;
   border-radius: 50%;
-  outline: 2px solid #FFFFFF;
+  outline: 2px solid #131313;
   outline-offset: -0.1px;
-  background-color: #FFFFFF;
+  background-color: #131313;
   overflow: hidden;
 }
 
@@ -199,9 +199,9 @@ exports[`StatusIcon with no account renders children in correct order 1`] = `
   bottom: -4px;
   left: -4px;
   border-radius: 50%;
-  outline: 2px solid #FFFFFF;
+  outline: 2px solid #131313;
   outline-offset: -0.1px;
-  background-color: #FFFFFF;
+  background-color: #131313;
   overflow: hidden;
 }
 

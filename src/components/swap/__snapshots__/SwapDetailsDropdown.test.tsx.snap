@@ -64,17 +64,17 @@ exports[`SwapDetailsDropdown.tsx renders a trade 1`] = `
 }
 
 .c9 {
-  color: #222222;
+  color: #FFFFFF;
 }
 
 .c14 {
-  color: #7D7D7D;
+  color: #9B9B9B;
 }
 
 .c18 {
   width: 100%;
   height: 1px;
-  background-color: #22222212;
+  background-color: #FFFFFF12;
 }
 
 .c0 {
@@ -125,7 +125,7 @@ exports[`SwapDetailsDropdown.tsx renders a trade 1`] = `
 }
 
 .c13 > * {
-  fill: #7D7D7D;
+  fill: #9B9B9B;
 }
 
 .c8 {
@@ -183,7 +183,7 @@ exports[`SwapDetailsDropdown.tsx renders a trade 1`] = `
 }
 
 .c1 {
-  border: 1px solid #22222212;
+  border: 1px solid #FFFFFF12;
   border-radius: 16px;
   padding: 12px 16px;
 }
@@ -262,7 +262,7 @@ exports[`SwapDetailsDropdown.tsx renders a trade 1`] = `
           class="c15"
           fill="none"
           height="24"
-          stroke="#CECECE"
+          stroke="#5E5E5E"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"
@@ -300,7 +300,7 @@ exports[`SwapDetailsDropdown.tsx renders a trade 1`] = `
                   <div
                     class="c14 css-142zc9n"
                   >
-                    Network fee
+                    Network fees
                   </div>
                 </div>
               </div>
