@@ -51,11 +51,15 @@ const TAIKO_HOODI_COMMON_TOKENS = [
 export function getTaikoTokenMap(): ChainTokenMap {
   const taikoMap: ChainTokenMap = {}
 
-  // Add Taiko Mainnet tokens
+  // Add Taiko Mainnet tokens.
+  // NOTE: key by the checksummed `token.address`, NOT a lowercased address. Consumers look these
+  // tokens up by `currencyId` (e.g. parseLocal.getCurrency, PopupContent), which is the checksummed
+  // address. Lowercasing the key here made every lookup miss, rendering tokens as "Unknown"
+  // (e.g. "Approving Unknown", "Swapping Unknown for ETH"). Matches useAllTokensMultichain keying.
   const taikoMainnetTokens: { [address: string]: Token } = {}
   TAIKO_MAINNET_COMMON_TOKENS.forEach((tokenInfo) => {
     const token = new Token(167000, tokenInfo.address, tokenInfo.decimals, tokenInfo.symbol, tokenInfo.name)
-    taikoMainnetTokens[tokenInfo.address.toLowerCase()] = token
+    taikoMainnetTokens[token.address] = token
   })
   taikoMap[167000] = taikoMainnetTokens
 
@@ -63,7 +67,7 @@ export function getTaikoTokenMap(): ChainTokenMap {
   const taikoHoodiTokens: { [address: string]: Token } = {}
   TAIKO_HOODI_COMMON_TOKENS.forEach((tokenInfo) => {
     const token = new Token(167013, tokenInfo.address, tokenInfo.decimals, tokenInfo.symbol, tokenInfo.name)
-    taikoHoodiTokens[tokenInfo.address.toLowerCase()] = token
+    taikoHoodiTokens[token.address] = token
   })
   taikoMap[167013] = taikoHoodiTokens
 

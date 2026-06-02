@@ -4,6 +4,7 @@ import { Currency, CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core'
 import { DutchOrderInfo, DutchOrderInfoJSON } from '@uniswap/uniswapx-sdk'
 import { Pair, Route as V2Route } from '@uniswap/v2-sdk'
 import { FeeAmount, Pool, Route as V3Route } from '@uniswap/v3-sdk'
+import { isTaikoChain } from 'config/chains'
 import { isAvalanche, isBsc, isMatic, nativeOnChain } from 'constants/tokens'
 import { toSlippagePercent } from 'utils/slippage'
 
@@ -318,6 +319,11 @@ export function isUniswapXTrade(trade?: InterfaceTrade): trade is DutchOrderTrad
 }
 
 export function shouldUseAPIRouter(args: GetQuoteArgs): boolean {
+  // Taiko is not served by Uniswap's hosted routing API and requests to it are CORS-blocked from
+  // swap.taiko.xyz. The quote always falls back to client-side routing anyway, so skip the hosted
+  // attempt entirely to avoid a wasted failed request and the alarming CORS / "GetQuote failed on
+  // Unified Routing API" console errors on every quote.
+  if (isTaikoChain(args.tokenInChainId)) return false
   return args.routerPreference !== RouterPreference.CLIENT
 }
 
