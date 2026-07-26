@@ -55,8 +55,7 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
   }>({})
   const activeBlock = chainId === activeChainId ? block : undefined
   const [fastForwarded, setFastForwarded] = useState<{ chainId: number; block: number }>()
-  const fastForwardedBlock =
-    fastForwarded && fastForwarded.chainId === activeChainId ? fastForwarded.block : undefined
+  const fastForwardedBlock = fastForwarded && fastForwarded.chainId === activeChainId ? fastForwarded.block : undefined
 
   const onChainBlock = useCallback((chainId: number, block: number) => {
     setChainBlock((chainBlock) => {
