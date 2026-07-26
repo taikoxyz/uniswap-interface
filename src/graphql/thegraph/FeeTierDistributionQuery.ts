@@ -4,7 +4,6 @@ import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'constants/taiko'
 import gql from 'graphql-tag'
 import { useMemo } from 'react'
 
-import { FeeTierDistributionQuery } from './__generated__/types-and-hooks'
 import { apolloClient } from './apollo'
 
 const query = gql`
@@ -35,11 +34,26 @@ const query = gql`
   }
 `
 
+interface FeeTierDistributionPool {
+  feeTier: string
+  totalValueLockedToken0: string
+  totalValueLockedToken1: string
+}
+
+// Result shape of the local `query` document above (with the asToken0/asToken1/_meta aliases).
+// Note: the FeeTierDistributionQuery type in __generated__/types-and-hooks describes a different
+// document (plain `pools`) that this hook does not execute.
+export interface FeeTierDistributionQueryData {
+  _meta?: { block?: { number: number } }
+  asToken0: FeeTierDistributionPool[]
+  asToken1: FeeTierDistributionPool[]
+}
+
 export default function useFeeTierDistributionQuery(
   token0: string | undefined,
   token1: string | undefined,
   interval: number
-): { error?: ApolloError; isLoading: boolean; data: FeeTierDistributionQuery } {
+): { error?: ApolloError; isLoading: boolean; data: FeeTierDistributionQueryData | undefined } {
   const { chainId } = useWeb3React()
 
   // Skip subgraph queries for Taiko chains (no subgraph deployed yet)
@@ -49,7 +63,7 @@ export default function useFeeTierDistributionQuery(
     data,
     loading: isLoading,
     error,
-  } = useQuery(query, {
+  } = useQuery<FeeTierDistributionQueryData>(query, {
     variables: {
       token0: token0?.toLowerCase(),
       token1: token1?.toLowerCase(),

@@ -60,6 +60,9 @@ export function WrongChainOverlay() {
   const defaultChainInfo = getChainInfo(defaultChainId)
   const connectedChainInfo = getChainInfo(connectedChainId)
 
+  // The default chain is always present in CHAIN_INFO; this guard is for type-narrowing only.
+  if (!defaultChainInfo) return null
+
   const handleSwitchChain = async () => {
     if (!connector) return
     try {

@@ -1,5 +1,5 @@
 import Badge from 'components/Badge'
-import { getChainInfo } from 'constants/chainInfo'
+import { getChainInfo, getChainInfoOrDefault } from 'constants/chainInfo'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'constants/taiko'
 import {
   BACKEND_NOT_YET_SUPPORTED_CHAIN_IDS,
@@ -125,7 +125,7 @@ export default function NetworkFilter() {
   const { chainName } = useParams<{ chainName?: string }>()
   const currentChainName = validateUrlChainParam(chainName)
 
-  const chainInfo = getChainInfo(supportedChainIdFromGQLChain(currentChainName))
+  const chainInfo = getChainInfoOrDefault(supportedChainIdFromGQLChain(currentChainName))
 
   return (
     <StyledMenu ref={node}>

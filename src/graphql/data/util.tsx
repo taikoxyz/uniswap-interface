@@ -105,7 +105,7 @@ export function isGqlSupportedChain(chainId: number | undefined): chainId is Gql
   return !!chainId && GQL_CHAINS.includes(chainId)
 }
 export function toContractInput(currency: Currency): ContractInput {
-  const chain = chainIdToBackendName(currency.chainId)
+  const chain = chainIdToBackendName(currency.chainId) as Chain
   return { chain, address: currency.isToken ? currency.address : getNativeTokenDBAddress(chain) }
 }
 

@@ -7,10 +7,10 @@ import JSBI from 'jsbi'
 import computeSurroundingTicks from './computeSurroundingTicks'
 
 const getV3Tick = (tick: number, liquidityNet: number): TickData => ({
-  tick,
-  liquidityNet: JSBI.BigInt(liquidityNet),
-  price0: undefined,
-  price1: undefined,
+  tickIdx: tick.toString(),
+  liquidityNet: liquidityNet.toString(),
+  price0: '0',
+  price1: '0',
 })
 
 describe('#computeSurroundingTicks', () => {
