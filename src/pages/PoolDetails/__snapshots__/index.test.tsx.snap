@@ -8,13 +8,38 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   min-width: 0;
 }
 
-.c9 {
+.c10 {
   box-sizing: border-box;
   margin: 0;
   min-width: 0;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
+}
+
+.c18 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  text-align: center;
+  line-height: inherit;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  font-size: inherit;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: white;
+  background-color: primary;
+  border: 0;
+  border-radius: 4px;
+  padding: 10px 16px;
+  width: auto;
 }
 
 .c1 {
@@ -34,7 +59,7 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   justify-content: flex-start;
 }
 
-.c8 {
+.c9 {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -52,7 +77,7 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   gap: 18px;
 }
 
-.c10 {
+.c11 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -72,15 +97,162 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   gap: 8px;
 }
 
-.c6 {
-  color: #7D7D7D;
+.c40 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  gap: 8px;
 }
 
 .c7 {
-  color: #222222;
+  color: #9B9B9B;
 }
 
-.c3 {
+.c8 {
+  color: #FFFFFF;
+}
+
+.c19 {
+  padding: 10px 16px;
+  width: auto;
+  line-height: 24px;
+  font-weight: 535;
+  text-align: center;
+  border-radius: 16px;
+  outline: none;
+  border: 1px solid transparent;
+  color: #FFFFFF;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  -webkit-transition: -webkit-transform 450ms ease;
+  -webkit-transition: transform 450ms ease;
+  transition: transform 450ms ease;
+  -webkit-transform: perspective(1px) translateZ(0);
+  -ms-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+}
+
+.c19:disabled {
+  opacity: 50%;
+  cursor: auto;
+  pointer-events: none;
+}
+
+.c19 > * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c19 > a {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c20 {
+  background: linear-gradient(93.06deg,#C8047D 2.66%,#FC72FF 98.99%);
+  font-size: 20px;
+  font-weight: 535;
+  padding: 16px;
+  color: #FFFFFF;
+  box-shadow: 0 0 20px rgba(200,4,125,0.3);
+  -webkit-transition: all 250ms ease;
+  transition: all 250ms ease;
+  border: none;
+}
+
+.c20:focus {
+  box-shadow: 0 0 0 2pt rgba(200,4,125,0.4),0 0 30px rgba(200,4,125,0.4);
+  background: linear-gradient(93.06deg,#B00370 2.66%,#E865F0 98.99%);
+}
+
+.c20:hover {
+  background: linear-gradient(93.06deg,#B00370 2.66%,#E865F0 98.99%);
+  box-shadow: 0 0 30px rgba(200,4,125,0.5);
+  -webkit-transform: translateY(-1px);
+  -ms-transform: translateY(-1px);
+  transform: translateY(-1px);
+}
+
+.c20:active {
+  box-shadow: 0 0 0 2pt rgba(200,4,125,0.5),0 0 35px rgba(200,4,125,0.5);
+  background: linear-gradient(93.06deg,#A00268 2.66%,#D655E0 98.99%);
+}
+
+.c20:disabled {
+  background: #FFFFFF12;
+  color: #9B9B9B;
+  cursor: auto;
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.c21 {
+  border: 1px solid #311C31;
+  color: #FC72FF;
+  background-color: transparent;
+  font-size: 16px;
+  border-radius: 12px;
+  padding: 10px 16px;
+}
+
+.c21:focus {
+  box-shadow: 0 0 0 1pt #311C31;
+  border: 1px solid #FC72FF;
+}
+
+.c21:hover {
+  border: 1px solid #FC72FF;
+}
+
+.c21:active {
+  box-shadow: 0 0 0 1pt #311C31;
+  border: 1px solid #FC72FF;
+}
+
+.c21:disabled {
+  opacity: 50%;
+  cursor: auto;
+}
+
+.c21 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -94,11 +266,127 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   justify-content: flex-start;
 }
 
-.c4 {
-  gap: 36px;
+.c39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.c22 {
+  gap: 16px;
+  padding: 24px;
+  background: #1B1B1B;
+  border-radius: 16px;
+  width: 100%;
+}
+
+.c23 {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+}
+
+.c24 {
+  gap: 8px;
+}
+
+.c25 {
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: none;
+  background: #FFFFFF12;
+  color: #FFFFFF;
+  font-weight: 535;
+  font-size: 16px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.c25:hover {
+  opacity: 1;
+}
+
+.c26 {
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: #9B9B9B;
+  font-weight: 535;
+  font-size: 16px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.c26:hover {
+  opacity: 0.7;
+}
+
+.c27 {
+  gap: 4px;
+}
+
+.c28 {
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: #9B9B9B;
+  font-weight: 535;
+  font-size: 14px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.c28:hover {
+  opacity: 0.7;
+}
+
+.c29 {
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: none;
+  background: #FFFFFF12;
+  color: #FFFFFF;
+  font-weight: 535;
+  font-size: 14px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.c29:hover {
+  opacity: 1;
+}
+
+.c30 {
+  width: 100%;
+  height: 400px;
 }
 
 .c5 {
+  gap: 36px;
+}
+
+.c6 {
   -webkit-text-decoration: none;
   text-decoration: none;
   -webkit-text-decoration: none;
@@ -108,21 +396,21 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   transition-duration: 125ms;
 }
 
-.c5:hover {
+.c6:hover {
   opacity: 0.6;
 }
 
-.c5:active {
+.c6:active {
   opacity: 0.4;
 }
 
-.c14 {
-  background: #F9F9F9;
+.c15 {
+  background: #1B1B1B;
   padding: 2px 6px;
   border-radius: 4px;
 }
 
-.c15 {
+.c16 {
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
@@ -130,21 +418,26 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   transition-duration: 125ms;
 }
 
-.c15:hover {
+.c16:hover {
   opacity: 0.6;
 }
 
-.c15:active {
+.c16:active {
   opacity: 0.4;
 }
 
-.c11 {
+.c17 {
+  gap: 12px;
+  margin-left: auto;
+}
+
+.c12 {
   position: relative;
   top: 0;
   left: 0;
 }
 
-.c12 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -155,126 +448,803 @@ exports[`PoolDetailsPage pool header is displayed when data is received from the
   left: 0;
 }
 
-.c12 img {
+.c13 img {
   width: 16px;
   height: 32px;
   object-fit: cover;
 }
 
-.c12 img:first-child {
+.c13 img:first-child {
   border-radius: 16px 0 0 16px;
   object-position: 0 0;
 }
 
-.c12 img:last-child {
+.c13 img:last-child {
   border-radius: 0 16px 16px 0;
   object-position: 100% 0;
 }
 
-.c13 {
+.c14 {
   width: 32px;
   height: 32px;
   border-radius: 50%;
 }
 
+.c41 {
+  gap: 24px;
+  padding: 24px;
+  background: #1B1B1B;
+  border-radius: 16px;
+  margin-top: 24px;
+}
+
+.c42 {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.c43 {
+  color: #9B9B9B;
+  min-width: 60px;
+}
+
+.c44 {
+  gap: 8px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c45 {
+  font-family: 'Courier New',monospace;
+}
+
+.c46 {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #9B9B9B;
+  -webkit-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.c46:hover {
+  color: #FFFFFF;
+}
+
+.c46:active {
+  opacity: 0.7;
+}
+
+.c47 {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #9B9B9B;
+  -webkit-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c47:hover {
+  color: #FC72FF;
+}
+
+.c33 {
+  gap: 24px;
+  padding: 24px;
+  background: #1B1B1B;
+  border-radius: 16px;
+}
+
+.c38 {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.c35 {
+  color: #9B9B9B;
+}
+
+.c34 {
+  gap: 8px;
+}
+
+.c36 {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c37 {
+  height: 8px;
+  background: linear-gradient(90deg,#5D9AFF 50%,#E74694 50%);
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+.c31 {
+  gap: 16px;
+  width: 100%;
+}
+
 .c2 {
   padding: 40px 56px;
   width: 100%;
+  gap: 24px;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.c3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.c32 {
+  width: 360px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media only screen and (max-width:768px) {
+  .c2 {
+    padding: 24px 24px;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width:640px) {
+  .c2 {
+    padding: 16px 16px;
+  }
+}
+
+@media only screen and (max-width:396px) {
+  .c2 {
+    padding: 12px 12px;
+  }
+}
+
+@media only screen and (max-width:768px) {
+  .c3 {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width:768px) {
+  .c32 {
+    width: 100%;
+  }
 }
 
 <div
     class="c0 c1 c2"
   >
     <div
-      class="c3 c4"
+      class="c3"
     >
       <div
-        class="c0 c1"
-      >
-        <a
-          class="c5"
-          href="/tokens/ETHEREUM"
-        >
-          <div
-            class="c6 css-1urox24"
-          >
-            Explore
-          </div>
-        </a>
-        <div
-          class="c6 css-1urox24"
-        >
-           &gt; 
-        </div>
-        <a
-          class="c5"
-          href="/tokens/ETHEREUM"
-        >
-          <div
-            class="c6 css-1urox24"
-          >
-            Pool
-          </div>
-        </a>
-        <div
-          class="c6 css-1urox24"
-        >
-           &gt; 
-        </div>
-        <div
-          class="c7 css-1urox24"
-        >
-          USDC / WETH (0x88e6...5640)
-        </div>
-      </div>
-      <div
-        class="c0 c8"
+        class="c4 c5"
       >
         <div
-          class="c9 c10"
-          width="max-content"
+          class="c0 c1"
+        >
+          <a
+            class="c6"
+            href="/explore"
+          >
+            <div
+              class="c7 css-1urox24"
+            >
+              Explore
+            </div>
+          </a>
+          <div
+            class="c7 css-1urox24"
+          >
+             &gt; 
+          </div>
+          <a
+            class="c6"
+            href="/explore"
+          >
+            <div
+              class="c7 css-1urox24"
+            >
+              Pool
+            </div>
+          </a>
+          <div
+            class="c7 css-1urox24"
+          >
+             &gt; 
+          </div>
+          <div
+            class="c8 css-1urox24"
+          >
+            USDC / WETH (0x88e6...5640)
+          </div>
+        </div>
+        <div
+          class="c0 c9"
         >
           <div
-            class="c11"
+            class="c10 c11"
+            width="max-content"
           >
             <div
               class="c12"
             >
-              <img
+              <div
                 class="c13"
-                src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
-              />
-              <img
-                class="c13"
-                src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
-              />
+              >
+                <img
+                  class="c14"
+                  src="blank_token.svg"
+                />
+                <img
+                  class="c14"
+                  src="blank_token.svg"
+                />
+              </div>
+            </div>
+            <div
+              class="c8 css-1jyz67g"
+            >
+              USDC / WETH
             </div>
           </div>
           <div
-            class="c7 css-1jyz67g"
+            class="c7 c15 css-1m65e73"
           >
-            USDC / WETH
+            0.05%
+          </div>
+          <svg
+            class="c16"
+            data-testid="toggle-tokens-reverse-arrows"
+            fill="none"
+            height="20"
+            viewBox="0 0 20 20"
+            width="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M18.125 10V12.5C18.125 14.2233 16.7225 15.625 15 15.625H4.0092L5.4425 17.0583C5.68667 17.3025 5.68667 17.6983 5.4425 17.9425C5.32084 18.0642 5.16081 18.1258 5.00081 18.1258C4.84081 18.1258 4.68079 18.065 4.55912 17.9425L2.05912 15.4425C2.00162 15.385 1.9559 15.3159 1.92424 15.2393C1.8609 15.0868 1.8609 14.9143 1.92424 14.7618C1.9559 14.6851 2.00162 14.6158 2.05912 14.5583L4.55912 12.0583C4.80329 11.8141 5.19915 11.8141 5.44332 12.0583C5.68749 12.3025 5.68749 12.6983 5.44332 12.9425L4.01001 14.3758H15C16.0333 14.3758 16.875 13.535 16.875 12.5008V10.0008C16.875 9.65581 17.155 9.37581 17.5 9.37581C17.845 9.37581 18.125 9.655 18.125 10ZM2.5 10.625C2.845 10.625 3.125 10.345 3.125 10V7.5C3.125 6.46583 3.96667 5.625 5 5.625H15.9908L14.5575 7.05831C14.3133 7.30247 14.3133 7.69834 14.5575 7.9425C14.6792 8.06417 14.8392 8.12581 14.9992 8.12581C15.1592 8.12581 15.3192 8.065 15.4409 7.9425L17.9409 5.4425C17.9984 5.385 18.0441 5.31592 18.0758 5.23926C18.1391 5.08676 18.1391 4.91426 18.0758 4.76176C18.0441 4.68509 17.9984 4.61581 17.9409 4.55831L15.4409 2.05831C15.1967 1.81414 14.8008 1.81414 14.5567 2.05831C14.3125 2.30247 14.3125 2.69834 14.5567 2.9425L15.99 4.37581H5C3.2775 4.37581 1.875 5.77748 1.875 7.50081V10.0008C1.875 10.345 2.155 10.625 2.5 10.625Z"
+              fill="#5E5E5E"
+            />
+          </svg>
+          <div
+            class="c0 c1 c17"
+          >
+            <button
+              class="c18 c19 c20"
+              width="auto"
+            >
+              Swap
+            </button>
+            <button
+              class="c18 c19 c21"
+              width="auto"
+            >
+              Add liquidity
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c4 c22"
+      >
+        <div
+          class="c0 c1 c23"
+        >
+          <div
+            class="c0 c1 c24"
+          >
+            <button
+              class="c25"
+            >
+              Volume
+            </button>
+            <button
+              class="c26"
+            >
+              TVL
+            </button>
+          </div>
+          <div
+            class="c0 c1 c27"
+          >
+            <button
+              class="c28"
+            >
+              1H
+            </button>
+            <button
+              class="c29"
+            >
+              1D
+            </button>
+            <button
+              class="c28"
+            >
+              1W
+            </button>
+            <button
+              class="c28"
+            >
+              1M
+            </button>
+            <button
+              class="c28"
+            >
+              1Y
+            </button>
           </div>
         </div>
         <div
-          class="c6 c14 css-1m65e73"
+          class="c30"
         >
-          0.05%
+          <div
+            class="c4"
+            style="align-items: center; justify-content: center; height: 100%;"
+          >
+            <div
+              class="c7 css-1urox24"
+            >
+              Loading chart data...
+            </div>
+          </div>
         </div>
-        <svg
-          class="c15"
-          data-testid="toggle-tokens-reverse-arrows"
-          fill="none"
-          height="20"
-          viewBox="0 0 20 20"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg"
+      </div>
+      <div
+        class="c4 c31"
+      >
+        <div
+          class="c8 css-4kpdx7"
         >
-          <path
-            d="M18.125 10V12.5C18.125 14.2233 16.7225 15.625 15 15.625H4.0092L5.4425 17.0583C5.68667 17.3025 5.68667 17.6983 5.4425 17.9425C5.32084 18.0642 5.16081 18.1258 5.00081 18.1258C4.84081 18.1258 4.68079 18.065 4.55912 17.9425L2.05912 15.4425C2.00162 15.385 1.9559 15.3159 1.92424 15.2393C1.8609 15.0868 1.8609 14.9143 1.92424 14.7618C1.9559 14.6851 2.00162 14.6158 2.05912 14.5583L4.55912 12.0583C4.80329 11.8141 5.19915 11.8141 5.44332 12.0583C5.68749 12.3025 5.68749 12.6983 5.44332 12.9425L4.01001 14.3758H15C16.0333 14.3758 16.875 13.535 16.875 12.5008V10.0008C16.875 9.65581 17.155 9.37581 17.5 9.37581C17.845 9.37581 18.125 9.655 18.125 10ZM2.5 10.625C2.845 10.625 3.125 10.345 3.125 10V7.5C3.125 6.46583 3.96667 5.625 5 5.625H15.9908L14.5575 7.05831C14.3133 7.30247 14.3133 7.69834 14.5575 7.9425C14.6792 8.06417 14.8392 8.12581 14.9992 8.12581C15.1592 8.12581 15.3192 8.065 15.4409 7.9425L17.9409 5.4425C17.9984 5.385 18.0441 5.31592 18.0758 5.23926C18.1391 5.08676 18.1391 4.91426 18.0758 4.76176C18.0441 4.68509 17.9984 4.61581 17.9409 4.55831L15.4409 2.05831C15.1967 1.81414 14.8008 1.81414 14.5567 2.05831C14.3125 2.30247 14.3125 2.69834 14.5567 2.9425L15.99 4.37581H5C3.2775 4.37581 1.875 5.77748 1.875 7.50081V10.0008C1.875 10.345 2.155 10.625 2.5 10.625Z"
-            fill="#5E5E5E"
+          Recent Transactions
+        </div>
+        <div
+          class="c7 css-1urox24"
+        >
+          Loading...
+        </div>
+      </div>
+    </div>
+    <div
+      class="c32"
+    >
+      <div
+        class="c4 c33"
+      >
+        <div
+          class="c8 css-4kpdx7"
+        >
+          Stats
+        </div>
+        <div
+          class="c4 c34"
+        >
+          <div
+            class="c7 c35 css-1urox24"
+          >
+            Pool balances
+          </div>
+          <div
+            class="c0 c1 c36"
+          >
+            <div
+              class="c8 css-1urox24"
+            >
+              180.08M USDC
+            </div>
+            <div
+              class="c8 css-1urox24"
+            >
+              142.78K WETH
+            </div>
+          </div>
+          <div
+            class="c37"
           />
-        </svg>
+        </div>
+        <div
+          class="c0 c1 c38"
+        >
+          <div
+            class="c39"
+          >
+            <div
+              class="c7 c35 css-1urox24"
+            >
+              Total APR
+            </div>
+            <div
+              class="c8 css-1jyz67g"
+              style="color: rgb(28, 110, 66);"
+            >
+              17274.00%
+            </div>
+          </div>
+        </div>
+        <div
+          class="c0 c1 c38"
+        >
+          <div
+            class="c39"
+          >
+            <div
+              class="c7 c35 css-1urox24"
+            >
+              TVL
+            </div>
+            <div
+              class="c0 c40"
+            >
+              <div
+                class="c8 css-1jyz67g"
+              >
+                $417.23M
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="c0 c1 c38"
+        >
+          <div
+            class="c39"
+          >
+            <div
+              class="c7 c35 css-1urox24"
+            >
+              24H volume
+            </div>
+            <div
+              class="c0 c40"
+            >
+              <div
+                class="c8 css-1jyz67g"
+              >
+                $394920.16M
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="c0 c1 c38"
+        >
+          <div
+            class="c39"
+          >
+            <div
+              class="c7 c35 css-1urox24"
+            >
+              24H fees
+            </div>
+            <div
+              class="c8 css-1jyz67g"
+            >
+              $197.46M
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c4 c41"
+      >
+        <div
+          class="c8 css-4kpdx7"
+        >
+          Links
+        </div>
+        <div
+          class="c0 c1 c42"
+        >
+          <div
+            class="c7 c43 css-1urox24"
+          >
+            Pool
+          </div>
+          <div
+            class="c0 c1 c44"
+          >
+            <div
+              class="c8 c45 css-1urox24"
+            >
+              0x88e6A0...5640
+            </div>
+            <button
+              class="c46"
+              title="Copy address"
+            >
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  height="13"
+                  rx="2"
+                  ry="2"
+                  width="13"
+                  x="9"
+                  y="9"
+                />
+                <path
+                  d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                />
+              </svg>
+            </button>
+            <a
+              class="c47"
+              href="https://etherscan.io/address/0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640"
+              rel="noopener noreferrer"
+              target="_blank"
+              title="View on explorer"
+            >
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                />
+                <polyline
+                  points="15 3 21 3 21 9"
+                />
+                <line
+                  x1="10"
+                  x2="21"
+                  y1="14"
+                  y2="3"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div
+          class="c0 c1 c42"
+        >
+          <div
+            class="c7 c43 css-1urox24"
+          >
+            USDC
+          </div>
+          <div
+            class="c0 c1 c44"
+          >
+            <div
+              class="c8 c45 css-1urox24"
+            >
+              0xA0b869...eB48
+            </div>
+            <button
+              class="c46"
+              title="Copy address"
+            >
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  height="13"
+                  rx="2"
+                  ry="2"
+                  width="13"
+                  x="9"
+                  y="9"
+                />
+                <path
+                  d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                />
+              </svg>
+            </button>
+            <a
+              class="c47"
+              href="https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+              rel="noopener noreferrer"
+              target="_blank"
+              title="View on explorer"
+            >
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                />
+                <polyline
+                  points="15 3 21 3 21 9"
+                />
+                <line
+                  x1="10"
+                  x2="21"
+                  y1="14"
+                  y2="3"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div
+          class="c0 c1 c42"
+        >
+          <div
+            class="c7 c43 css-1urox24"
+          >
+            WETH
+          </div>
+          <div
+            class="c0 c1 c44"
+          >
+            <div
+              class="c8 c45 css-1urox24"
+            >
+              0xC02aaA...6Cc2
+            </div>
+            <button
+              class="c46"
+              title="Copy address"
+            >
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  height="13"
+                  rx="2"
+                  ry="2"
+                  width="13"
+                  x="9"
+                  y="9"
+                />
+                <path
+                  d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                />
+              </svg>
+            </button>
+            <a
+              class="c47"
+              href="https://etherscan.io/token/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+              rel="noopener noreferrer"
+              target="_blank"
+              title="View on explorer"
+            >
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                />
+                <polyline
+                  points="15 3 21 3 21 9"
+                />
+                <line
+                  x1="10"
+                  x2="21"
+                  y1="14"
+                  y2="3"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

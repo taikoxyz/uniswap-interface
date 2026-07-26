@@ -17,6 +17,31 @@ exports[`PoolDetailsHeader renders header text correctly 1`] = `
   width: max-content;
 }
 
+.c16 {
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  text-align: center;
+  line-height: inherit;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  font-size: inherit;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: white;
+  background-color: primary;
+  border: 0;
+  border-radius: 4px;
+  padding: 10px 16px;
+  width: auto;
+}
+
 .c3 {
   width: 100%;
   display: -webkit-box;
@@ -73,11 +98,140 @@ exports[`PoolDetailsHeader renders header text correctly 1`] = `
 }
 
 .c5 {
-  color: #7D7D7D;
+  color: #9B9B9B;
 }
 
 .c6 {
-  color: #222222;
+  color: #FFFFFF;
+}
+
+.c17 {
+  padding: 10px 16px;
+  width: auto;
+  line-height: 24px;
+  font-weight: 535;
+  text-align: center;
+  border-radius: 16px;
+  outline: none;
+  border: 1px solid transparent;
+  color: #FFFFFF;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  -webkit-transition: -webkit-transform 450ms ease;
+  -webkit-transition: transform 450ms ease;
+  transition: transform 450ms ease;
+  -webkit-transform: perspective(1px) translateZ(0);
+  -ms-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+}
+
+.c17:disabled {
+  opacity: 50%;
+  cursor: auto;
+  pointer-events: none;
+}
+
+.c17 > * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c17 > a {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c18 {
+  background: linear-gradient(93.06deg,#C8047D 2.66%,#FC72FF 98.99%);
+  font-size: 20px;
+  font-weight: 535;
+  padding: 16px;
+  color: #FFFFFF;
+  box-shadow: 0 0 20px rgba(200,4,125,0.3);
+  -webkit-transition: all 250ms ease;
+  transition: all 250ms ease;
+  border: none;
+}
+
+.c18:focus {
+  box-shadow: 0 0 0 2pt rgba(200,4,125,0.4),0 0 30px rgba(200,4,125,0.4);
+  background: linear-gradient(93.06deg,#B00370 2.66%,#E865F0 98.99%);
+}
+
+.c18:hover {
+  background: linear-gradient(93.06deg,#B00370 2.66%,#E865F0 98.99%);
+  box-shadow: 0 0 30px rgba(200,4,125,0.5);
+  -webkit-transform: translateY(-1px);
+  -ms-transform: translateY(-1px);
+  transform: translateY(-1px);
+}
+
+.c18:active {
+  box-shadow: 0 0 0 2pt rgba(200,4,125,0.5),0 0 35px rgba(200,4,125,0.5);
+  background: linear-gradient(93.06deg,#A00268 2.66%,#D655E0 98.99%);
+}
+
+.c18:disabled {
+  background: #FFFFFF12;
+  color: #9B9B9B;
+  cursor: auto;
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.c19 {
+  border: 1px solid #311C31;
+  color: #FC72FF;
+  background-color: transparent;
+  font-size: 16px;
+  border-radius: 12px;
+  padding: 10px 16px;
+}
+
+.c19:focus {
+  box-shadow: 0 0 0 1pt #311C31;
+  border: 1px solid #FC72FF;
+}
+
+.c19:hover {
+  border: 1px solid #FC72FF;
+}
+
+.c19:active {
+  box-shadow: 0 0 0 1pt #311C31;
+  border: 1px solid #FC72FF;
+}
+
+.c19:disabled {
+  opacity: 50%;
+  cursor: auto;
+}
+
+.c19 a:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
 .c0 {
@@ -117,7 +271,7 @@ exports[`PoolDetailsHeader renders header text correctly 1`] = `
 }
 
 .c13 {
-  background: #F9F9F9;
+  background: #1B1B1B;
   padding: 2px 6px;
   border-radius: 4px;
 }
@@ -136,6 +290,11 @@ exports[`PoolDetailsHeader renders header text correctly 1`] = `
 
 .c14:active {
   opacity: 0.4;
+}
+
+.c15 {
+  gap: 12px;
+  margin-left: auto;
 }
 
 .c10 {
@@ -185,7 +344,7 @@ exports[`PoolDetailsHeader renders header text correctly 1`] = `
     >
       <a
         class="c4"
-        href="/tokens/ETHEREUM"
+        href="/explore"
       >
         <div
           class="c5 css-1urox24"
@@ -200,7 +359,7 @@ exports[`PoolDetailsHeader renders header text correctly 1`] = `
       </div>
       <a
         class="c4"
-        href="/tokens/ETHEREUM"
+        href="/explore"
       >
         <div
           class="c5 css-1urox24"
@@ -234,11 +393,11 @@ exports[`PoolDetailsHeader renders header text correctly 1`] = `
           >
             <img
               class="c12"
-              src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+              src="blank_token.svg"
             />
             <img
               class="c12"
-              src="https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+              src="blank_token.svg"
             />
           </div>
         </div>
@@ -267,6 +426,22 @@ exports[`PoolDetailsHeader renders header text correctly 1`] = `
           fill="#5E5E5E"
         />
       </svg>
+      <div
+        class="c2 c3 c15"
+      >
+        <button
+          class="c16 c17 c18"
+          width="auto"
+        >
+          Swap
+        </button>
+        <button
+          class="c16 c17 c19"
+          width="auto"
+        >
+          Add liquidity
+        </button>
+      </div>
     </div>
   </div>
 </DocumentFragment>
