@@ -141,7 +141,7 @@ describe('formatNumber', () => {
     mocked(useActiveLocalCurrency).mockReturnValue(Currency.Jpy)
     const { formatNumber } = renderHook(() => useFormatter()).result.current
 
-    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatTokenPrice })).toBe('1,23\xa0M¥')
+    expect(formatNumber({ input: 1234567.891, type: NumberType.FiatTokenPrice })).toBe('1,23\xa0M\xa0¥')
     expect(formatNumber({ input: 1234.5678, type: NumberType.FiatTokenPrice })).toBe('1234,57\xa0¥')
     expect(formatNumber({ input: 12345.678, type: NumberType.FiatTokenPrice })).toBe('12.345,68\xa0¥')
 
