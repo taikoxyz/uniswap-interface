@@ -1,9 +1,9 @@
 import TokenDetails from 'components/Tokens/TokenDetails'
 import { TokenDetailsPageSkeleton } from 'components/Tokens/TokenDetails/Skeleton'
 import { NATIVE_CHAIN_ID } from 'constants/tokens'
-import { useTokenQuery } from 'graphql/data/TokenQuery'
 import { useTokenPriceQuery } from 'graphql/data/TokenPrice'
-import { TimePeriod, toHistoryDuration, validateUrlChainParam } from 'graphql/data/util'
+import { useTokenQuery } from 'graphql/data/TokenQuery'
+import { InterfaceGqlChain, TimePeriod, toHistoryDuration, validateUrlChainParam } from 'graphql/data/util'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
@@ -18,7 +18,7 @@ export default function TokenDetailsPage() {
     tokenAddress: string
     chainName?: string
   }>()
-  const chain = validateUrlChainParam(chainName)
+  const chain = validateUrlChainParam(chainName) as InterfaceGqlChain
   const isNative = tokenAddress === NATIVE_CHAIN_ID
   const [timePeriod, setTimePeriod] = useAtom(pageTimePeriodAtom)
   const [detailedTokenAddress, duration] = useMemo(

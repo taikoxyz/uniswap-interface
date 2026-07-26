@@ -3,13 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { AppState } from 'state/reducer'
 
-import {
-  addPopup,
-  ApplicationModal,
-  PopupContent,
-  removePopup,
-  setOpenModal,
-} from './reducer'
+import { addPopup, ApplicationModal, PopupContent, removePopup, setOpenModal } from './reducer'
 
 export function useModalIsOpen(modal: ApplicationModal): boolean {
   const openModal = useAppSelector((state: AppState) => state.application.openModal)
@@ -37,11 +31,6 @@ export function useCloseModal() {
     },
     [currentlyOpenModal, dispatch]
   )
-}
-
-export function useOpenModal(modal: ApplicationModal): () => void {
-  const dispatch = useAppDispatch()
-  return useCallback(() => dispatch(setOpenModal(modal)), [dispatch, modal])
 }
 
 export function useToggleSettingsMenu(): () => void {

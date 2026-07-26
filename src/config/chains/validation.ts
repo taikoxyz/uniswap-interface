@@ -110,7 +110,7 @@ export function validateChainAddresses(
   addresses: ChainAddresses,
   chainName: string,
   chainId: number,
-  strict: boolean = false
+  strict = false
 ): ValidationResult {
   const errors: string[] = []
   const warnings: string[] = []
@@ -169,7 +169,7 @@ export function validateChainAddressesOrThrow(
   addresses: ChainAddresses,
   chainName: string,
   chainId: number,
-  strict: boolean = false
+  strict = false
 ): void {
   const result = validateChainAddresses(addresses, chainName, chainId, strict)
 
@@ -214,7 +214,7 @@ export function validateChainAddressesOrThrow(
  */
 export function validateMultipleChains(
   chains: Array<{ addresses: ChainAddresses; chainName: string; chainId: number }>,
-  strict: boolean = false
+  strict = false
 ): ValidationResult[] {
   return chains.map((chain) => validateChainAddresses(chain.addresses, chain.chainName, chain.chainId, strict))
 }

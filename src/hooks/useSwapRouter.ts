@@ -1,11 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { t } from '@lingui/macro'
 import { SwapEventName } from '@uniswap/analytics-events'
-import { Percent } from '@uniswap/sdk-core'
-import { SwapRouter, FeeOptions, toHex } from '@uniswap/v3-sdk'
+import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
+import { FeeOptions, PermitOptions, SwapRouter, toHex, Trade as V3Trade } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendAnalyticsEvent, useTrace } from 'analytics'
-import { TAIKO_HOODI_ADDRESSES, TAIKO_MAINNET_ADDRESSES, TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import {
+  TAIKO_HOODI_ADDRESSES,
+  TAIKO_HOODI_CHAIN_ID,
+  TAIKO_MAINNET_ADDRESSES,
+  TAIKO_MAINNET_CHAIN_ID,
+} from 'config/chains'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { formatCommonPropertiesForTrade, formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
 import { useCallback } from 'react'
@@ -92,14 +97,21 @@ export function useSwapRouterSwapCallback(
         // Adjust slippage tolerance to account for token tax
         const taxAdjustedSlippageTolerance = options.slippageTolerance.add(trade.totalTaxRate)
 
-        // Generate swap calldata using v3-sdk SwapRouter
-        const { calldata: data, value } = SwapRouter.swapCallParameters(trade, {
-          slippageTolerance: taxAdjustedSlippageTolerance,
-          recipient: account,
-          deadline: options.deadline?.toNumber() ?? Math.floor(Date.now() / 1000) + 1800, // 30 minutes default
-          inputTokenPermit: options.permit,
-          fee: options.feeOptions,
-        })
+        // Generate swap calldata using v3-sdk SwapRouter.
+        // ClassicTrade extends router-sdk's Trade, which structurally provides the `swaps` the
+        // v3-sdk SwapRouter consumes, but not the v3-sdk Trade's `route` getter - cast for types only.
+        const { calldata: data, value } = SwapRouter.swapCallParameters(
+          trade as unknown as V3Trade<Currency, Currency, TradeType>,
+          {
+            slippageTolerance: taxAdjustedSlippageTolerance,
+            recipient: account,
+            deadline: options.deadline?.toNumber() ?? Math.floor(Date.now() / 1000) + 1800, // 30 minutes default
+            // Type-only cast: Permit2 signatures are never produced on Taiko (see usePermit2Allowance),
+            // so this stays undefined at runtime; v3-sdk's EIP-2612 PermitOptions shape differs.
+            inputTokenPermit: options.permit as unknown as PermitOptions | undefined,
+            fee: options.feeOptions,
+          }
+        )
 
         const routerAddress = getSwapRouterAddress(chainId)
 

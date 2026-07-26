@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@uniswap/sdk-core'
+import { Token } from '@uniswap/sdk-core'
 import { ChainTokenMap } from 'hooks/Tokens'
 
 // Common tokens on Taiko Mainnet

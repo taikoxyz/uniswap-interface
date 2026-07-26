@@ -1,29 +1,17 @@
 import { t, Trans } from '@lingui/macro'
-import { InterfaceElementName } from '@uniswap/analytics-events'
 import FeatureFlagModal from 'components/FeatureFlagModal/FeatureFlagModal'
 import { PrivacyPolicyModal } from 'components/PrivacyPolicy'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
-import {
-  BarChartIcon,
-  DiscordIconMenu,
-  EllipsisIcon,
-  GithubIconMenu,
-  GovernanceIcon,
-  PoolIcon,
-  TwitterIconMenu,
-} from 'nft/components/icons'
+import { DiscordIconMenu, EllipsisIcon, GithubIconMenu, TwitterIconMenu } from 'nft/components/icons'
 import { body, bodySmall } from 'nft/css/common.css'
 import { themeVars } from 'nft/css/sprinkles.css'
 import { ReactNode, useReducer, useRef } from 'react'
 import { NavLink, NavLinkProps } from 'react-router-dom'
 import { useToggleModal } from 'state/application/hooks'
 import styled, { useTheme } from 'styled-components'
-import { isDevelopmentEnv, isStagingEnv } from 'utils/env'
-import { openDownloadApp } from 'utils/openDownloadApp'
 
-import { ReactComponent as AppleLogo } from '../../assets/svg/apple_logo.svg'
 import { ApplicationModal } from '../../state/application/reducer'
 import * as styles from './MenuDropdown.css'
 import { NavDropdown } from './NavDropdown'

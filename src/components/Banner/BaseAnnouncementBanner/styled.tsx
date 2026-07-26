@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules -- styled components for the temporarily disabled BaseWalletBanner in ./index.tsx, kept for re-enablement */
 import walletBannerPhoneImageSrc from 'assets/images/wallet_banner_phone_image.png'
 import { BaseButton } from 'components/Button'
 import { OpacityHoverState } from 'components/Common'

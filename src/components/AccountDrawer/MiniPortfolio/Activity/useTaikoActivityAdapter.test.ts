@@ -1,12 +1,10 @@
+import { useWeb3React } from '@web3-react/core'
+import { mocked } from 'test-utils/mocked'
 import { renderHook } from 'test-utils/render'
 
 import { useTaikoActivityAdapter } from './useTaikoActivityAdapter'
 
 const TAIKO_MAINNET_CHAIN_ID = 167000
-
-jest.mock('@web3-react/core', () => ({
-  useWeb3React: () => ({ chainId: TAIKO_MAINNET_CHAIN_ID }),
-}))
 
 const mockUseTaikoActivity = jest.fn()
 jest.mock('graphql/taiko/TaikoActivity', () => ({
@@ -38,12 +36,21 @@ function mockSwap(amount0: string, amount1: string) {
 }
 
 describe('useTaikoActivityAdapter swap direction', () => {
-  beforeEach(() => mockUseTaikoActivity.mockReset())
+  beforeEach(() => {
+    mockUseTaikoActivity.mockReset()
+    // useWeb3React is mocked globally in setupTests.ts and reset between tests; the default
+    // returns chainId 1, so point it at Taiko for the adapter to produce activities.
+    mocked(useWeb3React).mockReturnValue({ chainId: TAIKO_MAINNET_CHAIN_ID } as ReturnType<typeof useWeb3React>)
+  })
 
   // Pool is token0=WETH, token1=TAIKO. A TAIKO->WETH trade has amount1 (TAIKO) > 0 (sold in)
   // and amount0 (WETH) < 0 (bought out). It must read "Swap TAIKO for WETH", not "WETH for TAIKO".
   it('labels a TAIKO->WETH swap in the user trade direction', () => {
-    mockUseTaikoActivity.mockReturnValue({ activities: mockSwap('-0.1', '2051.75'), loading: false, refetch: jest.fn() })
+    mockUseTaikoActivity.mockReturnValue({
+      activities: mockSwap('-0.1', '2051.75'),
+      loading: false,
+      refetch: jest.fn(),
+    })
     const { result } = renderHook(() => useTaikoActivityAdapter('0xabc'))
     const activity = result.current.activities?.[0]
     expect(activity?.title).toBe('Swap TAIKO for WETH')
@@ -54,7 +61,11 @@ describe('useTaikoActivityAdapter swap direction', () => {
 
   // The opposite direction (WETH->TAIKO): amount0 (WETH) > 0 sold in, amount1 (TAIKO) < 0 bought out.
   it('labels a WETH->TAIKO swap in the user trade direction', () => {
-    mockUseTaikoActivity.mockReturnValue({ activities: mockSwap('0.1', '-2051.75'), loading: false, refetch: jest.fn() })
+    mockUseTaikoActivity.mockReturnValue({
+      activities: mockSwap('0.1', '-2051.75'),
+      loading: false,
+      refetch: jest.fn(),
+    })
     const { result } = renderHook(() => useTaikoActivityAdapter('0xabc'))
     const activity = result.current.activities?.[0]
     expect(activity?.title).toBe('Swap WETH for TAIKO')

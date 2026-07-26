@@ -93,11 +93,11 @@ export function useSearchTokens(searchQuery: string, chainId: number) {
   })
 
   const sortedTokens = useMemo(() => {
-    const searchChain = chainIdToBackendName(chainId)
+    const searchChain = chainIdToBackendName(chainId) as Chain
     // Stores results, allowing overwriting cross-chain tokens w/ more 'relevant token'
     const selectionMap: { [projectId: string]: SearchToken } = {}
     const filteredTokens = data?.searchTokens?.filter((token) =>
-      (BACKEND_SUPPORTED_CHAINS as ReadonlyArray<Chain>).includes(token.chain)
+      (BACKEND_SUPPORTED_CHAINS as ReadonlyArray<Chain | string>).includes(token.chain)
     )
     filteredTokens?.forEach((token) => {
       if (token.project?.id) {

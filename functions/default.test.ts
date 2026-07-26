@@ -1,6 +1,10 @@
+// Skipped for the Taiko-only deployment: asserts the Uniswap-branded og/twitter
+// meta tags that lived in the upstream public/index.html. The rebranded
+// index.html no longer carries them, and these Cloudflare Pages functions are
+// not deployed for swap.taiko.xyz (which deploys on Vercel).
 const defaultUrls = ['http://127.0.0.1:3000/', 'http://127.0.0.1:3000/swap', 'http://127.0.0.1:3000/pools']
 
-test.each(defaultUrls)('should inject metadata for valid collections', async (defaultUrl) => {
+test.skip.each(defaultUrls)('should inject metadata for valid collections', async (defaultUrl) => {
   const body = await fetch(new Request(defaultUrl)).then((res) => res.text())
   expect(body).toContain(`<meta property="og:title" content="Uniswap Interface"/>`)
   expect(body).toContain(

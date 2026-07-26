@@ -108,7 +108,7 @@ export function useAllActivities(account: string) {
   return {
     loading: isTaiko ? taikoLoading : loading,
     activities: combinedActivities,
-    refetch: isTaiko ? taikoRefetch : refetch
+    refetch: isTaiko ? taikoRefetch : refetch,
   }
 }
 

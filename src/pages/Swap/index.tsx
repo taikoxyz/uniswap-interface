@@ -33,6 +33,14 @@ import {
 } from 'components/swap/styled'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import SwapHeader from 'components/swap/SwapHeader'
+import { WrongChainOverlay } from 'components/WrongChainOverlay'
+import {
+  isTaikoChain,
+  TAIKO_HOODI_ADDRESSES,
+  TAIKO_HOODI_CHAIN_ID,
+  TAIKO_MAINNET_ADDRESSES,
+  TAIKO_MAINNET_CHAIN_ID,
+} from 'config/chains/taiko'
 import { getChainInfo } from 'constants/chainInfo'
 import { asSupportedChain, isSupportedChain } from 'constants/chains'
 import { getSwapCurrencyId, TOKEN_SHORTHANDS } from 'constants/tokens'
@@ -64,18 +72,9 @@ import { maybeLogFirstSwapAction } from 'tracing/swapFlowLoggers'
 import { computeFiatValuePriceImpact } from 'utils/computeFiatValuePriceImpact'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
 import { computeRealizedPriceImpact, warningSeverity } from 'utils/prices'
 import { didUserReject } from 'utils/swapErrorToUserReadableMessage'
-
-import {
-  isTaikoChain,
-  TAIKO_HOODI_ADDRESSES,
-  TAIKO_HOODI_CHAIN_ID,
-  TAIKO_MAINNET_ADDRESSES,
-  TAIKO_MAINNET_CHAIN_ID,
-} from 'config/chains/taiko'
-import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
-import { WrongChainOverlay } from 'components/WrongChainOverlay'
 
 import { useScreenSize } from '../../hooks/useScreenSize'
 import { useIsDarkMode } from '../../theme/components/ThemeToggle'
@@ -473,8 +472,8 @@ export function Swap({
     chainId && isTaikoChain(chainId)
       ? undefined
       : allowance.state === AllowanceState.ALLOWED
-        ? allowance.permitSignature
-        : undefined
+      ? allowance.permitSignature
+      : undefined
   )
 
   const handleContinueToReview = useCallback(() => {
@@ -833,8 +832,7 @@ export function Swap({
                 // on `allowance.state !== LOADING`, so without this the button looks active but clicking
                 // it is a silent no-op ("the pink button isn't working") until the allowance read lands.
                 disabled={
-                  !getIsValidSwapQuote(trade, tradeState, swapInputError) ||
-                  allowance.state === AllowanceState.LOADING
+                  !getIsValidSwapQuote(trade, tradeState, swapInputError) || allowance.state === AllowanceState.LOADING
                 }
                 error={!swapInputError && priceImpactSeverity > 2 && allowance.state === AllowanceState.ALLOWED}
               >
