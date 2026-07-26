@@ -1,7 +1,7 @@
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
+import { DATA_REFRESH_WINDOW_MS, getAverageBlockTimeMs } from 'config/chains'
 import { isTaikoChain } from 'config/chains/taiko'
-import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
 import { getPermit2Address } from 'constants/permit2'
 import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
 import { useRevokeTokenAllowance, useTokenAllowance, useUpdateTokenAllowance } from 'hooks/useTokenAllowance'
@@ -90,11 +90,14 @@ export default function usePermit2Allowance(
   }, [isApprovalPending, isApprovalSyncing])
 
   // Signature and PermitAllowance will expire, so they should be rechecked at an interval.
-  // Calculate now such that the signature will still be valid for the submitting block.
-  const [now, setNow] = useState(Date.now() + AVERAGE_L1_BLOCK_TIME)
+  // Calculate now (in seconds, to match on-chain deadlines) such that the signature will still be
+  // valid for the submitting block: the margin is the chain's block time, since the signature only
+  // needs to remain valid until it is mined.
+  const signatureMarginMs = getAverageBlockTimeMs(chainId)
+  const [now, setNow] = useState((Date.now() + signatureMarginMs) / 1000)
   useInterval(
-    useCallback(() => setNow((Date.now() + AVERAGE_L1_BLOCK_TIME) / 1000), []),
-    AVERAGE_L1_BLOCK_TIME
+    useCallback(() => setNow((Date.now() + signatureMarginMs) / 1000), [signatureMarginMs]),
+    DATA_REFRESH_WINDOW_MS
   )
 
   const [signature, setSignature] = useState<PermitSignature>()
@@ -188,6 +191,7 @@ export default function usePermit2Allowance(
   }, [
     approve,
     approveAndPermit,
+    chainId,
     isApprovalLoading,
     isApprovalPending,
     isApproved,

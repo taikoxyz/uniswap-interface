@@ -24,6 +24,15 @@
  */
 /* eslint-disable import/no-unused-modules -- public API barrel of the chain registry; documented entry points are kept even where not yet imported */
 
+// Re-export block time configuration
+export {
+  blocksPerWindow,
+  DATA_REFRESH_WINDOW_MS,
+  DEFAULT_AVERAGE_BLOCK_TIME_MS,
+  getAverageBlockTimeMs,
+  TAIKO_BLOCK_TIME_MS,
+} from './blockTime'
+
 // Re-export everything from the registry as the main interface
 export type { ChainConfig } from './registry'
 export {
