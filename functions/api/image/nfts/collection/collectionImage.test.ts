@@ -11,7 +11,13 @@ const nonexistentImageUrls = [
   'http://127.0.0.1:3000/api/image/nfts/collection/0xed5af388653567af2f388e6224dc7c4b3241c545',
 ]
 
-test.each([...collectionImageUrls, ...nonexistentImageUrls])('collectionImageUrl', async (url) => {
+// Skipped for the Taiko-only deployment: og-image generation resolves
+// collection data through Uniswap's private GraphQL gateway (api.uniswap.org),
+// which does not serve this fork, and these Cloudflare Pages functions are not
+// deployed for swap.taiko.xyz (which deploys on Vercel). The invalid/blocked
+// route tests below stay active because they assert error statuses without any
+// external data.
+test.skip.each([...collectionImageUrls, ...nonexistentImageUrls])('collectionImageUrl', async (url) => {
   const response = await fetch(new Request(url))
   expect(response.status).toBe(200)
   expect(response.headers.get('content-type')).toBe('image/png')

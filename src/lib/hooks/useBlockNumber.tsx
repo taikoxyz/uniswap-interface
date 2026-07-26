@@ -111,7 +111,7 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
           setChainBlock({
             chainId: activeChainId,
             block: update,
-            mainnetBlock: activeChainId === ChainId.MAINNET ? update : mainnetBlock,
+            mainnetBlock: activeChainId === TAIKO_MAINNET_CHAIN_ID ? update : mainnetBlock,
           })
         }
       },
