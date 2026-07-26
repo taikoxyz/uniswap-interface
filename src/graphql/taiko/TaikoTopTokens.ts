@@ -18,7 +18,7 @@ import { getPoolClientForChain, getTokenClientForChain } from './apollo'
  * Token data structure from Goldsky subgraph
  * Based on Uniswap V3 subgraph schema
  */
-export interface TaikoToken {
+interface TaikoToken {
   id: string // token address (lowercase)
   symbol: string
   name: string
@@ -35,7 +35,7 @@ export interface TaikoToken {
 /**
  * Token day data structure from Goldsky pool subgraph
  */
-export interface TaikoTokenDayData {
+interface TaikoTokenDayData {
   id: string
   date: number
   token: {
@@ -94,7 +94,7 @@ const TAIKO_TOKEN_DAY_DATA_QUERY = gql`
 /**
  * Token data normalized to match the interface expected by TokenTable
  */
-export interface NormalizedTaikoToken {
+interface NormalizedTaikoToken {
   __typename?: 'Token'
   id: string
   address: string
@@ -122,9 +122,9 @@ export interface NormalizedTaikoToken {
   }
 }
 
-export type SparklineMap = { [key: string]: PricePoint[] | undefined }
+type SparklineMap = { [key: string]: PricePoint[] | undefined }
 
-export interface UseTopTokensTaikoResult {
+interface UseTopTokensTaikoResult {
   tokens?: readonly NormalizedTaikoToken[]
   tokenSortRank: Record<string, number>
   loadingTokens: boolean

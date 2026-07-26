@@ -1,12 +1,12 @@
+import { Contract } from '@ethersproject/contracts'
 import { ChainId, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import ERC20_ABI from 'abis/erc20.json'
 import { isSupportedChain, SupportedInterfaceChain } from 'constants/chains'
 import { RPC_PROVIDERS } from 'constants/providers'
-import { Contract } from 'ethers'
 import { useEffect, useState } from 'react'
 
-export interface TaikoTokenBalance {
+interface TaikoTokenBalance {
   token: Token
   balance: string
   rawBalance: string

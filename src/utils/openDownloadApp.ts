@@ -23,8 +23,6 @@ const defaultDownloadAppOptions = {
  *
  * This way with JS disabled and when hovering the <a /> you see and nav to the full href properly,
  * but with JS on it will send the analytics event before navigating to the href.
- *
- * I've added a helper `getDownloadAppLinkProps` that unifies this behavior into one thing.
  */
 
 export function openDownloadApp(options: OpenDownloadAppOptions = defaultDownloadAppOptions) {
@@ -35,21 +33,11 @@ export function openDownloadApp(options: OpenDownloadAppOptions = defaultDownloa
   }
 }
 
-// if you need this by itself can add export, not used externally for now
+// eslint-disable-next-line import/no-unused-modules -- referenced by commented-out wallet redirect in pages/App.tsx, kept for re-enablement
 export const getDownloadAppLink = (options: OpenDownloadAppOptions = defaultDownloadAppOptions) =>
   isIOS
     ? linkWithParams(APP_STORE_LINK, options?.appStoreParams)
     : linkWithParams(MICROSITE_LINK, options?.microSiteParams)
-
-export const getDownloadAppLinkProps = (options: OpenDownloadAppOptions = defaultDownloadAppOptions) => {
-  return {
-    href: getDownloadAppLink(options),
-    onClick(e: { preventDefault: () => void }) {
-      e.preventDefault()
-      openDownloadApp(options)
-    },
-  }
-}
 
 type AnalyticsLinkOptions = {
   element?: InterfaceElementName
@@ -61,7 +49,7 @@ const openAppStore = (options?: AnalyticsLinkOptions) => {
   window.open(linkWithParams(APP_STORE_LINK, options?.urlParamString), /* target = */ 'uniswap_wallet_appstore')
 }
 
-export const openWalletMicrosite = (options?: AnalyticsLinkOptions) => {
+const openWalletMicrosite = (options?: AnalyticsLinkOptions) => {
   sendAnalyticsEvent(InterfaceEventName.UNISWAP_WALLET_MICROSITE_OPENED, { element: options?.element })
   window.open(linkWithParams(MICROSITE_LINK, options?.urlParamString), /* target = */ 'uniswap_wallet_microsite')
 }

@@ -48,7 +48,7 @@ const TAIKO_HOODI_COMMON_TOKENS = [
 /**
  * Creates a token map for Taiko chains with common tokens
  */
-export function getTaikoTokenMap(): ChainTokenMap {
+function getTaikoTokenMap(): ChainTokenMap {
   const taikoMap: ChainTokenMap = {}
 
   // Add Taiko Mainnet tokens

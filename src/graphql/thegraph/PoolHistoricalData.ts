@@ -18,14 +18,14 @@ const POOL_HISTORICAL_DATA_QUERY = gql`
   }
 `
 
-export interface PoolHistoricalData {
+interface PoolHistoricalData {
   date: number
   volumeUSD: string
   tvlUSD: string
   feesUSD: string
 }
 
-export interface PoolHistoricalDataQuery {
+interface PoolHistoricalDataQuery {
   poolDayDatas: PoolHistoricalData[]
 }
 

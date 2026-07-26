@@ -1,10 +1,6 @@
 import type { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import { _TypedDataEncoder } from '@ethersproject/hash'
 import type { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
-
-// TypedData types from ethers v5 (chainId is a BigNumberish there, e.g. it may be a string)
-export type { TypedDataDomain, TypedDataField }
-
 import { getWalletMeta, WalletType } from 'utils/walletMeta'
 
 // These are WalletConnect peers which do not implement eth_signTypedData_v4, but *do* implement eth_signTypedData.

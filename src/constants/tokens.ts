@@ -287,13 +287,6 @@ export const USDT_TAIKO_HOODI = new Token(
   'USDT',
   'Tether USD'
 )
-export const WETH_TAIKO_HOODI = new Token(
-  TAIKO_HOODI_CHAIN_ID,
-  '0x3B39685B5495359c892DDD1057B5712F49976835',
-  18,
-  'WETH',
-  'Wrapped Ether'
-)
 export const TAIKO_TAIKO_HOODI = new Token(
   TAIKO_HOODI_CHAIN_ID,
   '0x96257D50DB02ba0153f888e919ff47A91951e979',

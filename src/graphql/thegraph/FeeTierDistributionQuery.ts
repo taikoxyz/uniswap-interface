@@ -43,7 +43,7 @@ interface FeeTierDistributionPool {
 // Result shape of the local `query` document above (with the asToken0/asToken1/_meta aliases).
 // Note: the FeeTierDistributionQuery type in __generated__/types-and-hooks describes a different
 // document (plain `pools`) that this hook does not execute.
-export interface FeeTierDistributionQueryData {
+interface FeeTierDistributionQueryData {
   _meta?: { block?: { number: number } }
   asToken0: FeeTierDistributionPool[]
   asToken1: FeeTierDistributionPool[]

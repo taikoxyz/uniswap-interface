@@ -39,10 +39,11 @@ function useWalletSupportedChains(): ChainId[] {
 
   switch (connectionType) {
     case ConnectionType.WALLET_CONNECT_V2:
-    case ConnectionType.UNISWAP_WALLET_V2:
+    case ConnectionType.UNISWAP_WALLET_V2: {
       const wcChains = getSupportedChainIdsFromWalletConnectSession((connector as WalletConnectV2).provider?.session)
       // Filter WalletConnect chains to only include enabled ones
       return wcChains.filter((chainId) => enabledChains.includes(chainId))
+    }
     default:
       return enabledChains
   }

@@ -122,26 +122,26 @@ const TAIKO_USER_ACTIVITY_QUERY = gql`
   }
 `
 
-export interface TaikoActivityToken {
+interface TaikoActivityToken {
   id: string
   symbol: string
   name: string
   decimals: string
 }
 
-export interface TaikoActivityPool {
+interface TaikoActivityPool {
   id: string
   token0: TaikoActivityToken
   token1: TaikoActivityToken
 }
 
-export interface TaikoActivityTransaction {
+interface TaikoActivityTransaction {
   id: string
   blockNumber: string
   timestamp: string
 }
 
-export interface TaikoSwap {
+interface TaikoSwap {
   id: string
   timestamp: string
   sender: string
@@ -153,7 +153,7 @@ export interface TaikoSwap {
   transaction: TaikoActivityTransaction
 }
 
-export interface TaikoMint {
+interface TaikoMint {
   id: string
   timestamp: string
   sender: string
@@ -165,7 +165,7 @@ export interface TaikoMint {
   transaction: TaikoActivityTransaction
 }
 
-export interface TaikoBurn {
+interface TaikoBurn {
   id: string
   timestamp: string
   owner: string
@@ -177,7 +177,7 @@ export interface TaikoBurn {
   transaction: TaikoActivityTransaction
 }
 
-export interface TaikoCollect {
+interface TaikoCollect {
   id: string
   timestamp: string
   owner: string
@@ -188,14 +188,14 @@ export interface TaikoCollect {
   transaction: TaikoActivityTransaction
 }
 
-export interface TaikoActivityData {
+interface TaikoActivityData {
   swaps: TaikoSwap[]
   mints: TaikoMint[]
   burns: TaikoBurn[]
   collects: TaikoCollect[]
 }
 
-export interface UseTaikoActivityResult {
+interface UseTaikoActivityResult {
   activities?: TaikoActivityData
   loading: boolean
   error?: Error

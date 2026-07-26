@@ -109,6 +109,7 @@ const Tag = styled(Badge)`
   padding: 4px 6px;
 `
 
+// eslint-disable-next-line import/no-unused-modules -- referenced by commented-out <NetworkFilter /> in pages/Tokens, kept for re-enablement
 export default function NetworkFilter() {
   const theme = useTheme()
   const node = useRef<HTMLDivElement | null>(null)

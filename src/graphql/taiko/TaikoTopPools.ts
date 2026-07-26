@@ -12,7 +12,7 @@ import { getClient } from '../thegraph/apollo'
 /**
  * Pool data structure from Goldsky V3 subgraph
  */
-export interface TaikoPool {
+interface TaikoPool {
   id: string // pool address
   token0: {
     id: string
@@ -78,7 +78,7 @@ const TAIKO_TOP_POOLS_QUERY = gql`
 /**
  * Pool data normalized for display
  */
-export interface NormalizedTaikoPool {
+interface NormalizedTaikoPool {
   id: string
   token0Address: string
   token1Address: string
@@ -97,7 +97,7 @@ export interface NormalizedTaikoPool {
   apr?: number // Annual percentage rate (calculated from fees)
 }
 
-export interface UseTopPoolsTaikoResult {
+interface UseTopPoolsTaikoResult {
   pools?: readonly NormalizedTaikoPool[]
   loadingPools: boolean
   error?: ApolloError
@@ -185,7 +185,7 @@ const TAIKO_PROTOCOL_STATS_QUERY = gql`
   }
 `
 
-export interface TaikoProtocolStats {
+interface TaikoProtocolStats {
   totalVolumeUSD: number
   totalValueLockedUSD: number
   totalFeesUSD: number
@@ -193,7 +193,7 @@ export interface TaikoProtocolStats {
   poolCount: number
 }
 
-export interface UseProtocolStatsTaikoResult {
+interface UseProtocolStatsTaikoResult {
   stats?: TaikoProtocolStats
   loading: boolean
   error?: ApolloError

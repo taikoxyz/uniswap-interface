@@ -86,18 +86,6 @@ export const TESTNET_CHAIN_IDS = [
   TAIKO_HOODI_CHAIN_ID,
 ] as const
 
-export const MAINNET_CHAIN_IDS = [
-  ChainId.MAINNET,
-  ChainId.POLYGON,
-  ChainId.CELO,
-  ChainId.ARBITRUM_ONE,
-  ChainId.OPTIMISM,
-  ChainId.BNB,
-  ChainId.AVALANCHE,
-  ChainId.BASE,
-  TAIKO_MAINNET_CHAIN_ID,
-] as const
-
 /**
  * All the chain IDs that are running the Ethereum protocol.
  */

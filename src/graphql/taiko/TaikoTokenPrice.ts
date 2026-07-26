@@ -15,7 +15,7 @@ import { getTokenClientForChain } from './apollo'
  * Token hour data structure from Goldsky subgraph
  * Provides OHLC (Open, High, Low, Close) data for each hour
  */
-export interface TaikoTokenHourData {
+interface TaikoTokenHourData {
   periodStartUnix: number
   priceUSD: string
   open: string
@@ -29,7 +29,7 @@ export interface TaikoTokenHourData {
  * Token day data structure from Goldsky subgraph
  * Provides OHLC data for each day
  */
-export interface TaikoTokenDayData {
+interface TaikoTokenDayData {
   date: number
   priceUSD: string
   volumeUSD: string
@@ -138,7 +138,7 @@ function transformDailyData(data: TaikoTokenDayData[]): PricePoint[] {
   }))
 }
 
-export interface UseTaikoTokenPriceHistoryResult {
+interface UseTaikoTokenPriceHistoryResult {
   priceHistory?: PricePoint[]
   loading: boolean
   error?: ApolloError
@@ -215,16 +215,4 @@ export function useTaikoTokenPriceHistory(
     loading: useHourlyData ? hourlyLoading : dailyLoading,
     error: useHourlyData ? hourlyError : dailyError,
   }
-}
-
-/**
- * Hook variant that returns data in the same format as the Uniswap API
- * This is an alias for useTaikoTokenPriceHistory for consistency with existing code
- */
-export function useTaikoPriceHistory(
-  chainId: number,
-  tokenAddress: string,
-  duration: TimePeriod
-): UseTaikoTokenPriceHistoryResult {
-  return useTaikoTokenPriceHistory(chainId, tokenAddress, duration)
 }

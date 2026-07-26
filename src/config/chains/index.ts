@@ -22,6 +22,7 @@
  *
  * @module config/chains
  */
+/* eslint-disable import/no-unused-modules -- public API barrel of the chain registry; documented entry points are kept even where not yet imported */
 
 // Re-export everything from the registry as the main interface
 export type { ChainConfig } from './registry'

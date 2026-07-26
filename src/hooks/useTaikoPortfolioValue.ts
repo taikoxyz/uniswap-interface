@@ -26,13 +26,13 @@ const TAIKO_HOODI_TOKEN_ADDRESSES = [
   '0x18d5bB147f3D05D5f6c5E60Caf1daeeDBF5155B6', // USDC (correct address from taiko.tokenlist.json)
 ]
 
-export interface TokenBalance {
+interface TokenBalance {
   token: Token
   balance: string
   balanceUSD: number
 }
 
-export interface UseTaikoPortfolioValueResult {
+interface UseTaikoPortfolioValueResult {
   tokenBalances: TokenBalance[]
   lpPositionsValueUSD: number
   totalValueUSD: number
