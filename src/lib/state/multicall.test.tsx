@@ -1,12 +1,15 @@
 import { renderHook } from '@testing-library/react'
+import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import { EventEmitter } from 'events'
 import { useFastForwardBlockNumber } from 'lib/hooks/useBlockNumber'
+import { useEffect, useState } from 'react'
+import store from 'state'
 import { mocked } from 'test-utils/mocked'
 import { act, render } from 'test-utils/render'
 
-import multicall, { MulticallUpdater, useQuantizedBlockNumber } from './multicall'
+import multicall, { MulticallUpdater, useQuantizedBlockNumber, useSettledBlockNumber } from './multicall'
 
 jest.mock('hooks/useContract', () => {
   const useContract = jest.requireActual('hooks/useContract')
@@ -35,6 +38,14 @@ function renderQuantized(initial: { chainId?: number; blockNumber?: number; step
       step?: number
       snapTo?: number
     }) => useQuantizedBlockNumber(chainId ?? CHAIN_A, blockNumber, step ?? STEP, snapTo),
+    { initialProps: initial }
+  )
+}
+
+function renderSettled(initial: { chainId?: number; blockNumber?: number; isFetching?: boolean }) {
+  return renderHook(
+    ({ chainId, blockNumber, isFetching }: { chainId?: number; blockNumber?: number; isFetching?: boolean }) =>
+      useSettledBlockNumber(chainId ?? CHAIN_A, blockNumber, isFetching ?? false),
     { initialProps: initial }
   )
 }
@@ -125,6 +136,44 @@ describe('useQuantizedBlockNumber', () => {
   })
 })
 
+describe('useSettledBlockNumber', () => {
+  it('adopts desired blocks while idle', () => {
+    const { result, rerender } = renderSettled({ blockNumber: undefined })
+    expect(result.current).toBeUndefined()
+    rerender({ blockNumber: 100 })
+    expect(result.current).toEqual(100)
+    rerender({ blockNumber: 106 })
+    expect(result.current).toEqual(106)
+  })
+
+  it('holds while fetching and coalesces to the newest desired block', () => {
+    const { result, rerender } = renderSettled({ blockNumber: 100 })
+    rerender({ blockNumber: 106, isFetching: true })
+    expect(result.current).toEqual(100)
+    rerender({ blockNumber: 112, isFetching: true })
+    expect(result.current).toEqual(100)
+    rerender({ blockNumber: 112, isFetching: false })
+    expect(result.current).toEqual(112)
+  })
+
+  it('does not carry a block across a chain switch', () => {
+    const { result, rerender } = renderSettled({ chainId: CHAIN_A, blockNumber: 100 })
+    expect(result.current).toEqual(100)
+    rerender({ chainId: CHAIN_B, blockNumber: undefined })
+    expect(result.current).toBeUndefined()
+    rerender({ chainId: CHAIN_B, blockNumber: 102 })
+    expect(result.current).toEqual(102)
+  })
+
+  it('queues a lower reorg block until the current fetch settles', () => {
+    const { result, rerender } = renderSettled({ blockNumber: 100 })
+    rerender({ blockNumber: 90, isFetching: true })
+    expect(result.current).toEqual(100)
+    rerender({ blockNumber: 90, isFetching: false })
+    expect(result.current).toEqual(90)
+  })
+})
+
 describe('MulticallUpdater', () => {
   // Mimics an ethers provider: emits 'block' events and answers getBlockNumber().
   class FakeProvider extends EventEmitter {
@@ -139,6 +188,22 @@ describe('MulticallUpdater', () => {
   // Far above any real Taiko block number, so the ambient mainnet-block fetch
   // (swallowed in tests) can never outrank the fake feed.
   const BLOCK = 1_000_000_100
+  const ACTIVE_CALL = {
+    address: '0x0000000000000000000000000000000000000002',
+    callData: '0x1234',
+  }
+  const MAINNET_CALL = {
+    address: '0x0000000000000000000000000000000000000003',
+    callData: '0x5678',
+  }
+  const ISOLATION_ACTIVE_CALL = {
+    address: '0x0000000000000000000000000000000000000004',
+    callData: '0x9abc',
+  }
+  const SWITCH_CALL = {
+    address: '0x0000000000000000000000000000000000000005',
+    callData: '0xdef0',
+  }
 
   let fastForward: (block: number) => void
   function Probe() {
@@ -151,8 +216,46 @@ describe('MulticallUpdater', () => {
     updaterSpy = jest.spyOn(multicall, 'Updater').mockImplementation(() => <></>)
   })
   afterEach(() => {
+    act(() => {
+      store.dispatch(
+        multicall.actions.errorFetchingMulticallResults({
+          chainId: TAIKO_MAINNET_CHAIN_ID,
+          calls: [ACTIVE_CALL, ISOLATION_ACTIVE_CALL, SWITCH_CALL],
+          fetchingBlockNumber: Number.MAX_SAFE_INTEGER,
+        })
+      )
+      store.dispatch(
+        multicall.actions.errorFetchingMulticallResults({
+          chainId: ChainId.MAINNET,
+          calls: [MAINNET_CALL],
+          fetchingBlockNumber: Number.MAX_SAFE_INTEGER,
+        })
+      )
+    })
     updaterSpy.mockRestore()
   })
+
+  function markFetching(chainId: number, call: typeof ACTIVE_CALL, blockNumber: number) {
+    store.dispatch(
+      multicall.actions.fetchingMulticallResults({
+        chainId,
+        calls: [call],
+        fetchingBlockNumber: blockNumber,
+      })
+    )
+  }
+
+  function settle(chainId: number, call: typeof ACTIVE_CALL, blockNumber: number) {
+    store.dispatch(
+      multicall.actions.updateMulticallResults({
+        chainId,
+        blockNumber,
+        results: {
+          [`${call.address}-${call.callData}`]: '0x01',
+        },
+      })
+    )
+  }
 
   /** The latest props passed to the inner multicall.Updater registered for chainId. */
   function latestUpdaterProps(chainId: number) {
@@ -162,7 +265,11 @@ describe('MulticallUpdater', () => {
 
   function renderUpdater(chainId: number, provider: FakeProvider) {
     mocked(useWeb3React).mockReturnValue({ chainId, provider } as unknown as ReturnType<typeof useWeb3React>)
-    return render(
+    return render(updaterTree())
+  }
+
+  function updaterTree() {
+    return (
       <>
         <MulticallUpdater />
         <Probe />
@@ -225,5 +332,96 @@ describe('MulticallUpdater', () => {
     })
     // Hoodi receipts snap the active feed, but are not forwarded to the mainnet feed.
     expect(latestUpdaterProps(TAIKO_HOODI_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 2)
+  })
+
+  it('holds an active updater block until its current request settles', async () => {
+    const provider = new FakeProvider(BLOCK)
+    renderUpdater(TAIKO_MAINNET_CHAIN_ID, provider)
+    await act(async () => undefined)
+
+    act(() => {
+      markFetching(TAIKO_MAINNET_CHAIN_ID, ISOLATION_ACTIVE_CALL, BLOCK)
+      provider.emit('block', BLOCK + STEP)
+      provider.emit('block', BLOCK + 2 * STEP)
+      provider.emit('block', BLOCK + 3 * STEP)
+    })
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK)
+
+    act(() => {
+      settle(TAIKO_MAINNET_CHAIN_ID, ISOLATION_ACTIVE_CALL, BLOCK)
+    })
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 3 * STEP)
+  })
+
+  it('gates the active and dedicated mainnet updater independently', async () => {
+    const provider = new FakeProvider(BLOCK)
+    renderUpdater(TAIKO_MAINNET_CHAIN_ID, provider)
+    await act(async () => undefined)
+
+    act(() => {
+      markFetching(TAIKO_MAINNET_CHAIN_ID, ACTIVE_CALL, BLOCK)
+      provider.emit('block', BLOCK + STEP)
+    })
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK)
+    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + STEP)
+
+    act(() => {
+      settle(TAIKO_MAINNET_CHAIN_ID, ACTIVE_CALL, BLOCK)
+      markFetching(ChainId.MAINNET, MAINNET_CALL, BLOCK + STEP)
+      provider.emit('block', BLOCK + 2 * STEP)
+    })
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 2 * STEP)
+    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + STEP)
+
+    act(() => {
+      settle(ChainId.MAINNET, MAINNET_CALL, BLOCK + STEP)
+    })
+    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + 2 * STEP)
+  })
+
+  it('remounts the active updater across a chain switch and releases the old chain on settlement', async () => {
+    const mounted: number[] = []
+    const unmounted: number[] = []
+    updaterSpy.mockImplementation(({ chainId }) => {
+      const [mountedChainId] = useState(chainId)
+      useEffect(() => {
+        if (mountedChainId !== undefined) mounted.push(mountedChainId)
+        return () => {
+          if (mountedChainId !== undefined) unmounted.push(mountedChainId)
+        }
+      }, [mountedChainId])
+      return <></>
+    })
+
+    const providerA = new FakeProvider(BLOCK)
+    const view = renderUpdater(CHAIN_A, providerA)
+    await act(async () => undefined)
+    act(() => {
+      markFetching(CHAIN_A, SWITCH_CALL, BLOCK)
+    })
+
+    const providerB = new FakeProvider(BLOCK + STEP)
+    mocked(useWeb3React).mockReturnValue({
+      chainId: CHAIN_B,
+      provider: providerB,
+    } as unknown as ReturnType<typeof useWeb3React>)
+    view.rerender(updaterTree())
+    await act(async () => undefined)
+
+    expect(mounted).toContain(CHAIN_B)
+    expect(unmounted).toContain(CHAIN_A)
+
+    mocked(useWeb3React).mockReturnValue({
+      chainId: CHAIN_A,
+      provider: providerA,
+    } as unknown as ReturnType<typeof useWeb3React>)
+    view.rerender(updaterTree())
+    await act(async () => undefined)
+    expect(latestUpdaterProps(CHAIN_A)?.latestBlockNumber).toBeUndefined()
+
+    act(() => {
+      settle(CHAIN_A, SWITCH_CALL, BLOCK)
+    })
+    expect(latestUpdaterProps(CHAIN_A)?.latestBlockNumber).toEqual(BLOCK)
   })
 })
