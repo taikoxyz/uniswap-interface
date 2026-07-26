@@ -1,8 +1,9 @@
 import { ChainId, Token } from '@uniswap/sdk-core'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains/taiko'
 import { nativeOnChain } from 'constants/tokens'
 
-import { PoolType } from './types'
-import { computeRoutes } from './utils'
+import { GetQuoteArgs, PoolType, RouterPreference } from './types'
+import { computeRoutes, shouldUseAPIRouter } from './utils'
 
 const USDC = new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC')
 const DAI = new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 6, 'DAI')
@@ -348,5 +349,30 @@ describe('#useRoute', () => {
       expect(result?.[0].routev2?.path).toStrictEqual([USDC, WETH])
       expect(result?.[0].outputAmount.toSignificant()).toBe('1')
     })
+  })
+})
+
+describe('#shouldUseAPIRouter', () => {
+  const args = (tokenInChainId: number, routerPreference: GetQuoteArgs['routerPreference']) =>
+    ({ tokenInChainId, routerPreference } as GetQuoteArgs)
+
+  it.each([TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID])(
+    'bypasses the hosted API router for Taiko chain %i regardless of preference',
+    (chainId) => {
+      // Taiko is not served by the hosted routing API; requests are CORS-blocked and always
+      // fell back to client routing. The API attempt must be skipped entirely.
+      expect(shouldUseAPIRouter(args(chainId, RouterPreference.API))).toBe(false)
+      expect(shouldUseAPIRouter(args(chainId, RouterPreference.X))).toBe(false)
+      expect(shouldUseAPIRouter(args(chainId, RouterPreference.CLIENT))).toBe(false)
+    }
+  )
+
+  it('still uses the hosted API router for non-Taiko chains with an API preference', () => {
+    expect(shouldUseAPIRouter(args(ChainId.MAINNET, RouterPreference.API))).toBe(true)
+    expect(shouldUseAPIRouter(args(ChainId.MAINNET, RouterPreference.X))).toBe(true)
+  })
+
+  it('respects an explicit client preference on non-Taiko chains', () => {
+    expect(shouldUseAPIRouter(args(ChainId.MAINNET, RouterPreference.CLIENT))).toBe(false)
   })
 })
