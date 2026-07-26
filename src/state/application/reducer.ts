@@ -1,7 +1,7 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
 import { ChainId } from '@uniswap/sdk-core'
-import { DEFAULT_TXN_DISMISS_MS } from 'constants/misc'
 import { getDefaultChainId } from 'config/chains'
+import { DEFAULT_TXN_DISMISS_MS } from 'constants/misc'
 
 export enum PopupType {
   Transaction = 'transaction',
@@ -94,6 +94,5 @@ const applicationSlice = createSlice({
   },
 })
 
-export const { updateChainId, setOpenModal, addPopup, removePopup } =
-  applicationSlice.actions
+export const { updateChainId, setOpenModal, addPopup, removePopup } = applicationSlice.actions
 export default applicationSlice.reducer

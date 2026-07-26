@@ -1,14 +1,13 @@
 import { Trans } from '@lingui/macro'
+import { PortfolioLogo } from 'components/AccountDrawer/MiniPortfolio/PortfolioLogo'
+import { getDefaultChainId } from 'config/chains'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains/taiko'
 import { useTopPoolsTaiko } from 'graphql/taiko/TaikoTopPools'
+import { useCurrency } from 'hooks/Tokens'
+import { useMemo, useState } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { ThemedText } from 'theme'
-import { useMemo, useState } from 'react'
-import { getDefaultChainId } from 'config/chains'
-import { TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID } from 'config/chains/taiko'
-import { PortfolioLogo } from 'components/AccountDrawer/MiniPortfolio/PortfolioLogo'
-import { useCurrency } from 'hooks/Tokens'
 
 const TableContainer = styled.div`
   background: ${({ theme }) => theme.surface1};

@@ -6,14 +6,12 @@ import Column, { AutoColumn } from 'components/Column'
 import Modal from 'components/Modal'
 import { RowBetween } from 'components/Row'
 import { uniwalletWCV2ConnectConnection } from 'connection'
-import { ActivationStatus, useActivationState } from 'connection/activate'
-import { ConnectionType } from 'connection/types'
+import { useActivationState } from 'connection/activate'
 import { UniwalletConnect as UniwalletConnectV2 } from 'connection/WalletConnectV2'
 import { QRCodeSVG } from 'qrcode.react'
 import { useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { CloseIcon, ThemedText } from 'theme'
-import { isIOS } from 'utils/userAgent'
 
 import uniPng from '../../assets/images/uniwallet_modal_icon.png'
 import { DownloadButton } from './DownloadButton'
@@ -45,14 +43,14 @@ export default function UniwalletModal() {
   // Disabled for Taiko - do not show Uniswap Wallet modal
   const open = false
 
-  /* Original code disabled
-  // Displays the modal if not on iOS, a Uniswap Wallet Connection is pending, & qrcode URI is available
-  const open =
-    !isIOS &&
-    activationState.status === ActivationStatus.PENDING &&
-    activationState.connection.type === ConnectionType.UNISWAP_WALLET_V2 &&
-    !!uri
-  */
+  // Original code disabled
+  // // Displays the modal if not on iOS, a Uniswap Wallet Connection is pending, & qrcode URI is available
+  // const open =
+  // !isIOS &&
+  // activationState.status === ActivationStatus.PENDING &&
+  // activationState.connection.type === ConnectionType.UNISWAP_WALLET_V2 &&
+  // !!uri
+  //
 
   useEffect(() => {
     const connectorV2 = uniwalletWCV2ConnectConnection.connector as WalletConnectv2

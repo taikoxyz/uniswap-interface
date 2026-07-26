@@ -193,7 +193,14 @@ export const routingApi = createApi({
           // Use V3-only routing for Taiko chains since we don't have V2 deployed
           const isTaiko = isTaikoChain(args.tokenInChainId)
           const routerParams = isTaiko ? TAIKO_CLIENT_PARAMS : CLIENT_PARAMS
-          console.log('[ROUTING] Chain:', args.tokenInChainId, 'isTaiko:', isTaiko, 'protocols:', routerParams.protocols)
+          console.log(
+            '[ROUTING] Chain:',
+            args.tokenInChainId,
+            'isTaiko:',
+            isTaiko,
+            'protocols:',
+            routerParams.protocols
+          )
           const quoteResult = await getClientSideQuote(args, router, routerParams)
           if (quoteResult.state === QuoteState.SUCCESS) {
             const trade = await transformRoutesToTrade(args, quoteResult.data, method)

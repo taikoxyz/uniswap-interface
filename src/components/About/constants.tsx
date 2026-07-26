@@ -1,7 +1,30 @@
+import { ReactNode } from 'react'
 import styled from 'styled-components'
 
+// Card shapes consumed by pages/Landing (all entries are currently commented out, so the
+// explicit types keep the empty arrays from collapsing to never[]).
+interface MainCard {
+  to: string
+  title: string
+  description: string
+  cta?: string
+  darkBackgroundImgSrc: string
+  lightBackgroundImgSrc: string
+  elementName?: string
+}
 
-export const MAIN_CARDS = [
+interface MoreCard {
+  to: string
+  external?: boolean
+  title: string
+  description: string
+  cta?: string
+  lightIcon: ReactNode
+  darkIcon: ReactNode
+  elementName?: string
+}
+
+export const MAIN_CARDS: MainCard[] = [
   // {
   //   to: '/swap',
   //   title: 'Swap tokens',
@@ -29,7 +52,7 @@ const StyledCardLogo = styled.img`
   max-width: 48px;
 `
 
-export const MORE_CARDS = [
+export const MORE_CARDS: MoreCard[] = [
   // {
   //   to: 'https://support.uniswap.org/hc/en-us/articles/11306574799117-How-to-use-Moon-Pay-on-the-Uniswap-web-app-',
   //   external: true,

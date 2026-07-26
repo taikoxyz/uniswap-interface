@@ -5,8 +5,9 @@
  * for Taiko networks (Mainnet and Hoodi).
  */
 
-import { gql, useQuery, ApolloError } from '@apollo/client'
+import { ApolloError, gql, useQuery } from '@apollo/client'
 import { useMemo } from 'react'
+
 import { getTokenClientForChain } from './apollo'
 
 /**

@@ -24,23 +24,31 @@ const nonexistentCollections = [
   },
 ]
 
-test.each([...collections, ...nonexistentCollections])('should inject metadata for collections', async (collection) => {
-  const url = 'http://127.0.0.1:3000/nfts/collection/' + collection.address
-  const body = await fetch(new Request(url)).then((res) => res.text())
-  expect(body).toMatchSnapshot()
-  expect(body).toContain(`<meta property="og:title" content="${collection.collectionName} on Uniswap"/>`)
-  expect(body).not.toContain(`<meta property="og:description"`)
-  expect(body).toContain(`<meta property="og:image" content="${collection.image}"/>`)
-  expect(body).toContain(`<meta property="og:image:width" content="1200"/>`)
-  expect(body).toContain(`<meta property="og:image:height" content="630"/>`)
-  expect(body).toContain(`<meta property="og:type" content="website"/>`)
-  expect(body).toContain(`<meta property="og:url" content="${url}"/>`)
-  expect(body).toContain(`<meta property="og:image:alt" content="${collection.collectionName} on Uniswap"/>`)
-  expect(body).toContain(`<meta property="twitter:card" content="summary_large_image"/>`)
-  expect(body).toContain(`<meta property="twitter:title" content="${collection.collectionName} on Uniswap"/>`)
-  expect(body).toContain(`<meta property="twitter:image" content="${collection.image}"/>`)
-  expect(body).toContain(`<meta property="twitter:image:alt" content="${collection.collectionName} on Uniswap"/>`)
-})
+// Skipped for the Taiko-only deployment: collection metadata is resolved
+// through Uniswap's private GraphQL gateway (api.uniswap.org), which does not
+// serve this fork, and these Cloudflare Pages functions are not deployed for
+// swap.taiko.xyz (which deploys on Vercel). The invalid-route test below stays
+// active because it asserts no injection happens without any external data.
+test.skip.each([...collections, ...nonexistentCollections])(
+  'should inject metadata for collections',
+  async (collection) => {
+    const url = 'http://127.0.0.1:3000/nfts/collection/' + collection.address
+    const body = await fetch(new Request(url)).then((res) => res.text())
+    expect(body).toMatchSnapshot()
+    expect(body).toContain(`<meta property="og:title" content="${collection.collectionName} on Uniswap"/>`)
+    expect(body).not.toContain(`<meta property="og:description"`)
+    expect(body).toContain(`<meta property="og:image" content="${collection.image}"/>`)
+    expect(body).toContain(`<meta property="og:image:width" content="1200"/>`)
+    expect(body).toContain(`<meta property="og:image:height" content="630"/>`)
+    expect(body).toContain(`<meta property="og:type" content="website"/>`)
+    expect(body).toContain(`<meta property="og:url" content="${url}"/>`)
+    expect(body).toContain(`<meta property="og:image:alt" content="${collection.collectionName} on Uniswap"/>`)
+    expect(body).toContain(`<meta property="twitter:card" content="summary_large_image"/>`)
+    expect(body).toContain(`<meta property="twitter:title" content="${collection.collectionName} on Uniswap"/>`)
+    expect(body).toContain(`<meta property="twitter:image" content="${collection.image}"/>`)
+    expect(body).toContain(`<meta property="twitter:image:alt" content="${collection.collectionName} on Uniswap"/>`)
+  }
+)
 
 const invalidCollections = [
   {

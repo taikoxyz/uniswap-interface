@@ -1,7 +1,7 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { TokenList } from '@uniswap/token-lists'
-import { RPC_PROVIDERS } from 'constants/providers'
 import { TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import { RPC_PROVIDERS } from 'constants/providers'
 import getTokenList from 'lib/hooks/useTokenList/fetchTokenList'
 import resolveENSContentHash from 'lib/utils/resolveENSContentHash'
 import { useCallback } from 'react'

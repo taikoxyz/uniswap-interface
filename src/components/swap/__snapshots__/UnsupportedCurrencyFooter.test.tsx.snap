@@ -39,7 +39,7 @@ exports[`UnsupportedCurrencyFooter.tsx with unsupported tokens renders 1`] = `
   border-radius: 16px;
   outline: none;
   border: 1px solid transparent;
-  color: #222222;
+  color: #FFFFFF;
   -webkit-text-decoration: none;
   text-decoration: none;
   display: -webkit-box;
@@ -134,8 +134,8 @@ exports[`UnsupportedCurrencyFooter.tsx with unsupported tokens renders 1`] = `
   max-width: 400px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  color: #7D7D7D;
-  background-color: #F9F9F9;
+  color: #9B9B9B;
+  background-color: #1B1B1B;
   z-index: 0;
   -webkit-transform: translateY(0%);
   -ms-transform: translateY(0%);

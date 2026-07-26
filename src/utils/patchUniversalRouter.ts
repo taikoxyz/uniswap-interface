@@ -11,7 +11,8 @@
  */
 
 import { UNIVERSAL_ROUTER_ADDRESS as SDK_UNIVERSAL_ROUTER_ADDRESS } from '@uniswap/universal-router-sdk'
-import { TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID, TAIKO_UNIVERSAL_ROUTER_ADDRESS } from '../constants/taiko'
+
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID, TAIKO_UNIVERSAL_ROUTER_ADDRESS } from '../constants/taiko'
 
 // Store the original function
 const originalUniversalRouterAddress = SDK_UNIVERSAL_ROUTER_ADDRESS

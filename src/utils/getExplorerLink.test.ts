@@ -1,7 +1,7 @@
 import { ChainId } from '@uniswap/sdk-core'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 import { ExplorerDataType, getExplorerLink } from './getExplorerLink'
-import { TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID } from 'config/chains'
 
 describe('#getExplorerLink', () => {
   it('correct for tx', () => {

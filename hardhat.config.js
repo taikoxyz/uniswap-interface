@@ -1,4 +1,3 @@
-import { ChainId } from '@uniswap/sdk-core'
 import { TAIKO_HOODI_CHAIN_ID } from './src/config/chains'
 
 /* eslint-env node */
