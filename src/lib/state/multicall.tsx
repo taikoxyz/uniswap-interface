@@ -77,6 +77,8 @@ export function useSettledBlockNumber(
 ): number | undefined {
   const [settled, setSettled] = useState<{ chainId?: number; block?: number }>({})
   useEffect(() => {
+    // While fetching, the desired block keeps changing; adopt its latest value
+    // on the first render after fetching clears.
     if (!isFetching) {
       setSettled({ chainId, block: desiredBlockNumber })
     }
@@ -87,9 +89,11 @@ export function useSettledBlockNumber(
 function useMulticallFetching(chainId: number | undefined): boolean {
   return useAppSelector((state) => {
     if (chainId === undefined) return false
-    return Object.values(state.multicall.callResults[chainId] ?? {}).some(
-      (result) => typeof result.fetchingBlockNumber === 'number'
-    )
+    const callResults = state.multicall.callResults[chainId] ?? {}
+    for (const callKey in callResults) {
+      if (typeof callResults[callKey].fetchingBlockNumber === 'number') return true
+    }
+    return false
   })
 }
 

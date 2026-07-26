@@ -216,6 +216,7 @@ describe('MulticallUpdater', () => {
     updaterSpy = jest.spyOn(multicall, 'Updater').mockImplementation(() => <></>)
   })
   afterEach(() => {
+    // Unlock any synthetic fetch left in Redux by a failing assertion.
     act(() => {
       store.dispatch(
         multicall.actions.errorFetchingMulticallResults({
