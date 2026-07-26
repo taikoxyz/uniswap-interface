@@ -70,7 +70,8 @@ describe('connection utility/metadata tests', () => {
   it('Coinbase and MetaMask Injected Desktop', async () => {
     const { displayed, injected, coinbase } = createWalletEnvironment({ isCoinbaseWallet: true, isMetaMask: true })
 
-    expect(displayed.includes(coinbase)).toBe(true)
+    // Coinbase option is hidden in the Taiko fork, even when the Coinbase extension is injected
+    expect(displayed.includes(coinbase)).toBe(false)
     expect(displayed.includes(injected)).toBe(true)
     expect(injected.getName()).toBe('MetaMask')
     expect(injected.overrideActivate?.()).toBeFalsy()
@@ -187,22 +188,25 @@ describe('connection utility/metadata tests', () => {
   it('Coinbase Mobile Browser', async () => {
     const { displayed, coinbase } = createWalletEnvironment({ isCoinbaseWallet: true }, true)
 
-    expect(displayed.includes(coinbase)).toBe(true)
+    // Coinbase option is hidden in the Taiko fork, even in the Coinbase mobile browser
+    expect(displayed.includes(coinbase)).toBe(false)
     // Expect coinbase option to not override activation in a the cb mobile browser
     expect(coinbase.overrideActivate?.()).toBeFalsy()
-    expect(displayed.length).toEqual(1)
+    expect(displayed.length).toEqual(0)
   })
 
   it('Uninjected mWeb Browser', async () => {
     const { displayed, injected, coinbase, walletconnect } = createWalletEnvironment(undefined, true)
 
-    expect(displayed.includes(coinbase)).toBe(true)
+    // Coinbase option is hidden in the Taiko fork
+    expect(displayed.includes(coinbase)).toBe(false)
     expect(displayed.includes(walletconnect)).toBe(true)
     // Don't show injected connection on plain mWeb browser
     expect(displayed.includes(injected)).toBe(false)
     // Expect coinbase option to launch coinbase app in a regular mobile browser
     expect(coinbase.overrideActivate?.()).toBeTruthy()
 
-    expect(displayed.length).toEqual(3)
+    // Only WalletConnect is displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
+    expect(displayed.length).toEqual(1)
   })
 })
