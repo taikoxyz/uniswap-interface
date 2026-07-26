@@ -2020,7 +2020,7 @@ exports[`disable nft on landing page does not render nft information and card 1`
 </div>
 `;
 
-exports[`disable nft on landing page renders nft information and card 1`] = `
+exports[`disable nft on landing page does not render nft information and card even when nft routes are enabled 1`] = `
 .c13 {
   box-sizing: border-box;
   margin: 0;
