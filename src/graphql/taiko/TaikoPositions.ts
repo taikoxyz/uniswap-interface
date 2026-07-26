@@ -11,6 +11,7 @@ import { getPoolClientForChain } from './apollo'
 
 const MAX_SUBGRAPH_BLOCK_LAG = 20
 const MAX_SUBGRAPH_POSITIONS = 1_000
+const SUBGRAPH_POLL_INTERVAL = 30_000
 const ZERO = BigNumber.from(0)
 
 const TAIKO_USER_POSITIONS_QUERY = gql`
@@ -102,6 +103,7 @@ export function useTaikoV3Positions(
     variables: { account: account?.toLowerCase() ?? '' },
     skip: !client || !account,
     fetchPolicy: 'cache-and-network',
+    pollInterval: SUBGRAPH_POLL_INTERVAL,
   })
 
   return useMemo(() => {

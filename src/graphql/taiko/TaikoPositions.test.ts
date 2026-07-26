@@ -51,6 +51,7 @@ it.each([TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID])('queries and maps positi
     expect.anything(),
     expect.objectContaining({
       client: CLIENT,
+      pollInterval: 30_000,
       skip: false,
       variables: { account: ACCOUNT },
     })
@@ -97,4 +98,30 @@ it('falls back when the query fails', () => {
   const { result } = renderHook(() => useTaikoV3Positions(TAIKO_MAINNET_CHAIN_ID, ACCOUNT))
 
   expect(result.current.fallbackToRpc).toBe(true)
+})
+
+it('recovers from stale data after a polled result refreshes', () => {
+  const refreshedPosition = { ...POSITION, liquidity: '654321' }
+  let queryResult = {
+    data: DATA,
+    loading: false,
+  } as ReturnType<typeof useQuery>
+  ;(useBlockNumber as jest.MockedFunction<typeof useBlockNumber>).mockReturnValue(1_021)
+  ;(useQuery as jest.MockedFunction<typeof useQuery>).mockImplementation(() => queryResult)
+
+  const { result, rerender } = renderHook(() => useTaikoV3Positions(TAIKO_MAINNET_CHAIN_ID, ACCOUNT))
+
+  expect(result.current.fallbackToRpc).toBe(true)
+
+  queryResult = {
+    data: {
+      _meta: { block: { number: 1_020 }, hasIndexingErrors: false },
+      positions: [refreshedPosition],
+    },
+    loading: false,
+  } as ReturnType<typeof useQuery>
+  rerender()
+
+  expect(result.current.fallbackToRpc).toBe(false)
+  expect(result.current.positions?.[0].liquidity.toString()).toBe(refreshedPosition.liquidity)
 })
