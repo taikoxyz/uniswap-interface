@@ -74,7 +74,6 @@ const ChainRow = styled.button<{ $disabled: boolean }>`
   border-radius: 8px;
   background: transparent;
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
-  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
   transition: background 0.15s ease;
 
   &:hover {
@@ -82,17 +81,20 @@ const ChainRow = styled.button<{ $disabled: boolean }>`
   }
 `
 
-const RowLogo = styled.img`
+// Disabled rows mute only non-text elements: dimming the whole row would drop the
+// caption below the 4.5:1 WCAG AA contrast the colors are chosen for.
+const RowLogo = styled.img<{ $disabled?: boolean }>`
   width: 20px;
   height: 20px;
   margin-right: 12px;
   border-radius: 50%;
+  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
 `
 
-const RowLabel = styled.div`
+const RowLabel = styled.div<{ $disabled?: boolean }>`
   font-size: 16px;
   font-weight: 500;
-  color: ${LIGHT_COLORS.text};
+  color: ${({ $disabled }) => ($disabled ? LIGHT_COLORS.textSecondary : LIGHT_COLORS.text)};
   text-align: left;
 `
 
@@ -137,12 +139,13 @@ function ChainRowItem({ disabled, targetChain, onSelectChain, isPending }: Chain
       <ChainRow
         data-testid={`${label}-selector`}
         $disabled={!!disabled}
+        disabled={!!disabled}
         onClick={() => {
           if (!disabled) onSelectChain(targetChain)
         }}
       >
-        {logoUrl && <RowLogo src={logoUrl} alt={label} />}
-        <RowLabel>{label}</RowLabel>
+        {logoUrl && <RowLogo src={logoUrl} alt={label} $disabled={!!disabled} />}
+        <RowLabel $disabled={!!disabled}>{label}</RowLabel>
         {disabled && (
           <RowCaption>
             <Trans>Unsupported by your wallet</Trans>
@@ -205,7 +208,14 @@ export function ChainSelectorWidget() {
   return (
     <Container ref={ref}>
       <MouseoverTooltip text={t`Your wallet's current network is unsupported.`} disabled={isSupported}>
-        <SelectorButton $isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} data-testid="chain-selector">
+        <SelectorButton
+          $isOpen={isOpen}
+          onClick={() => setIsOpen(!isOpen)}
+          data-testid="chain-selector"
+          aria-label={t`Select network`}
+          aria-haspopup="true"
+          aria-expanded={isOpen}
+        >
           {!isSupported ? (
             <AlertTriangle size={20} color={LIGHT_COLORS.textSecondary} />
           ) : (
