@@ -26,7 +26,7 @@ exports[`NftCard renders correctly 1`] = `
 }
 
 .c16 {
-  color: #222222;
+  color: #FFFFFF;
 }
 
 .c11 {
@@ -68,7 +68,7 @@ exports[`NftCard renders correctly 1`] = `
   will-change: transform;
   object-fit: contain;
   visibility: visible;
-  background: linear-gradient(270deg,#22222212 0%,#FFFFFF 100%);
+  background: linear-gradient(270deg,#FFFFFF12 0%,#131313 100%);
 }
 
 .c9 {
@@ -86,7 +86,7 @@ exports[`NftCard renders correctly 1`] = `
   justify-content: space-between;
   gap: 8px;
   height: 84px;
-  background: #FFFFFF;
+  background: #131313;
   will-change: transform;
   -webkit-transition: 250ms ease -webkit-transform;
   -webkit-transition: 250ms ease transform;
@@ -141,7 +141,7 @@ exports[`NftCard renders correctly 1`] = `
 .c0 {
   position: relative;
   border-radius: 12px;
-  background-color: #FFFFFF;
+  background-color: #131313;
   overflow: hidden;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -157,7 +157,7 @@ exports[`NftCard renders correctly 1`] = `
   left: 0px;
   border: 1px solid;
   border-radius: 12px;
-  border-color: #22222212;
+  border-color: #FFFFFF12;
   pointer-events: none;
   -webkit-transition: 250ms ease border;
   transition: 250ms ease border;
@@ -271,8 +271,8 @@ exports[`NftCard renders correctly 1`] = `
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-  color: #7D7D7D;
-  background: #22222212;
+  color: #9B9B9B;
+  background: #FFFFFF12;
   padding: 4px 6px;
   border-radius: 4px;
   font-weight: 535 !important;

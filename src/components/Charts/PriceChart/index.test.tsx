@@ -43,7 +43,7 @@ describe('PriceChart', () => {
     const { asFragment } = render(<PriceChart prices={[]} width={780} height={392} timePeriod={TimePeriod.HOUR} />)
     expect(asFragment()).toMatchSnapshot()
     expect(asFragment().textContent).toContain('Price Unavailable')
-    expect(asFragment().textContent).toContain('Missing price data due to recently low trading volume on Uniswap v3')
+    expect(asFragment().textContent).toContain('Missing price data due to recently low trading volume')
   })
   it('renders correctly with undefined prices', () => {
     const { asFragment } = render(

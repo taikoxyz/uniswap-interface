@@ -2,8 +2,8 @@
 
 exports[`disable nft on searchbar should render text with nfts 1`] = `
 .c0 {
-  background-color: #22222212;
-  color: #7D7D7D;
+  background-color: #FFFFFF12;
+  color: #9B9B9B;
   padding: 0px 8px;
   width: 20px;
   height: 20px;
@@ -92,8 +92,8 @@ exports[`disable nft on searchbar should render text with nfts 1`] = `
 
 exports[`disable nft on searchbar should render text without nfts 1`] = `
 .c0 {
-  background-color: #22222212;
-  color: #7D7D7D;
+  background-color: #FFFFFF12;
+  color: #9B9B9B;
   padding: 0px 8px;
   width: 20px;
   height: 20px;
