@@ -10,6 +10,7 @@ const BlockNumberContext = createContext<
       fastForward(block: number): void
       block?: number
       mainnetBlock?: number
+      fastForwardedBlock?: number
     }
   | typeof MISSING_PROVIDER
 >(MISSING_PROVIDER)
@@ -35,6 +36,16 @@ export function useMainnetBlockNumber(): number | undefined {
   return useBlockNumberContext().mainnetBlock
 }
 
+/**
+ * The highest block number observed via a confirmed transaction receipt on the active chain
+ * (see useFastForwardBlockNumber). Unlike the raw block feed, this only moves when one of the
+ * user's own transactions confirms, so consumers that deliberately lag the raw feed (e.g. the
+ * quantized multicall feed) can use it to refresh immediately after a user action.
+ */
+export function useFastForwardedBlockNumber(): number | undefined {
+  return useBlockNumberContext().fastForwardedBlock
+}
+
 export function BlockNumberProvider({ children }: { children: ReactNode }) {
   const { chainId: activeChainId, provider } = useWeb3React()
   const [{ chainId, block, mainnetBlock }, setChainBlock] = useState<{
@@ -43,6 +54,9 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
     mainnetBlock?: number
   }>({})
   const activeBlock = chainId === activeChainId ? block : undefined
+  const [fastForwarded, setFastForwarded] = useState<{ chainId: number; block: number }>()
+  const fastForwardedBlock =
+    fastForwarded && fastForwarded.chainId === activeChainId ? fastForwarded.block : undefined
 
   const onChainBlock = useCallback((chainId: number, block: number) => {
     setChainBlock((chainBlock) => {
@@ -106,6 +120,14 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       fastForward: (update: number) => {
+        // Record the receipt-confirmed block even when it does not advance the raw feed (the
+        // block event may already have arrived): the raw feed only proves a block exists, while
+        // this proves the user's own state changed in it. See useFastForwardedBlockNumber.
+        if (activeChainId) {
+          setFastForwarded((prev) =>
+            prev?.chainId === activeChainId && prev.block >= update ? prev : { chainId: activeChainId, block: update }
+          )
+        }
         if (activeBlock && update > activeBlock) {
           setChainBlock({
             chainId: activeChainId,
@@ -116,8 +138,9 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
       },
       block: activeBlock,
       mainnetBlock,
+      fastForwardedBlock,
     }),
-    [activeBlock, activeChainId, mainnetBlock]
+    [activeBlock, activeChainId, fastForwardedBlock, mainnetBlock]
   )
   return <BlockNumberContext.Provider value={value}>{children}</BlockNumberContext.Provider>
 }
