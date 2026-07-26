@@ -28,6 +28,7 @@ export const sentryEnhancer = Sentry.createReduxEnhancer({
     const { application, user, transactions } = state
     return {
       application: {
+        fiatOnramp: application.fiatOnramp,
         chainId: application.chainId,
         openModal: application.openModal,
         popupList: application.popupList,

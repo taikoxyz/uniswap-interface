@@ -1,7 +1,6 @@
 // a list of tokens by chain
 import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 
-import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from './taiko'
 import {
   ARB,
   BTC_BSC,
@@ -21,8 +20,6 @@ import {
   OP,
   PORTAL_ETH_CELO,
   PORTAL_USDC_CELO,
-  TAIKO_TAIKO_HOODI,
-  TAIKO_TOKEN,
   USDC_ARBITRUM,
   USDC_ARBITRUM_GOERLI,
   USDC_AVALANCHE,
@@ -41,6 +38,8 @@ import {
   USDT_POLYGON,
   USDT_TAIKO_HOODI,
   USDT_TAIKO_MAINNET,
+  TAIKO_TOKEN,
+  TAIKO_TAIKO_HOODI,
   WBTC,
   WBTC_ARBITRUM_ONE,
   WBTC_CELO,
@@ -51,6 +50,7 @@ import {
   WETH_POLYGON_MUMBAI,
   WRAPPED_NATIVE_CURRENCY,
 } from './tokens'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from './taiko'
 
 type ChainTokenList = {
   readonly [chainId: number]: Token[]

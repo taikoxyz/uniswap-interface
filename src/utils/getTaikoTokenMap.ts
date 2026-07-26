@@ -1,4 +1,4 @@
-import { Token } from '@uniswap/sdk-core'
+import { ChainId, Token } from '@uniswap/sdk-core'
 import { ChainTokenMap } from 'hooks/Tokens'
 
 // Common tokens on Taiko Mainnet
@@ -48,7 +48,7 @@ const TAIKO_HOODI_COMMON_TOKENS = [
 /**
  * Creates a token map for Taiko chains with common tokens
  */
-function getTaikoTokenMap(): ChainTokenMap {
+export function getTaikoTokenMap(): ChainTokenMap {
   const taikoMap: ChainTokenMap = {}
 
   // Add Taiko Mainnet tokens

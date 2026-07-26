@@ -57,7 +57,7 @@ const TAIKO_USER_POSITIONS_QUERY = gql`
   }
 `
 
-interface TaikoToken {
+export interface TaikoToken {
   id: string
   symbol: string
   name: string
@@ -65,16 +65,25 @@ interface TaikoToken {
   derivedETH: string
 }
 
-interface TaikoBundle {
+export interface TaikoBundle {
   ethPriceUSD: string
 }
 
-interface TaikoTokenPricesData {
+export interface TaikoTokenPricesData {
   tokens: TaikoToken[]
   bundle: TaikoBundle | null
 }
 
-interface TaikoPool {
+export interface TaikoTokenDayData {
+  id: string
+  date: number
+  token: TaikoToken
+  priceUSD: string
+  volumeUSD: string
+  totalValueLockedUSD: string
+}
+
+export interface TaikoPool {
   id: string
   token0Price: string
   token1Price: string
@@ -83,7 +92,7 @@ interface TaikoPool {
   totalValueLockedToken1: string
 }
 
-interface TaikoPosition {
+export interface TaikoPosition {
   id: string
   owner: string
   liquidity: string
@@ -98,14 +107,14 @@ interface TaikoPosition {
   collectedFeesToken1: string
 }
 
-interface TaikoPortfolioData {
+export interface TaikoPortfolioData {
   positions: TaikoPosition[]
 }
 
-interface UseTaikoPortfolioResult {
-  positions?: TaikoPosition[]
+export interface UseTaikoPortfolioResult {
+  positions: TaikoPosition[] | undefined
   loading: boolean
-  error?: Error
+  error: Error | undefined
   refetch: () => void
   totalValueUSD: number
 }
@@ -175,7 +184,7 @@ export function useTaikoPortfolio(chainId: number, account: string): UseTaikoPor
   )
 }
 
-interface TokenPriceInfo {
+export interface TokenPriceInfo {
   address: string
   symbol: string
   name: string
@@ -183,10 +192,10 @@ interface TokenPriceInfo {
   priceUSD: number
 }
 
-interface UseTaikoTokenPricesResult {
+export interface UseTaikoTokenPricesResult {
   tokenPrices: Map<string, TokenPriceInfo>
   loading: boolean
-  error?: Error
+  error: Error | undefined
   refetch: () => void
 }
 

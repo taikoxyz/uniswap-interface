@@ -17,12 +17,7 @@ import {
   TAIKO_MAINNET_METADATA,
   TaikoChainMetadata,
 } from './taiko'
-import {
-  ChainAddresses,
-  getValidationSummary,
-  validateChainAddressesOrThrow,
-  validateMultipleChains,
-} from './validation'
+import { ChainAddresses, validateChainAddressesOrThrow, validateMultipleChains, getValidationSummary } from './validation'
 
 /**
  * Complete chain configuration including addresses and metadata
@@ -191,7 +186,7 @@ export function getEnabledChainIds(): number[] {
  * This function is called on module import to ensure no invalid chains are used
  * @param throwOnError - If true, throws on validation errors (default: true for production)
  */
-export function validateRegistry(throwOnError = true): void {
+export function validateRegistry(throwOnError: boolean = true): void {
   const enabledChains = getEnabledChains()
 
   if (enabledChains.length === 0) {

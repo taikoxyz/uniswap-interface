@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import Row from 'components/Row'
-import { atom, useAtom, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import ms from 'ms'
 import { useCallback, useEffect, useMemo } from 'react'

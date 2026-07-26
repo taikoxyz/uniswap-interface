@@ -1,5 +1,6 @@
 import { ChainId, SUPPORTED_CHAINS, SupportedChainsType } from '@uniswap/sdk-core'
-import { getEnabledChainIds, TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID, getEnabledChainIds } from 'config/chains'
 
 // Get enabled Taiko chains from the validated registry
 const ENABLED_TAIKO_CHAIN_IDS = getEnabledChainIds()
@@ -30,10 +31,7 @@ const NOT_YET_UX_SUPPORTED_CHAIN_IDS: number[] = [ChainId.BASE_GOERLI]
 const CUSTOM_SUPPORTED_CHAIN_IDS: number[] = ENABLED_TAIKO_CHAIN_IDS
 
 // TODO: include BASE_GOERLI when routing is implemented
-export type SupportedInterfaceChain =
-  | Exclude<SupportedChainsType, ChainId.BASE_GOERLI>
-  | typeof TAIKO_MAINNET_CHAIN_ID
-  | typeof TAIKO_HOODI_CHAIN_ID
+export type SupportedInterfaceChain = Exclude<SupportedChainsType, ChainId.BASE_GOERLI> | typeof TAIKO_MAINNET_CHAIN_ID | typeof TAIKO_HOODI_CHAIN_ID
 
 export function isSupportedChain(
   chainId: number | null | undefined | ChainId,
@@ -84,6 +82,18 @@ export const TESTNET_CHAIN_IDS = [
   ChainId.OPTIMISM_GOERLI,
   ChainId.CELO_ALFAJORES,
   TAIKO_HOODI_CHAIN_ID,
+] as const
+
+export const MAINNET_CHAIN_IDS = [
+  ChainId.MAINNET,
+  ChainId.POLYGON,
+  ChainId.CELO,
+  ChainId.ARBITRUM_ONE,
+  ChainId.OPTIMISM,
+  ChainId.BNB,
+  ChainId.AVALANCHE,
+  ChainId.BASE,
+  TAIKO_MAINNET_CHAIN_ID,
 ] as const
 
 /**

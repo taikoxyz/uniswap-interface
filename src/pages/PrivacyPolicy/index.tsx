@@ -113,7 +113,9 @@ export default function PrivacyPolicy() {
           <Trans>Introduction</Trans>
         </SectionTitle>
         <Paragraph>
-          <Trans>This Privacy Policy (the &quot;Policy&quot;) explains how the Taiko DEX interface available at</Trans>{' '}
+          <Trans>
+            This Privacy Policy (the &quot;Policy&quot;) explains how the Taiko DEX interface available at
+          </Trans>{' '}
           <ExternalLink href="https://swap.taiko.xyz/">https://swap.taiko.xyz/</ExternalLink>{' '}
           <Trans>
             (the &quot;DEX&quot;, &quot;Interface&quot;, &quot;Services&quot;, &quot;we&quot;, &quot;us&quot; or

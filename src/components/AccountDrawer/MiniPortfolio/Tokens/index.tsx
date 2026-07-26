@@ -7,12 +7,7 @@ import Row from 'components/Row'
 import { DeltaArrow, formatDelta } from 'components/Tokens/TokenDetails/Delta'
 import { isTaikoChain } from 'config/chains/taiko'
 import { TokenBalance } from 'graphql/data/__generated__/types-and-hooks'
-import {
-  chainIdToBackendName,
-  getTokenDetailsURL,
-  gqlToCurrency,
-  logSentryErrorForUnsupportedChain,
-} from 'graphql/data/util'
+import { chainIdToBackendName, getTokenDetailsURL, gqlToCurrency, logSentryErrorForUnsupportedChain } from 'graphql/data/util'
 import { useAtomValue } from 'jotai'
 import { EmptyWalletModule } from 'nft/components/profile/view/EmptyWalletContent'
 import { useCallback, useMemo, useState } from 'react'
@@ -24,6 +19,7 @@ import { splitHiddenTokens } from 'utils/splitHiddenTokens'
 
 import { useToggleAccountDrawer } from '../..'
 import { hideSmallBalancesAtom } from '../../SmallBalanceToggle'
+import { ExpandoRow } from '../ExpandoRow'
 import { PortfolioLogo } from '../PortfolioLogo'
 import PortfolioRow, { PortfolioSkeleton, PortfolioTabWrapper } from '../PortfolioRow'
 import { useTaikoTokenBalances } from './useTaikoTokenBalances'
@@ -122,11 +118,7 @@ function TaikoTokenRow({ tokenBalance }: { tokenBalance: { token: Currency; bala
       events={[BrowserEvent.onClick]}
       name={SharedEventName.ELEMENT_CLICKED}
       element={InterfaceElementName.MINI_PORTFOLIO_TOKEN_ROW}
-      properties={{
-        chain_id: tokenBalance.token.chainId,
-        token_name: tokenBalance.token.name,
-        address: tokenBalance.token.isToken ? tokenBalance.token.address : undefined,
-      }}
+      properties={{ chain_id: tokenBalance.token.chainId, token_name: tokenBalance.token.name, address: tokenBalance.token.isToken ? tokenBalance.token.address : undefined }}
     >
       <PortfolioRow
         left={<PortfolioLogo chainId={tokenBalance.token.chainId} currencies={[tokenBalance.token]} size="40px" />}
@@ -143,7 +135,10 @@ function TaikoTokenRow({ tokenBalance }: { tokenBalance: { token: Currency; bala
         onClick={navigateToTokenDetails}
         right={
           <>
-            <ThemedText.SubHeader>{/* No USD value available for Taiko tokens */}-</ThemedText.SubHeader>
+            <ThemedText.SubHeader>
+              {/* No USD value available for Taiko tokens */}
+              -
+            </ThemedText.SubHeader>
           </>
         }
       />

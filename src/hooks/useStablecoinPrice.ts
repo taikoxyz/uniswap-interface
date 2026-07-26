@@ -26,8 +26,9 @@ const STABLECOIN_AMOUNT_OUT: { [chainId: number]: CurrencyAmount<Token> } = {
   [ChainId.CELO]: CurrencyAmount.fromRawAmount(CUSD_CELO, 10_000e18),
   [ChainId.BNB]: CurrencyAmount.fromRawAmount(USDT_BSC, 100e18),
   [ChainId.AVALANCHE]: CurrencyAmount.fromRawAmount(USDC_AVALANCHE, 10_000e6),
-  [ChainId.TAIKO_HOODI]: CurrencyAmount.fromRawAmount(USDC_TAIKO_HOODI, 10_000e6),
+  [ChainId.TAIKO_HOODI]: CurrencyAmount.fromRawAmount(USDC_TAIKO_HOODI, 10_000e6), 
 }
+
 
 /**
  * Returns the price in USDC of the input currency

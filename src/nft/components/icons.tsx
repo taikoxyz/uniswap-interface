@@ -72,6 +72,22 @@ export const VerifiedIcon = (props: SVGProps) => {
   )
 }
 
+export const PoolIcon = ({ width, height, ...props }: SVGProps) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox={`0 0 ${width} ${height}`}
+    {...props}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M5.19993 7.5915H12.3999V3.59138C12.3999 1.82406 13.8326 0.39143 15.5999 0.39143C17.3672 0.39143 18.8 1.82406 18.8 3.59138H17.1999C17.1999 2.70774 16.4835 1.99148 15.5999 1.99148C14.7162 1.99148 14 2.70774 14 3.59138V12.3915H12.3999V9.19155H5.19993V10.7915H3.59988V3.59145C3.59988 1.82413 5.03265 0.391498 6.79998 0.391498C8.5673 0.391498 9.99993 1.82413 9.99993 3.59145H8.39988C8.39988 2.70781 7.68362 1.99154 6.79998 1.99154C5.91633 1.99154 5.19993 2.70781 5.19993 3.59145V7.5915ZM1.49707 14.7342L0.902832 13.2487C3.75352 12.1084 6.88055 12.1084 10.2529 13.2325C13.2806 14.2417 16.0201 14.2417 18.5027 13.2487L19.097 14.7342C16.2463 15.8745 13.1192 15.8745 9.7469 14.7503C6.71916 13.7411 3.9797 13.7411 1.49707 14.7342ZM1.49707 18.734L0.902832 17.2485C3.75352 16.1082 6.88055 16.1082 10.2529 17.2324C13.2806 18.2416 16.0201 18.2416 18.5027 17.2485L19.097 18.734C16.2463 19.8743 13.1192 19.8743 9.7469 18.7502C6.71916 17.7411 3.9797 17.7411 1.49707 18.734Z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
 export const XMarkIcon = (props: SVGProps) => (
   <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
@@ -349,6 +365,14 @@ export const TagIcon = (props: SVGProps) => (
   </svg>
 )
 
+export const BarChartIcon = (props: SVGProps) => (
+  <svg fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path d="M12 20V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 20V4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M18 20V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
 export const DiscordIcon = (props: SVGProps) => (
   <svg role="img" width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" {...props} fill="none">
     <path
@@ -404,6 +428,27 @@ export const CheckMarkIcon = (props: SVGProps) => (
       d="M16.6693 5.33789L7.5026 14.3175L3.33594 10.2358"
       stroke="currentColor"
       strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+export const GovernanceIcon = (props: SVGProps) => (
+  <svg fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      d="M18.75 16.5V6.00002C18.7512 5.7042 18.6939 5.41106 18.5813 5.13752C18.4686 4.86397 18.3029 4.61544 18.0938 4.40626C17.8846 4.19708 17.636 4.0314 17.3625 3.91876C17.089 3.80613 16.7958 3.74878 16.5 3.75002H3.75"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path d="M9.75 8.75H15.75" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9.75 12.75H15.75" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M2.07187 7.49977C1.829 7.22785 1.65585 6.90097 1.56733 6.54728C1.4788 6.19359 1.47756 5.82369 1.56369 5.46941C1.64983 5.11513 1.82077 4.7871 2.0618 4.51353C2.30283 4.23997 2.60673 4.02908 2.94734 3.89902C3.28795 3.76895 3.65507 3.72361 4.01709 3.76689C4.37911 3.81017 4.72519 3.94077 5.02554 4.14747C5.32589 4.35416 5.57151 4.63074 5.74126 4.95342C5.91101 5.27609 5.9998 5.63518 6 5.99977V17.9998C6.00019 18.3644 6.08899 18.7235 6.25874 19.0461C6.42849 19.3688 6.67411 19.6454 6.97446 19.8521C7.27481 20.0588 7.62089 20.1894 7.98291 20.2327C8.34493 20.2759 8.71205 20.2306 9.05266 20.1005C9.39327 19.9705 9.69717 19.7596 9.9382 19.486C10.1792 19.2125 10.3502 18.8844 10.4363 18.5301C10.5224 18.1759 10.5212 17.806 10.4327 17.4523C10.3441 17.0986 10.171 16.7717 9.92813 16.4998H20.4281C20.7177 16.8236 20.9074 17.2243 20.9743 17.6536C21.0411 18.0828 20.9823 18.5223 20.8048 18.9188C20.6274 19.3154 20.3389 19.6521 19.9743 19.8882C19.6096 20.1244 19.1844 20.25 18.75 20.2498H8.25"
+      stroke="currentColor"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />

@@ -9,17 +9,6 @@ interface WalletConnectProvider extends ExternalProvider {
     url?: string
     icons?: string[]
   }
-  // WalletConnect v2 exposes the peer metadata on the session instead of peerMeta.
-  session?: {
-    peer: {
-      metadata?: {
-        name?: string
-        description?: string
-        url?: string
-        icons?: string[]
-      }
-    }
-  }
 }
 
 function isWeb3Provider(provider: JsonRpcProvider): provider is Web3Provider {

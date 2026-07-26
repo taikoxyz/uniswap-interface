@@ -35,7 +35,7 @@ const BalanceRow = styled(Row)`
 
 const BalanceBar = styled.div`
   height: 8px;
-  background: linear-gradient(90deg, #5d9aff 50%, #e74694 50%);
+  background: linear-gradient(90deg, #5D9AFF 50%, #E74694 50%);
   border-radius: 4px;
   margin-top: 8px;
 `
@@ -126,8 +126,12 @@ export function PoolDetailsStats({ poolData, poolAddress, chainId }: PoolDetails
   const tvlChange = previousTvl > 0 ? ((tvl - previousTvl) / previousTvl) * 100 : 0
   const volumeChange = previousVolume > 0 ? ((volume - previousVolume) / previousVolume) * 100 : 0
 
-  const token0Amount = poolData.totalValueLockedToken0 ? formatTokenAmount(poolData.totalValueLockedToken0) : '0'
-  const token1Amount = poolData.totalValueLockedToken1 ? formatTokenAmount(poolData.totalValueLockedToken1) : '0'
+  const token0Amount = poolData.totalValueLockedToken0
+    ? formatTokenAmount(poolData.totalValueLockedToken0)
+    : '0'
+  const token1Amount = poolData.totalValueLockedToken1
+    ? formatTokenAmount(poolData.totalValueLockedToken1)
+    : '0'
 
   return (
     <StatsContainer>

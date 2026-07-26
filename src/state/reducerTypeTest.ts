@@ -116,6 +116,7 @@ assert<Equals<ListsState, ExpectedListsState>>()
 
 interface ExpectedApplicationState {
   readonly chainId: number | null
+  readonly fiatOnramp: { available: boolean; availabilityChecked: boolean }
   readonly openModal: ApplicationModal | null
   readonly popupList: PopupList
 }

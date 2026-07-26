@@ -52,7 +52,9 @@ const EXTERNAL_APIS = [
   {
     name: 'Taiko Network RPC',
     description: (
-      <Trans>The app connects to the Taiko blockchain network to execute transactions and fetch on-chain data.</Trans>
+      <Trans>
+        The app connects to the Taiko blockchain network to execute transactions and fetch on-chain data.
+      </Trans>
     ),
   },
   {
@@ -79,8 +81,8 @@ const EXTERNAL_APIS = [
     name: 'Web Tracking Tools',
     description: (
       <Trans>
-        The app uses cookies and similar technologies to collect anonymous device and browser information to improve the
-        service. No personal data or IP addresses are collected.
+        The app uses cookies and similar technologies to collect anonymous device and browser information to improve
+        the service. No personal data or IP addresses are collected.
       </Trans>
     ),
   },
@@ -88,8 +90,8 @@ const EXTERNAL_APIS = [
     name: 'Wallet Providers',
     description: (
       <Trans>
-        The app integrates with third-party non-custodial wallet providers. Your relationship with wallet providers is
-        governed by their own terms of service.
+        The app integrates with third-party non-custodial wallet providers. Your relationship with wallet providers
+        is governed by their own terms of service.
       </Trans>
     ),
   },

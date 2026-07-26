@@ -1,15 +1,14 @@
 import { Trans } from '@lingui/macro'
 import { InterfacePageName } from '@uniswap/analytics-events'
 import { Trace } from 'analytics'
-import SearchBar from 'components/Tokens/TokenTable/SearchBar'
-import TimeSelector from 'components/Tokens/TokenTable/TimeSelector'
-import TokenTable from 'components/Tokens/TokenTable/TokenTable'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { ThemedText } from 'theme'
-
-import { PoolsTable } from './PoolsTable'
 import { ProtocolStats } from './ProtocolStats'
+import { PoolsTable } from './PoolsTable'
+import TokenTable from 'components/Tokens/TokenTable/TokenTable'
+import SearchBar from 'components/Tokens/TokenTable/SearchBar'
+import TimeSelector from 'components/Tokens/TokenTable/TimeSelector'
 
 const ExploreContainer = styled.div`
   width: 100%;

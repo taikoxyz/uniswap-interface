@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import { ChainId, Currency } from '@uniswap/sdk-core'
 import { FeeAmount, nearestUsableTick, Pool, TICK_SPACINGS, tickToPrice } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -115,12 +114,11 @@ function useTicksFromTickLens(
         .reduce(
           (accumulator, current) => [
             ...accumulator,
-            ...(current?.map((populatedTick: { tick: number; liquidityNet: BigNumber }) => {
-              // Shape the on-chain TickLens result like the subgraph tick type consumed downstream.
+            ...(current?.map((tickData: TickData) => {
               return {
-                tickIdx: populatedTick.tick.toString(),
-                liquidityNet: populatedTick.liquidityNet.toString(),
-              } as TickData
+                tick: tickData.tick,
+                liquidityNet: JSBI.BigInt(tickData.liquidityNet),
+              }
             }) ?? []),
           ],
           []
@@ -136,7 +134,7 @@ function useTicksFromTickLens(
   // return the latest synced tickData even if we are still loading the newest data
   useEffect(() => {
     if (!IsSyncing && !isLoading && !isError && isValid) {
-      setTickDataLatestSynced(tickData.sort((a, b) => Number(a.tickIdx) - Number(b.tickIdx)))
+      setTickDataLatestSynced(tickData.sort((a, b) => a.tick - b.tick))
     }
   }, [isError, isLoading, IsSyncing, tickData, isValid])
 
@@ -165,7 +163,7 @@ function useTicksFromSubgraph(
       : undefined
 
   return useAllV3TicksQuery({
-    variables: { poolAddress: poolAddress?.toLowerCase() ?? '', skip },
+    variables: { poolAddress: poolAddress?.toLowerCase(), skip },
     skip: !poolAddress,
     pollInterval: ms(`30s`),
     client: apolloClient,
@@ -254,7 +252,7 @@ export function usePoolActiveLiquidity(
     // find where the active tick would be to partition the array
     // if the active tick is initialized, the pivot will be an element
     // if not, take the previous tick as pivot
-    const pivot = ticks.findIndex(({ tickIdx }) => Number(tickIdx) > activeTick) - 1
+    const pivot = ticks.findIndex(({ tick }) => tick > activeTick) - 1
 
     if (pivot < 0) {
       // consider setting a local error
@@ -270,8 +268,7 @@ export function usePoolActiveLiquidity(
     const activeTickProcessed: TickProcessed = {
       liquidityActive: JSBI.BigInt(pool[1]?.liquidity ?? 0),
       tick: activeTick,
-      liquidityNet:
-        Number(ticks[pivot].tickIdx) === activeTick ? JSBI.BigInt(ticks[pivot].liquidityNet) : JSBI.BigInt(0),
+      liquidityNet: Number(ticks[pivot].tick) === activeTick ? JSBI.BigInt(ticks[pivot].liquidityNet) : JSBI.BigInt(0),
       price0: tickToPrice(token0, token1, activeTick).toFixed(PRICE_FIXED_DIGITS),
     }
 

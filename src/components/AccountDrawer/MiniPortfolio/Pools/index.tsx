@@ -51,6 +51,11 @@ export default function Pools({ account }: { account: string }) {
   const isTaiko = chainId && isTaikoChain(chainId)
   const toggleWalletDrawer = useToggleAccountDrawer()
 
+  // Hide LP positions on Taiko chains
+  if (isTaiko) {
+    return <EmptyWalletModule type="pool" onNavigateClick={toggleWalletDrawer} />
+  }
+
   const { positions, loading } = useMultiChainPositions(account)
   const filteredPositions = useFilterPossiblyMaliciousPositionInfo(positions)
   const [showClosed, toggleShowClosed] = useReducer((showClosed) => !showClosed, false)
@@ -68,12 +73,6 @@ export default function Pools({ account }: { account: string }) {
     }
     return [openPositions, closedPositions]
   }, [filteredPositions])
-
-  // Hide LP positions on Taiko chains. This must come after the hooks above so
-  // the hook order stays stable when chainId changes (e.g. on wallet connect).
-  if (isTaiko) {
-    return <EmptyWalletModule type="pool" onNavigateClick={toggleWalletDrawer} />
-  }
 
   if (!filteredPositions || loading) {
     return <PortfolioSkeleton />

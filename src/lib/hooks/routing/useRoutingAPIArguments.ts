@@ -39,48 +39,51 @@ export function useRoutingAPIArguments({
   const uniswapXExactOutputEnabled = useUniswapXExactOutputEnabled()
   const isUniswapXDefaultEnabled = useUniswapXDefaultEnabled()
 
-  return useMemo(() => {
-    if (!tokenIn || !tokenOut || !amount || tokenIn.equals(tokenOut) || tokenIn.wrapped.equals(tokenOut.wrapped)) {
-      return skipToken
-    }
+  return useMemo(
+    () => {
+      if (!tokenIn || !tokenOut || !amount || tokenIn.equals(tokenOut) || tokenIn.wrapped.equals(tokenOut.wrapped)) {
+        return skipToken
+      }
 
-    const args = {
+      const args = {
+        account,
+        amount: amount.quotient.toString(),
+        tokenInAddress: currencyAddressForSwapQuote(tokenIn),
+        tokenInChainId: tokenIn.chainId,
+        tokenInDecimals: tokenIn.wrapped.decimals,
+        tokenInSymbol: tokenIn.wrapped.symbol,
+        tokenOutAddress: currencyAddressForSwapQuote(tokenOut),
+        tokenOutChainId: tokenOut.wrapped.chainId,
+        tokenOutDecimals: tokenOut.wrapped.decimals,
+        tokenOutSymbol: tokenOut.wrapped.symbol,
+        routerPreference,
+        tradeType,
+        needsWrapIfUniswapX: tokenIn.isNative,
+        uniswapXForceSyntheticQuotes,
+        userDisabledUniswapX,
+        uniswapXEthOutputEnabled,
+        uniswapXExactOutputEnabled,
+        isUniswapXDefaultEnabled,
+        inputTax,
+        outputTax,
+      }
+
+      return args
+    },
+    [
       account,
-      amount: amount.quotient.toString(),
-      tokenInAddress: currencyAddressForSwapQuote(tokenIn),
-      tokenInChainId: tokenIn.chainId,
-      tokenInDecimals: tokenIn.wrapped.decimals,
-      tokenInSymbol: tokenIn.wrapped.symbol,
-      tokenOutAddress: currencyAddressForSwapQuote(tokenOut),
-      tokenOutChainId: tokenOut.wrapped.chainId,
-      tokenOutDecimals: tokenOut.wrapped.decimals,
-      tokenOutSymbol: tokenOut.wrapped.symbol,
+      amount,
       routerPreference,
+      tokenIn,
+      tokenOut,
       tradeType,
-      needsWrapIfUniswapX: tokenIn.isNative,
+      uniswapXExactOutputEnabled,
       uniswapXForceSyntheticQuotes,
       userDisabledUniswapX,
       uniswapXEthOutputEnabled,
-      uniswapXExactOutputEnabled,
       isUniswapXDefaultEnabled,
       inputTax,
       outputTax,
-    }
-
-    return args
-  }, [
-    account,
-    amount,
-    routerPreference,
-    tokenIn,
-    tokenOut,
-    tradeType,
-    uniswapXExactOutputEnabled,
-    uniswapXForceSyntheticQuotes,
-    userDisabledUniswapX,
-    uniswapXEthOutputEnabled,
-    isUniswapXDefaultEnabled,
-    inputTax,
-    outputTax,
-  ])
+    ]
+  )
 }

@@ -1,8 +1,8 @@
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { isTaikoChain } from 'config/chains/taiko'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
 import { getPermit2Address } from 'constants/permit2'
+import { isTaikoChain } from 'config/chains/taiko'
 import { PermitSignature, usePermitAllowance, useUpdatePermitAllowance } from 'hooks/usePermitAllowance'
 import { useRevokeTokenAllowance, useTokenAllowance, useUpdateTokenAllowance } from 'hooks/useTokenAllowance'
 import useInterval from 'lib/hooks/useInterval'
@@ -145,7 +145,7 @@ export default function usePermit2Allowance(
       // If permitAllowance is undefined (Permit2 not deployed), skip permit signature flow
       // This allows chains without Permit2 to still work with regular ERC20 approvals
       // Taiko uses SwapRouter02 which doesn't support Permit2, so disable permit signatures
-      const permit2Available = permitAllowance !== undefined && !(chainId && isTaikoChain(chainId))
+      const permit2Available = permitAllowance !== undefined && !isTaikoChain(chainId)
       if (permit2Available && shouldRequestSignature) {
         return {
           token,

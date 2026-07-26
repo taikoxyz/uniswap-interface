@@ -1,6 +1,6 @@
 // DISABLED: IPFS lists cause CORS errors - kept for compatibility but not used in default lists
 export const UNI_LIST = 'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
-// const UNI_EXTENDED_LIST = 'https://gateway.ipfs.io/ipns/extendedtokens.uniswap.org'
+export const UNI_EXTENDED_LIST = 'https://gateway.ipfs.io/ipns/extendedtokens.uniswap.org'
 // const UNI_UNSUPPORTED_LIST = 'https://gateway.ipfs.io/ipns/unsupportedtokens.uniswap.org'
 
 // DISABLED: ENS-based lists fail to resolve - not used in default lists

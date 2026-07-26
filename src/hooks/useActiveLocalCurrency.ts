@@ -1,6 +1,6 @@
 import { DEFAULT_LOCAL_CURRENCY, SUPPORTED_LOCAL_CURRENCIES, SupportedLocalCurrency } from 'constants/localCurrencies'
-import { useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 
 import useParsedQueryString from './useParsedQueryString'

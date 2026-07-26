@@ -62,11 +62,11 @@ exports[`renders multi route 1`] = `
 }
 
 .c10 {
-  color: #FFFFFF;
+  color: #222222;
 }
 
 .c12 {
-  color: #9B9B9B;
+  color: #7D7D7D;
 }
 
 .c7 {
@@ -74,7 +74,7 @@ exports[`renders multi route 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: #1B1B1B;
+  background: #F9F9F9;
   border: unset;
   border-radius: 0.5rem;
   color: #000;
@@ -136,11 +136,11 @@ exports[`renders multi route 1`] = `
 }
 
 .c6 path {
-  stroke: #FFFFFF12;
+  stroke: #22222212;
 }
 
 .c8 {
-  background-color: #1B1B1B;
+  background-color: #F9F9F9;
   border-radius: 8px;
   display: grid;
   grid-gap: 4px;
@@ -154,9 +154,9 @@ exports[`renders multi route 1`] = `
 }
 
 .c9 {
-  background-color: #1B1B1B;
+  background-color: #F9F9F9;
   border-radius: 4px;
-  color: #9B9B9B;
+  color: #7D7D7D;
   font-size: 10px;
   padding: 2px 4px;
   z-index: 1021;
@@ -325,11 +325,11 @@ exports[`renders single route 1`] = `
 }
 
 .c10 {
-  color: #FFFFFF;
+  color: #222222;
 }
 
 .c12 {
-  color: #9B9B9B;
+  color: #7D7D7D;
 }
 
 .c7 {
@@ -337,7 +337,7 @@ exports[`renders single route 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: #1B1B1B;
+  background: #F9F9F9;
   border: unset;
   border-radius: 0.5rem;
   color: #000;
@@ -399,11 +399,11 @@ exports[`renders single route 1`] = `
 }
 
 .c6 path {
-  stroke: #FFFFFF12;
+  stroke: #22222212;
 }
 
 .c8 {
-  background-color: #1B1B1B;
+  background-color: #F9F9F9;
   border-radius: 8px;
   display: grid;
   grid-gap: 4px;
@@ -417,9 +417,9 @@ exports[`renders single route 1`] = `
 }
 
 .c9 {
-  background-color: #1B1B1B;
+  background-color: #F9F9F9;
   border-radius: 4px;
-  color: #9B9B9B;
+  color: #7D7D7D;
   font-size: 10px;
   padding: 2px 4px;
   z-index: 1021;

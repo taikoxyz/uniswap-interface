@@ -131,9 +131,6 @@ export function usePoolDataQuery(options: {
 export function useAllV3TicksQuery(options: {
   variables: { poolAddress: string; skip: number }
   client?: ApolloClient<any>
-  // Forwarded to useQuery via the options spread below.
-  skip?: boolean
-  pollInterval?: number
 }): QueryResult<AllV3TicksQuery> {
   return useQuery<AllV3TicksQuery>(ALL_V3_TICKS_QUERY, {
     ...options,

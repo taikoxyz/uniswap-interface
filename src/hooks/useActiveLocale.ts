@@ -20,7 +20,7 @@ function parseLocale(maybeSupportedLocale: unknown): SupportedLocale | undefined
 /**
  * Returns the supported locale read from the user agent (navigator)
  */
-function navigatorLocale(): SupportedLocale | undefined {
+export function navigatorLocale(): SupportedLocale | undefined {
   if (!navigator.language) return undefined
 
   const [language, region] = navigator.language.split('-')

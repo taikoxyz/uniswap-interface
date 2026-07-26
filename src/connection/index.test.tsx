@@ -39,8 +39,7 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getName()).toBe('Install MetaMask')
     expect(injected.overrideActivate?.()).toBeTruthy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('MetaMask-Injected Desktop', async () => {
@@ -50,34 +49,29 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getName()).toBe('MetaMask')
     expect(injected.overrideActivate?.()).toBeFalsy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('Coinbase-Injected Desktop', async () => {
     const { displayed, injected, coinbase } = createWalletEnvironment({ isCoinbaseWallet: true })
 
-    // Coinbase option is hidden in the Taiko fork, even when the Coinbase extension is injected
-    expect(displayed.includes(coinbase)).toBe(false)
+    expect(displayed.includes(coinbase)).toBe(true)
     expect(displayed.includes(injected)).toBe(true)
     expect(injected.getName()).toBe('Install MetaMask')
     expect(injected.overrideActivate?.()).toBeTruthy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('Coinbase and MetaMask Injected Desktop', async () => {
     const { displayed, injected, coinbase } = createWalletEnvironment({ isCoinbaseWallet: true, isMetaMask: true })
 
-    // Coinbase option is hidden in the Taiko fork, even when the Coinbase extension is injected
-    expect(displayed.includes(coinbase)).toBe(false)
+    expect(displayed.includes(coinbase)).toBe(true)
     expect(displayed.includes(injected)).toBe(true)
     expect(injected.getName()).toBe('MetaMask')
     expect(injected.overrideActivate?.()).toBeFalsy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('Trust Wallet Injected Desktop', async () => {
@@ -87,8 +81,7 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getName()).toBe('Trust Wallet')
     expect(injected.overrideActivate?.()).toBeFalsy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('Rabby Wallet Injected Desktop', async () => {
@@ -98,8 +91,7 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getName()).toBe('Rabby')
     expect(injected.overrideActivate?.()).toBeFalsy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('LedgerConnect Wallet Injected Desktop', async () => {
@@ -109,8 +101,7 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getName()).toBe('Ledger')
     expect(injected.overrideActivate?.()).toBeFalsy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('Brave Browser Wallet Injected Desktop', async () => {
@@ -120,8 +111,7 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getName()).toBe('Brave')
     expect(injected.overrideActivate?.()).toBeFalsy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('Phantom Wallet Injected Desktop displays as MetaMask', async () => {
@@ -132,8 +122,7 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getName()).toBe('MetaMask')
     expect(injected.overrideActivate?.()).toBeFalsy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   const UNKNOWN_MM_INJECTOR = { isRandomWallet: true, isMetaMask: true } as Window['window']['ethereum']
@@ -144,8 +133,7 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getName()).toBe('MetaMask')
     expect(injected.overrideActivate?.()).toBeFalsy()
 
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   const UNKNOWN_INJECTOR = { isRandomWallet: true } as Window['window']['ethereum']
@@ -160,8 +148,7 @@ describe('connection utility/metadata tests', () => {
     expect(injected.getIcon?.(/* isDarkMode= */ true)).toBe(INJECTED_DARK_ICON)
 
     // Ensures we provide multiple connection options if in an unknown injected browser
-    // Only injected + WalletConnect are displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(2)
+    expect(displayed.length).toEqual(4)
   })
 
   it('Generic Wallet Browser with delayed injection', async () => {
@@ -188,25 +175,22 @@ describe('connection utility/metadata tests', () => {
   it('Coinbase Mobile Browser', async () => {
     const { displayed, coinbase } = createWalletEnvironment({ isCoinbaseWallet: true }, true)
 
-    // Coinbase option is hidden in the Taiko fork, even in the Coinbase mobile browser
-    expect(displayed.includes(coinbase)).toBe(false)
+    expect(displayed.includes(coinbase)).toBe(true)
     // Expect coinbase option to not override activation in a the cb mobile browser
     expect(coinbase.overrideActivate?.()).toBeFalsy()
-    expect(displayed.length).toEqual(0)
+    expect(displayed.length).toEqual(1)
   })
 
   it('Uninjected mWeb Browser', async () => {
     const { displayed, injected, coinbase, walletconnect } = createWalletEnvironment(undefined, true)
 
-    // Coinbase option is hidden in the Taiko fork
-    expect(displayed.includes(coinbase)).toBe(false)
+    expect(displayed.includes(coinbase)).toBe(true)
     expect(displayed.includes(walletconnect)).toBe(true)
     // Don't show injected connection on plain mWeb browser
     expect(displayed.includes(injected)).toBe(false)
     // Expect coinbase option to launch coinbase app in a regular mobile browser
     expect(coinbase.overrideActivate?.()).toBeTruthy()
 
-    // Only WalletConnect is displayed; Coinbase and Uniswap Wallet are hidden in the Taiko fork
-    expect(displayed.length).toEqual(1)
+    expect(displayed.length).toEqual(3)
   })
 })

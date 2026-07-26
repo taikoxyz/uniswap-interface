@@ -321,7 +321,9 @@ export default function Pool() {
                 </ErrorContainer>
               )}
             </MainContentWrapper>
-            <HideSmall>{/* <CTACards /> */}</HideSmall>
+            <HideSmall>
+              {/* <CTACards /> */}
+            </HideSmall>
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>

@@ -48,14 +48,14 @@ function createTokenClient(uri: string): ApolloClient<NormalizedCacheObject> {
 /**
  * Apollo client for Taiko Mainnet token data
  */
-const taikoMainnetTokenClient = TAIKO_MAINNET_SUBGRAPH_URLS.tokens
+export const taikoMainnetTokenClient = TAIKO_MAINNET_SUBGRAPH_URLS.tokens
   ? createTokenClient(TAIKO_MAINNET_SUBGRAPH_URLS.tokens)
   : undefined
 
 /**
  * Apollo client for Taiko Hoodi token data
  */
-const taikoHoodiTokenClient = TAIKO_HOODI_SUBGRAPH_URLS.tokens
+export const taikoHoodiTokenClient = TAIKO_HOODI_SUBGRAPH_URLS.tokens
   ? createTokenClient(TAIKO_HOODI_SUBGRAPH_URLS.tokens)
   : undefined
 
@@ -68,7 +68,7 @@ export const taikoTokenClient = taikoMainnetTokenClient || taikoHoodiTokenClient
 /**
  * Map of chain IDs to their token subgraph clients
  */
-const chainToTokenClient: Record<number, ApolloClient<NormalizedCacheObject> | undefined> = {
+export const chainToTokenClient: Record<number, ApolloClient<NormalizedCacheObject> | undefined> = {
   [TAIKO_MAINNET_CHAIN_ID]: taikoMainnetTokenClient,
   [TAIKO_HOODI_CHAIN_ID]: taikoHoodiTokenClient,
 }
@@ -93,21 +93,21 @@ function createPoolClient(uri: string): ApolloClient<NormalizedCacheObject> {
 /**
  * Apollo client for Taiko Mainnet pool data
  */
-const taikoMainnetPoolClient = TAIKO_MAINNET_SUBGRAPH_URLS.pools
+export const taikoMainnetPoolClient = TAIKO_MAINNET_SUBGRAPH_URLS.pools
   ? createPoolClient(TAIKO_MAINNET_SUBGRAPH_URLS.pools)
   : undefined
 
 /**
  * Apollo client for Taiko Hoodi pool data
  */
-const taikoHoodiPoolClient = TAIKO_HOODI_SUBGRAPH_URLS.pools
+export const taikoHoodiPoolClient = TAIKO_HOODI_SUBGRAPH_URLS.pools
   ? createPoolClient(TAIKO_HOODI_SUBGRAPH_URLS.pools)
   : undefined
 
 /**
  * Map of chain IDs to their pool subgraph clients
  */
-const chainToPoolClient: Record<number, ApolloClient<NormalizedCacheObject> | undefined> = {
+export const chainToPoolClient: Record<number, ApolloClient<NormalizedCacheObject> | undefined> = {
   [TAIKO_MAINNET_CHAIN_ID]: taikoMainnetPoolClient,
   [TAIKO_HOODI_CHAIN_ID]: taikoHoodiPoolClient,
 }

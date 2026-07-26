@@ -33,14 +33,6 @@ import {
 } from 'components/swap/styled'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import SwapHeader from 'components/swap/SwapHeader'
-import { WrongChainOverlay } from 'components/WrongChainOverlay'
-import {
-  isTaikoChain,
-  TAIKO_HOODI_ADDRESSES,
-  TAIKO_HOODI_CHAIN_ID,
-  TAIKO_MAINNET_ADDRESSES,
-  TAIKO_MAINNET_CHAIN_ID,
-} from 'config/chains/taiko'
 import { getChainInfo } from 'constants/chainInfo'
 import { asSupportedChain, isSupportedChain } from 'constants/chains'
 import { getSwapCurrencyId, TOKEN_SHORTHANDS } from 'constants/tokens'
@@ -72,9 +64,18 @@ import { maybeLogFirstSwapAction } from 'tracing/swapFlowLoggers'
 import { computeFiatValuePriceImpact } from 'utils/computeFiatValuePriceImpact'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
 import { computeRealizedPriceImpact, warningSeverity } from 'utils/prices'
 import { didUserReject } from 'utils/swapErrorToUserReadableMessage'
+
+import {
+  isTaikoChain,
+  TAIKO_HOODI_ADDRESSES,
+  TAIKO_HOODI_CHAIN_ID,
+  TAIKO_MAINNET_ADDRESSES,
+  TAIKO_MAINNET_CHAIN_ID,
+} from 'config/chains/taiko'
+import { UNIVERSAL_ROUTER_ADDRESS } from 'utils/patchUniversalRouter'
+import { WrongChainOverlay } from 'components/WrongChainOverlay'
 
 import { useScreenSize } from '../../hooks/useScreenSize'
 import { useIsDarkMode } from '../../theme/components/ThemeToggle'
@@ -472,8 +473,8 @@ export function Swap({
     chainId && isTaikoChain(chainId)
       ? undefined
       : allowance.state === AllowanceState.ALLOWED
-      ? allowance.permitSignature
-      : undefined
+        ? allowance.permitSignature
+        : undefined
   )
 
   const handleContinueToReview = useCallback(() => {

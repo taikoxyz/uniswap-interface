@@ -380,7 +380,8 @@ export default function TermsOfService() {
         <SectionTitle>8. Contact Us</SectionTitle>
         <Paragraph>
           <Trans>We welcome comments, questions, concerns, or suggestions. Please visit</Trans>{' '}
-          <ExternalLink href="https://taiko.xyz">https://taiko.xyz</ExternalLink> <Trans>for more information.</Trans>
+          <ExternalLink href="https://taiko.xyz">https://taiko.xyz</ExternalLink>{' '}
+          <Trans>for more information.</Trans>
         </Paragraph>
       </Section>
 

@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro'
 import { ChainId, SUPPORTED_CHAINS } from '@uniswap/sdk-core'
 import { FeeAmount } from '@uniswap/v3-sdk'
-import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import type { ReactNode } from 'react'
+
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 export const FEE_AMOUNT_DETAIL: Record<
   FeeAmount,

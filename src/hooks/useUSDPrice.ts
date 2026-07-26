@@ -67,7 +67,7 @@ export function useUSDPrice(
 } {
   const currency = currencyAmount?.currency ?? prefetchCurrency
   const chainId = currency?.chainId
-  const chain = chainId ? (chainIdToBackendName(chainId) as Chain) : undefined
+  const chain = chainId ? chainIdToBackendName(chainId) : undefined
 
   // Use ETH-based pricing if available.
   const { data: tokenEthPrice, isLoading: isTokenEthPriceLoading } = useETHPrice(currency)

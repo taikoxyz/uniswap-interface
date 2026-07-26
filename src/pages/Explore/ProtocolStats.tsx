@@ -1,10 +1,10 @@
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
-import { getDefaultChainId } from 'config/chains'
-import { useProtocolStatsTaiko } from 'graphql/taiko/TaikoTopPools'
-import { useMemo } from 'react'
 import styled from 'styled-components'
 import { ThemedText } from 'theme'
+import { useProtocolStatsTaiko } from 'graphql/taiko/TaikoTopPools'
+import { useMemo } from 'react'
+import { useWeb3React } from '@web3-react/core'
+import { getDefaultChainId } from 'config/chains'
 
 const StatsContainer = styled.div`
   display: grid;

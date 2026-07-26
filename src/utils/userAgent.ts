@@ -7,6 +7,6 @@ const { name } = parser.getBrowser()
 export const isMobile = type === 'mobile' || type === 'tablet'
 const platform = parser.getOS().name
 export const isIOS = platform === 'iOS'
+export const isNonIOSPhone = !isIOS && type === 'mobile'
 
-// eslint-disable-next-line import/no-unused-modules -- used by the temporarily disabled BaseWalletBanner (components/Banner/BaseAnnouncementBanner)
 export const isMobileSafari = isMobile && isIOS && name?.toLowerCase().includes('safari')

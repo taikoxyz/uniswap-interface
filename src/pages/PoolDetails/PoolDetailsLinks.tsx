@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro'
 import Column from 'components/Column'
 import Row from 'components/Row'
-import { useCallback, useState } from 'react'
-import { CheckCircle, Copy, ExternalLink as ExternalLinkIcon } from 'react-feather'
+import { useState, useCallback } from 'react'
+import { Copy, CheckCircle, ExternalLink as ExternalLinkIcon } from 'react-feather'
 import styled from 'styled-components'
 import { ThemedText } from 'theme'
-import { shortenAddress } from 'utils/addresses'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { shortenAddress } from 'utils/addresses'
 
 const LinksContainer = styled(Column)`
   gap: 24px;

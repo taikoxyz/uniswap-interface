@@ -11,7 +11,7 @@ import { Activity } from './types'
  * Converts Taiko subgraph activity data to the Activity format used by the UI
  */
 export function useTaikoActivityAdapter(account: string): {
-  activities?: Activity[]
+  activities: Activity[] | undefined
   loading: boolean
   refetch: () => void
 } {
@@ -50,9 +50,7 @@ export function useTaikoActivityAdapter(account: string): {
         from: swap.origin,
         nonce: undefined,
         title: `Swap ${swap.pool.token0.symbol} for ${swap.pool.token1.symbol}`,
-        descriptor: `${Math.abs(parseFloat(swap.amount0))} ${swap.pool.token0.symbol} → ${Math.abs(
-          parseFloat(swap.amount1)
-        )} ${swap.pool.token1.symbol}`,
+        descriptor: `${Math.abs(parseFloat(swap.amount0))} ${swap.pool.token0.symbol} → ${Math.abs(parseFloat(swap.amount1))} ${swap.pool.token1.symbol}`,
         logos: [swap.pool.token0.id, swap.pool.token1.id],
         currencies: [token0, token1],
       } as Activity)
@@ -83,9 +81,7 @@ export function useTaikoActivityAdapter(account: string): {
         from: mint.origin,
         nonce: undefined,
         title: `Add ${mint.pool.token0.symbol}/${mint.pool.token1.symbol} Liquidity`,
-        descriptor: `${parseFloat(mint.amount0).toFixed(4)} ${mint.pool.token0.symbol} + ${parseFloat(
-          mint.amount1
-        ).toFixed(4)} ${mint.pool.token1.symbol}`,
+        descriptor: `${parseFloat(mint.amount0).toFixed(4)} ${mint.pool.token0.symbol} + ${parseFloat(mint.amount1).toFixed(4)} ${mint.pool.token1.symbol}`,
         logos: [mint.pool.token0.id, mint.pool.token1.id],
         currencies: [token0, token1],
       } as Activity)
@@ -116,9 +112,7 @@ export function useTaikoActivityAdapter(account: string): {
         from: burn.origin,
         nonce: undefined,
         title: `Remove ${burn.pool.token0.symbol}/${burn.pool.token1.symbol} Liquidity`,
-        descriptor: `${parseFloat(burn.amount0).toFixed(4)} ${burn.pool.token0.symbol} + ${parseFloat(
-          burn.amount1
-        ).toFixed(4)} ${burn.pool.token1.symbol}`,
+        descriptor: `${parseFloat(burn.amount0).toFixed(4)} ${burn.pool.token0.symbol} + ${parseFloat(burn.amount1).toFixed(4)} ${burn.pool.token1.symbol}`,
         logos: [burn.pool.token0.id, burn.pool.token1.id],
         currencies: [token0, token1],
       } as Activity)
@@ -149,9 +143,7 @@ export function useTaikoActivityAdapter(account: string): {
         from: collect.owner,
         nonce: undefined,
         title: `Collect ${collect.pool.token0.symbol}/${collect.pool.token1.symbol} Fees`,
-        descriptor: `${parseFloat(collect.amount0).toFixed(6)} ${collect.pool.token0.symbol} + ${parseFloat(
-          collect.amount1
-        ).toFixed(6)} ${collect.pool.token1.symbol}`,
+        descriptor: `${parseFloat(collect.amount0).toFixed(6)} ${collect.pool.token0.symbol} + ${parseFloat(collect.amount1).toFixed(6)} ${collect.pool.token1.symbol}`,
         logos: [collect.pool.token0.id, collect.pool.token1.id],
         currencies: [token0, token1],
       } as Activity)

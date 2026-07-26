@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { useMemo } from 'react'
 
-import { Chain, useTrendingTokensQuery } from './__generated__/types-and-hooks'
+import { useTrendingTokensQuery } from './__generated__/types-and-hooks'
 import { chainIdToBackendName, unwrapToken } from './util'
 
 gql`
@@ -42,7 +42,7 @@ gql`
 
 export default function useTrendingTokens(chainId?: number) {
   const chain = chainIdToBackendName(chainId)
-  const { data, loading } = useTrendingTokensQuery({ variables: { chain: chain as Chain } })
+  const { data, loading } = useTrendingTokensQuery({ variables: { chain } })
 
   return useMemo(
     () => ({ data: data?.topTokens?.map((token) => unwrapToken(chainId ?? 1, token)), loading }),

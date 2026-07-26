@@ -1,10 +1,12 @@
 import { darken } from 'polished'
 import { forwardRef } from 'react'
 import { Check, ChevronDown } from 'react-feather'
-import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
+import { ButtonProps as ButtonPropsOriginal, Button as RebassButton } from 'rebass/styled-components'
 import styled, { DefaultTheme, useTheme } from 'styled-components'
 
 import { RowBetween } from '../Row'
+
+export { default as LoadingButtonSpinner } from './LoadingButtonSpinner'
 
 type ButtonProps = Omit<ButtonPropsOriginal, 'css'>
 
@@ -66,7 +68,7 @@ export const BaseButton = styled(RebassButton)<BaseButtonProps>`
 `
 
 export const ButtonPrimary = styled(BaseButton)`
-  background: linear-gradient(93.06deg, #c8047d 2.66%, #fc72ff 98.99%);
+  background: linear-gradient(93.06deg, #C8047D 2.66%, #FC72FF 98.99%);
   font-size: 20px;
   font-weight: 535;
   padding: 16px;
@@ -77,16 +79,16 @@ export const ButtonPrimary = styled(BaseButton)`
 
   &:focus {
     box-shadow: 0 0 0 2pt rgba(200, 4, 125, 0.4), 0 0 30px rgba(200, 4, 125, 0.4);
-    background: linear-gradient(93.06deg, #b00370 2.66%, #e865f0 98.99%);
+    background: linear-gradient(93.06deg, #B00370 2.66%, #E865F0 98.99%);
   }
   &:hover {
-    background: linear-gradient(93.06deg, #b00370 2.66%, #e865f0 98.99%);
+    background: linear-gradient(93.06deg, #B00370 2.66%, #E865F0 98.99%);
     box-shadow: 0 0 30px rgba(200, 4, 125, 0.5);
     transform: translateY(-1px);
   }
   &:active {
     box-shadow: 0 0 0 2pt rgba(200, 4, 125, 0.5), 0 0 35px rgba(200, 4, 125, 0.5);
-    background: linear-gradient(93.06deg, #a00268 2.66%, #d655e0 98.99%);
+    background: linear-gradient(93.06deg, #A00268 2.66%, #D655E0 98.99%);
   }
   &:disabled {
     background: ${({ theme, altDisabledStyle, disabled }) =>
@@ -272,29 +274,29 @@ const ButtonConfirmedStyle = styled(BaseButton)`
 `
 
 const ButtonErrorStyle = styled(BaseButton)`
-  background: linear-gradient(93.06deg, #c8047d 2.66%, #fc72ff 98.99%);
+  background: linear-gradient(93.06deg, #C8047D 2.66%, #FC72FF 98.99%);
   border: none;
   box-shadow: 0 0 20px rgba(200, 4, 125, 0.3);
   transition: all 250ms ease;
 
   &:focus {
     box-shadow: 0 0 0 2pt rgba(200, 4, 125, 0.4), 0 0 30px rgba(200, 4, 125, 0.4);
-    background: linear-gradient(93.06deg, #b00370 2.66%, #e865f0 98.99%);
+    background: linear-gradient(93.06deg, #B00370 2.66%, #E865F0 98.99%);
   }
   &:hover {
-    background: linear-gradient(93.06deg, #b00370 2.66%, #e865f0 98.99%);
+    background: linear-gradient(93.06deg, #B00370 2.66%, #E865F0 98.99%);
     box-shadow: 0 0 30px rgba(200, 4, 125, 0.5);
     transform: translateY(-1px);
   }
   &:active {
     box-shadow: 0 0 0 2pt rgba(200, 4, 125, 0.5), 0 0 35px rgba(200, 4, 125, 0.5);
-    background: linear-gradient(93.06deg, #a00268 2.66%, #d655e0 98.99%);
+    background: linear-gradient(93.06deg, #A00268 2.66%, #D655E0 98.99%);
   }
   &:disabled {
     opacity: 50%;
     cursor: auto;
     box-shadow: none;
-    background: linear-gradient(93.06deg, #c8047d 2.66%, #fc72ff 98.99%);
+    background: linear-gradient(93.06deg, #C8047D 2.66%, #FC72FF 98.99%);
     border: none;
   }
 `

@@ -5,13 +5,12 @@
  * that routes Taiko chains to Goldsky subgraph and other chains to Uniswap API.
  */
 
-import { isTaikoChain, TAIKO_MAINNET_CHAIN_ID } from 'config/chains/taiko'
-import { useTaikoToken } from 'graphql/taiko/TaikoToken'
 import { useMemo } from 'react'
-
-import type { Chain, TokenQuery } from './__generated__/types-and-hooks'
-import { useTokenQuery as useGeneratedTokenQuery } from './__generated__/types-and-hooks'
+import { isTaikoChain, TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID } from 'config/chains/taiko'
+import { useTaikoToken } from 'graphql/taiko/TaikoToken'
 import { supportedChainIdFromGQLChain } from './util'
+import { useTokenQuery as useGeneratedTokenQuery } from './__generated__/types-and-hooks'
+import type { Chain, TokenQuery } from './__generated__/types-and-hooks'
 
 /**
  * Options for useTokenQuery
@@ -30,7 +29,7 @@ interface TokenQueryOptions {
  * Routes Taiko chains to Goldsky subgraph, other chains to Uniswap API
  */
 export function useTokenQuery(options: TokenQueryOptions): {
-  data?: TokenQuery
+  data: TokenQuery | undefined
   loading: boolean
   error?: Error
 } {
@@ -39,21 +38,13 @@ export function useTokenQuery(options: TokenQueryOptions): {
   const isTaiko = pageChainId && isTaikoChain(pageChainId)
 
   // Use Taiko subgraph for Taiko chains
-  const {
-    token: taikoToken,
-    loading: taikoLoading,
-    error: taikoError,
-  } = useTaikoToken(
+  const { token: taikoToken, loading: taikoLoading, error: taikoError } = useTaikoToken(
     pageChainId || 167013, // Default to Hoodi if pageChainId is undefined
     options.variables.address
   )
 
   // Use Uniswap API for other chains
-  const {
-    data: apiData,
-    loading: apiLoading,
-    error: apiError,
-  } = useGeneratedTokenQuery({
+  const { data: apiData, loading: apiLoading, error: apiError } = useGeneratedTokenQuery({
     variables: {
       address: options.variables.address,
       chain: options.variables.chain as Chain,

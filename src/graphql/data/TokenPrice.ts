@@ -1,11 +1,10 @@
-import { isTaikoChain } from 'config/chains/taiko'
-import { useTaikoTokenPriceHistory } from 'graphql/taiko/TaikoTokenPrice'
 import gql from 'graphql-tag'
 import { useMemo } from 'react'
-
-import type { Chain, HistoryDuration, TokenPriceQuery } from './__generated__/types-and-hooks'
-import { useTokenPriceQuery as useGeneratedTokenPriceQuery } from './__generated__/types-and-hooks'
+import { isTaikoChain } from 'config/chains/taiko'
+import { useTaikoTokenPriceHistory } from 'graphql/taiko/TaikoTokenPrice'
 import { supportedChainIdFromGQLChain } from './util'
+import { useTokenPriceQuery as useGeneratedTokenPriceQuery } from './__generated__/types-and-hooks'
+import type { Chain, HistoryDuration, TokenPriceQuery } from './__generated__/types-and-hooks'
 
 gql`
   query TokenPrice($chain: Chain!, $address: String = null, $duration: HistoryDuration!) {
@@ -64,7 +63,7 @@ export function useTokenPriceQuery(options: {
   }
   errorPolicy?: 'all' | 'none' | 'ignore'
   skip?: boolean
-}): { data?: TokenPriceQuery; loading: boolean; error?: Error } {
+}): { data: TokenPriceQuery | undefined; loading: boolean; error?: Error } {
   // Use page chain parameter, not wallet's connected chain
   const pageChainId = supportedChainIdFromGQLChain(options.variables.chain)
   const isTaiko = pageChainId && isTaikoChain(pageChainId)
@@ -96,11 +95,7 @@ export function useTokenPriceQuery(options: {
   )
 
   // Use Uniswap API for other chains
-  const {
-    data: apiData,
-    loading: apiLoading,
-    error: apiError,
-  } = useGeneratedTokenPriceQuery({
+  const { data: apiData, loading: apiLoading, error: apiError } = useGeneratedTokenPriceQuery({
     ...options,
     skip: isTaiko || options.skip || !options.variables.address, // Skip API query on Taiko or if no address
   })
@@ -125,7 +120,7 @@ export function useTokenPriceQuery(options: {
           __typename: 'Token',
           id: `${address}-${chain}`,
           address,
-          chain,
+          chain: chain,
           market: {
             __typename: 'TokenMarket',
             id: `${address}-${chain}-USD`,

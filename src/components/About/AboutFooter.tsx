@@ -1,10 +1,10 @@
 import { BrowserEvent, InterfaceElementName, SharedEventName } from '@uniswap/analytics-events'
 import { TraceEvent } from 'analytics'
-import { TaikoIcon } from 'components/Logo/TaikoLogo'
 import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
 import styled from 'styled-components'
 import { BREAKPOINTS, ExternalLink, StyledRouterLink } from 'theme'
 
+import { TaikoIcon } from 'components/Logo/TaikoLogo'
 import { DiscordIcon, GithubIcon, TwitterIcon } from './Icons'
 
 const Footer = styled.div`
@@ -136,7 +136,9 @@ const LogoSectionContent = () => {
         <TaikoIcon width="120" height="120" />
       </StyledLogoWrapper>
       <BrandTitle>Taiko Labs</BrandTitle>
-      <BrandDescription>The most developer-friendly and secure Ethereum scaling solution.</BrandDescription>
+      <BrandDescription>
+        The most developer-friendly and secure Ethereum scaling solution.
+      </BrandDescription>
       <SocialLinks>
         <SocialLink href="https://discord.gg/taikoxyz" target="_blank" rel="noopener noreferrer">
           <DiscordIcon size={32} />

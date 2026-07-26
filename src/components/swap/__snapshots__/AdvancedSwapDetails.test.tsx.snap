@@ -39,17 +39,17 @@ exports[`AdvancedSwapDetails.tsx matches base snapshot 1`] = `
 }
 
 .c6 {
-  color: #9B9B9B;
+  color: #7D7D7D;
 }
 
 .c7 {
-  color: #FFFFFF;
+  color: #222222;
 }
 
 .c1 {
   width: 100%;
   height: 1px;
-  background-color: #FFFFFF12;
+  background-color: #22222212;
 }
 
 .c0 {

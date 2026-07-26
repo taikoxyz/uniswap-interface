@@ -1,19 +1,17 @@
 import { SwapEventTimestampTracker, SwapEventType } from './SwapEventTimestampTracker'
 
-// The mock factory is hoisted above imports, so it cannot reference the
-// SwapEventType enum directly; use its string values (keys === values).
 jest.mock('./utils', () => ({
   calculateElapsedTimeWithPerformanceMark: (mark: string) => {
     switch (mark) {
-      case 'FIRST_SWAP_ACTION':
+      case SwapEventType.FIRST_SWAP_ACTION:
         return 100
-      case 'FIRST_QUOTE_FETCH_STARTED':
+      case SwapEventType.FIRST_QUOTE_FETCH_STARTED:
         return 200
-      case 'FIRST_SWAP_SIGNATURE_REQUESTED':
+      case SwapEventType.FIRST_SWAP_SIGNATURE_REQUESTED:
         return 300
-      case 'FIRST_SWAP_SIGNATURE_COMPLETED':
+      case SwapEventType.FIRST_SWAP_SIGNATURE_COMPLETED:
         return 400
-      case 'FIRST_SWAP_SUCCESS':
+      case SwapEventType.FIRST_SWAP_SUCCESS:
         return 500
       default:
         return 0

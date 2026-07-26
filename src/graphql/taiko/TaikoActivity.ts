@@ -4,7 +4,12 @@ import { useMemo } from 'react'
 
 const TAIKO_USER_ACTIVITY_QUERY = gql`
   query TaikoUserActivity($account: Bytes!, $first: Int = 100) {
-    swaps(first: $first, orderBy: timestamp, orderDirection: desc, where: { origin: $account }) {
+    swaps(
+      first: $first
+      orderBy: timestamp
+      orderDirection: desc
+      where: { origin: $account }
+    ) {
       id
       timestamp
       sender
@@ -33,7 +38,12 @@ const TAIKO_USER_ACTIVITY_QUERY = gql`
         timestamp
       }
     }
-    mints(first: $first, orderBy: timestamp, orderDirection: desc, where: { origin: $account }) {
+    mints(
+      first: $first
+      orderBy: timestamp
+      orderDirection: desc
+      where: { origin: $account }
+    ) {
       id
       timestamp
       sender
@@ -62,7 +72,12 @@ const TAIKO_USER_ACTIVITY_QUERY = gql`
         timestamp
       }
     }
-    burns(first: $first, orderBy: timestamp, orderDirection: desc, where: { origin: $account }) {
+    burns(
+      first: $first
+      orderBy: timestamp
+      orderDirection: desc
+      where: { origin: $account }
+    ) {
       id
       timestamp
       owner
@@ -91,7 +106,12 @@ const TAIKO_USER_ACTIVITY_QUERY = gql`
         timestamp
       }
     }
-    collects(first: $first, orderBy: timestamp, orderDirection: desc, where: { owner: $account }) {
+    collects(
+      first: $first
+      orderBy: timestamp
+      orderDirection: desc
+      where: { owner: $account }
+    ) {
       id
       timestamp
       owner
@@ -122,26 +142,26 @@ const TAIKO_USER_ACTIVITY_QUERY = gql`
   }
 `
 
-interface TaikoActivityToken {
+export interface TaikoActivityToken {
   id: string
   symbol: string
   name: string
   decimals: string
 }
 
-interface TaikoActivityPool {
+export interface TaikoActivityPool {
   id: string
   token0: TaikoActivityToken
   token1: TaikoActivityToken
 }
 
-interface TaikoActivityTransaction {
+export interface TaikoActivityTransaction {
   id: string
   blockNumber: string
   timestamp: string
 }
 
-interface TaikoSwap {
+export interface TaikoSwap {
   id: string
   timestamp: string
   sender: string
@@ -153,7 +173,7 @@ interface TaikoSwap {
   transaction: TaikoActivityTransaction
 }
 
-interface TaikoMint {
+export interface TaikoMint {
   id: string
   timestamp: string
   sender: string
@@ -165,7 +185,7 @@ interface TaikoMint {
   transaction: TaikoActivityTransaction
 }
 
-interface TaikoBurn {
+export interface TaikoBurn {
   id: string
   timestamp: string
   owner: string
@@ -177,7 +197,7 @@ interface TaikoBurn {
   transaction: TaikoActivityTransaction
 }
 
-interface TaikoCollect {
+export interface TaikoCollect {
   id: string
   timestamp: string
   owner: string
@@ -188,17 +208,17 @@ interface TaikoCollect {
   transaction: TaikoActivityTransaction
 }
 
-interface TaikoActivityData {
+export interface TaikoActivityData {
   swaps: TaikoSwap[]
   mints: TaikoMint[]
   burns: TaikoBurn[]
   collects: TaikoCollect[]
 }
 
-interface UseTaikoActivityResult {
-  activities?: TaikoActivityData
+export interface UseTaikoActivityResult {
+  activities: TaikoActivityData | undefined
   loading: boolean
-  error?: Error
+  error: Error | undefined
   refetch: () => void
 }
 
@@ -208,7 +228,7 @@ interface UseTaikoActivityResult {
  * @param account - User wallet address
  * @param first - Number of items to fetch per activity type (default: 100)
  */
-export function useTaikoActivity(chainId: number, account: string, first = 100): UseTaikoActivityResult {
+export function useTaikoActivity(chainId: number, account: string, first: number = 100): UseTaikoActivityResult {
   const client = getClient(chainId)
 
   const { data, loading, error, refetch } = useQuery<TaikoActivityData>(TAIKO_USER_ACTIVITY_QUERY, {

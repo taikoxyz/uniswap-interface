@@ -3,12 +3,7 @@ const assetImageUrl = [
   'http://127.0.0.1:3000/api/image/nfts/asset/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb/3947',
 ]
 
-// Skipped for the Taiko-only deployment: og-image generation resolves NFT data
-// through Uniswap's private GraphQL gateway (api.uniswap.org), which does not
-// serve this fork, and these Cloudflare Pages functions are not deployed for
-// swap.taiko.xyz (which deploys on Vercel). The invalid/blocked-route tests
-// below stay active because they assert 404s without any external data.
-test.skip.each(assetImageUrl)('assetImageUrl', async (url) => {
+test.each(assetImageUrl)('assetImageUrl', async (url) => {
   const response = await fetch(new Request(url))
   expect(response.status).toBe(200)
   expect(response.headers.get('content-type')).toBe('image/png')

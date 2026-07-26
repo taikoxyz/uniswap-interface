@@ -3,7 +3,6 @@ import { InterfaceEventName, WalletConnectionResult } from '@uniswap/analytics-e
 import { MockEIP1193Provider } from '@web3-react/core'
 import { Provider as EIP1193Provider } from '@web3-react/types'
 import { sendAnalyticsEvent, user } from 'analytics'
-import { getDefaultChainId } from 'config/chains'
 import { connections, getConnection } from 'connection'
 import { Connection, ConnectionType } from 'connection/types'
 import { Provider } from 'react-redux'
@@ -53,11 +52,6 @@ const UI = (
   </HashRouter>
 )
 
-// The Taiko fork auto-switches wallets that connect on the wrong network to the
-// default chain, so connect the mock wallet on the default chain to keep these
-// analytics tests focused on connection events.
-const DEFAULT_CHAIN_ID_HEX = `0x${getDefaultChainId().toString(16)}`
-
 describe('Web3Provider', () => {
   it('renders and eagerly connects', async () => {
     const result = render(UI)
@@ -86,7 +80,7 @@ describe('Web3Provider', () => {
 
       // Act
       act(() => {
-        mockProvider.emitConnect(DEFAULT_CHAIN_ID_HEX)
+        mockProvider.emitConnect('0x1')
         mockProvider.emitAccountsChanged(['0x0000000000000000000000000000000000000000'])
       })
 
@@ -116,7 +110,7 @@ describe('Web3Provider', () => {
 
       // Act
       act(() => {
-        mockProvider.emitConnect(DEFAULT_CHAIN_ID_HEX)
+        mockProvider.emitConnect('0x1')
         mockProvider.emitAccountsChanged(['0x0000000000000000000000000000000000000000'])
       })
       act(() => {

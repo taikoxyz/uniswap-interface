@@ -23,7 +23,7 @@ export function isAppUniswapStagingOrg({ hostname }: { hostname: string }): bool
   return hostname === 'app.corn-staging.com'
 }
 
-function isTaikoDex({ hostname }: { hostname: string }): boolean {
+export function isTaikoDex({ hostname }: { hostname: string }): boolean {
   return hostname === 'swap.taiko.xyz' || hostname === 'swap.hoodi.taiko.xyz'
 }
 

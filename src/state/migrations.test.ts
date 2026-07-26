@@ -1,5 +1,4 @@
 import { Store } from '@reduxjs/toolkit'
-import { getDefaultChainId } from 'config/chains'
 import { persistStore } from 'redux-persist'
 import { createDefaultStore } from 'state'
 
@@ -17,8 +16,11 @@ const defaultState = {
     version: 0,
   },
   application: {
-    // The Taiko fork initializes the application state on the default chain
-    chainId: getDefaultChainId(),
+    chainId: null,
+    fiatOnramp: {
+      availabilityChecked: false,
+      available: false,
+    },
     openModal: null,
     popupList: [],
   },

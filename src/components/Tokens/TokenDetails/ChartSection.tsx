@@ -77,7 +77,11 @@ function Chart({
 
   // For Taiko chains, fetch data from Goldsky subgraph
   const isTaikoChain = chainId === TAIKO_HOODI_CHAIN_ID || chainId === TAIKO_MAINNET_CHAIN_ID
-  const { priceHistory: taikoPriceHistory } = useTaikoTokenPriceHistory(chainId ?? 0, tokenAddress ?? '', timePeriod)
+  const { priceHistory: taikoPriceHistory } = useTaikoTokenPriceHistory(
+    chainId ?? 0,
+    tokenAddress ?? '',
+    timePeriod
+  )
 
   // For non-Taiko chains, use standard AWS backend price history
   const standardPriceHistory = usePriceHistory(tokenPriceQuery ?? ({} as TokenPriceQuery))

@@ -4,15 +4,15 @@
  * Custom implementation for querying pool data from Goldsky's Taiko V3 subgraph.
  */
 
-import { ApolloError, gql, useQuery } from '@apollo/client'
+import { useQuery, gql, ApolloError } from '@apollo/client'
 import { useMemo } from 'react'
-
 import { getClient } from '../thegraph/apollo'
+import { TAIKO_HOODI_CHAIN_ID } from 'config/chains'
 
 /**
  * Pool data structure from Goldsky V3 subgraph
  */
-interface TaikoPool {
+export interface TaikoPool {
   id: string // pool address
   token0: {
     id: string
@@ -78,7 +78,7 @@ const TAIKO_TOP_POOLS_QUERY = gql`
 /**
  * Pool data normalized for display
  */
-interface NormalizedTaikoPool {
+export interface NormalizedTaikoPool {
   id: string
   token0Address: string
   token1Address: string
@@ -97,7 +97,7 @@ interface NormalizedTaikoPool {
   apr?: number // Annual percentage rate (calculated from fees)
 }
 
-interface UseTopPoolsTaikoResult {
+export interface UseTopPoolsTaikoResult {
   pools?: readonly NormalizedTaikoPool[]
   loadingPools: boolean
   error?: ApolloError
@@ -109,7 +109,7 @@ interface UseTopPoolsTaikoResult {
  */
 export function useTopPoolsTaiko(
   chainId: number,
-  first = 100,
+  first: number = 100,
   orderBy: 'totalValueLockedUSD' | 'volumeUSD' = 'totalValueLockedUSD'
 ): UseTopPoolsTaikoResult {
   // Get the Apollo client for the specified Taiko chain
@@ -185,7 +185,7 @@ const TAIKO_PROTOCOL_STATS_QUERY = gql`
   }
 `
 
-interface TaikoProtocolStats {
+export interface TaikoProtocolStats {
   totalVolumeUSD: number
   totalValueLockedUSD: number
   totalFeesUSD: number
@@ -193,7 +193,7 @@ interface TaikoProtocolStats {
   poolCount: number
 }
 
-interface UseProtocolStatsTaikoResult {
+export interface UseProtocolStatsTaikoResult {
   stats?: TaikoProtocolStats
   loading: boolean
   error?: ApolloError

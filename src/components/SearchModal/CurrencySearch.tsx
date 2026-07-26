@@ -90,7 +90,9 @@ export function CurrencySearch({
   const filteredTokens: Token[] = useMemo(() => {
     // For Taiko, use tokens from COMMON_BASES instead of active lists
     if (isTaiko) {
-      return taikoCurrencies.filter((c): c is Token => c.isToken).filter(getTokenFilter(debouncedQuery))
+      return taikoCurrencies
+        .filter((c): c is Token => c.isToken)
+        .filter(getTokenFilter(debouncedQuery))
     }
     return Object.values(defaultTokens).filter(getTokenFilter(debouncedQuery))
   }, [defaultTokens, debouncedQuery, isTaiko, taikoCurrencies])
@@ -110,9 +112,7 @@ export function CurrencySearch({
           const address = currency.isNative ? 'ETH' : currency.isToken ? currency.address?.toLowerCase() : undefined
           if (address) {
             balanceMap[address] = {
-              // Keep the exact decimal string at runtime (consumers String() it before parsing);
-              // TokenBalances declares number, so cast rather than parseFloat to avoid precision loss.
-              balance: balance.toExact() as unknown as number,
+              balance: balance.toExact(),
               usdValue: 0, // USD value not available from on-chain data
             }
           }

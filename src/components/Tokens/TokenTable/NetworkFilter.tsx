@@ -1,7 +1,12 @@
 import Badge from 'components/Badge'
-import { getChainInfo, getChainInfoOrDefault } from 'constants/chainInfo'
+import { getChainInfo } from 'constants/chainInfo'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'constants/taiko'
-import { supportedChainIdFromGQLChain, validateUrlChainParam } from 'graphql/data/util'
+import {
+  BACKEND_NOT_YET_SUPPORTED_CHAIN_IDS,
+  BACKEND_SUPPORTED_CHAINS,
+  supportedChainIdFromGQLChain,
+  validateUrlChainParam,
+} from 'graphql/data/util'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { useRef } from 'react'
 import { Check, ChevronDown, ChevronUp } from 'react-feather'
@@ -109,7 +114,6 @@ const Tag = styled(Badge)`
   padding: 4px 6px;
 `
 
-// eslint-disable-next-line import/no-unused-modules -- referenced by commented-out <NetworkFilter /> in pages/Tokens, kept for re-enablement
 export default function NetworkFilter() {
   const theme = useTheme()
   const node = useRef<HTMLDivElement | null>(null)
@@ -121,7 +125,7 @@ export default function NetworkFilter() {
   const { chainName } = useParams<{ chainName?: string }>()
   const currentChainName = validateUrlChainParam(chainName)
 
-  const chainInfo = getChainInfoOrDefault(supportedChainIdFromGQLChain(currentChainName))
+  const chainInfo = getChainInfo(supportedChainIdFromGQLChain(currentChainName))
 
   return (
     <StyledMenu ref={node}>
