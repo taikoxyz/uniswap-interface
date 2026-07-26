@@ -263,7 +263,10 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [TAIKO_MAINNET_CHAIN_ID]: {
     networkType: NetworkType.L2,
-    blockWaitMsBeforeWarning: ms(`25m`),
+    // Taiko produces a block every ~2s, so a 3m-old head is ~90 missed blocks — an unambiguous
+    // stall. (The timestamp feeding this check refreshes every ~12s, so the threshold only needs
+    // to comfortably exceed that; the 25m value tuned for other L2s hid outages for 25 minutes.)
+    blockWaitMsBeforeWarning: ms(`3m`),
     bridge: 'https://bridge.taiko.xyz',
     docs: 'https://docs.taiko.xyz/',
     explorer: 'https://taikoscan.io/',
@@ -279,7 +282,9 @@ const CHAIN_INFO: ChainInfoMap = {
   },
   [TAIKO_HOODI_CHAIN_ID]: {
     networkType: NetworkType.L2,
-    blockWaitMsBeforeWarning: ms(`25m`),
+    // Hoodi also targets ~2s blocks, but testnets idle and hiccup more; 10m avoids crying wolf
+    // while still surfacing real stalls an order of magnitude sooner than the old 25m.
+    blockWaitMsBeforeWarning: ms(`10m`),
     bridge: 'https://bridge.taiko.xyz',
     docs: 'https://docs.taiko.xyz/',
     explorer: 'https://hoodi.taikoscan.io/',
