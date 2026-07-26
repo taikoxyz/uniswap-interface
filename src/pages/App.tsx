@@ -21,6 +21,7 @@ import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 import { STATSIG_DUMMY_KEY } from 'tracing'
 import { getEnvName, isBrowserRouterEnabled } from 'utils/env'
+import { isWidgetPath } from 'utils/isWidgetPath'
 import { getCurrentPageFromLocation } from 'utils/urlRoutes'
 import { getCLS, getFCP, getFID, getLCP, Metric } from 'web-vitals'
 
@@ -118,7 +119,7 @@ export default function App() {
   const { hash, pathname } = location
   const currentPage = getCurrentPageFromLocation(pathname)
   const isDarkMode = useIsDarkMode()
-  const isWidgetPage = pathname === '/widget'
+  const isWidgetPage = isWidgetPath(pathname)
   const [routerPreference] = useRouterPreference()
   const [scrolledState, setScrolledState] = useState(false)
   const infoPoolPageEnabled = useInfoPoolPageEnabled()

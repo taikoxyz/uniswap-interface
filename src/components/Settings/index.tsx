@@ -127,8 +127,9 @@ export default function SettingsTab({
   const toggleMenu = useToggleSettingsMenu()
 
   const isMobile = useIsMobile()
-  const isOpenMobile = isOpen && isMobile
-  const isOpenDesktop = isOpen && !isMobile
+  // Compact (widget) mode always uses the full-viewport flyout, never the mobile bottom sheet
+  const isOpenMobile = isOpen && isMobile && !compact
+  const isOpenDesktop = isOpen && (!isMobile || compact)
 
   useOnClickOutside(node, isOpenDesktop ? closeMenu : undefined)
   useDisableScrolling(isOpen)

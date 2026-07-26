@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { ButtonPrimary } from 'components/Button'
+import { ButtonPrimary, ButtonSecondary } from 'components/Button'
 import { ColumnCenter } from 'components/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import Row from 'components/Row'
@@ -19,6 +19,7 @@ export enum PendingModalError {
 interface ErrorModalContentProps {
   errorType: PendingModalError
   onRetry: () => void
+  onDismiss?: () => void
 }
 
 function getErrorContent(errorType: PendingModalError) {
@@ -53,7 +54,7 @@ function getErrorContent(errorType: PendingModalError) {
   }
 }
 
-export function ErrorModalContent({ errorType, onRetry }: ErrorModalContentProps) {
+export function ErrorModalContent({ errorType, onRetry, onDismiss }: ErrorModalContentProps) {
   const theme = useTheme()
 
   const { title, label, tooltipText } = getErrorContent(errorType)
@@ -68,11 +69,20 @@ export function ErrorModalContent({ errorType, onRetry }: ErrorModalContentProps
           {tooltipText && <QuestionHelper text={tooltipText} />}
         </Row>
       </ColumnCenter>
-      <Row justify="center">
-        <ButtonPrimary marginX="24px" marginBottom="16px" onClick={onRetry}>
-          <Trans>Retry</Trans>
-        </ButtonPrimary>
-      </Row>
+      <ColumnCenter gap="sm" style={{ marginBottom: '16px' }}>
+        <Row justify="center">
+          <ButtonPrimary marginX="24px" onClick={onRetry}>
+            <Trans>Retry</Trans>
+          </ButtonPrimary>
+        </Row>
+        {onDismiss && (
+          <Row justify="center">
+            <ButtonSecondary data-testid="pending-modal-failure-dismiss" marginX="24px" onClick={onDismiss}>
+              <Trans>Close</Trans>
+            </ButtonSecondary>
+          </Row>
+        )}
+      </ColumnCenter>
     </PendingModalContainer>
   )
 }

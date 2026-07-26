@@ -421,6 +421,7 @@ export default function ConfirmSwapModal({
           <ErrorModalContent
             errorType={approvalError ?? PendingModalError.CONFIRMATION_ERROR}
             onRetry={startSwapFlow}
+            onDismiss={onModalDismiss}
           />
         ) : (
           <ConfirmationModalContent

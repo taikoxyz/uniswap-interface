@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Widget embed test harness</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 24px;
+      }
+      p {
+        max-width: 640px;
+        color: #444;
+        margin: 0;
+      }
+      iframe {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: #fff;
+      }
+      .desktop {
+        width: 640px;
+        height: 720px;
+      }
+      .mobile {
+        width: 375px;
+        height: 667px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      QA harness for the <code>/widget</code> iframe embed (same-origin framing is permitted by the
+      <code>frame-ancestors</code> policy, so this page works on any deployment of the app). Verify: rendering at both
+      sizes, wallet connect, chain selector, URL currency params, settings flyout, and the swap review/error modals.
+    </p>
+    <iframe class="desktop" src="/widget" title="Swap widget (desktop size)"></iframe>
+    <iframe class="mobile" src="/widget?inputCurrency=ETH" title="Swap widget (mobile size, ETH preselected)"></iframe>
+  </body>
+</html>

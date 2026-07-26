@@ -4,7 +4,7 @@ import { TradeFillType } from 'state/routing/types'
 import { useSwapTransactionStatus } from 'state/transactions/hooks'
 import { TEST_TRADE_EXACT_INPUT } from 'test-utils/constants'
 import { mocked } from 'test-utils/mocked'
-import { render, screen } from 'test-utils/render'
+import { fireEvent, render, screen } from 'test-utils/render'
 
 import { ConfirmModalState } from '../ConfirmSwapModal'
 import { PendingModalContent } from '.'
@@ -191,5 +191,28 @@ describe('PendingModalContent', () => {
       expect(screen.queryByTestId('pending-modal-currency-logo-loader')).toBeNull()
       expect(screen.getByTestId('confirmed-icon')).toBeInTheDocument()
     })
+  })
+})
+
+describe('ErrorModalContent', () => {
+  it('renders no dismiss action when onDismiss is not provided', () => {
+    render(<ErrorModalContent errorType={PendingModalError.TOKEN_APPROVAL_ERROR} onRetry={jest.fn()} />)
+    expect(screen.getByText('Retry')).toBeInTheDocument()
+    expect(screen.queryByTestId('pending-modal-failure-dismiss')).toBeNull()
+  })
+
+  it('renders a dismiss action which fires onDismiss', () => {
+    const onRetry = jest.fn()
+    const onDismiss = jest.fn()
+    render(
+      <ErrorModalContent errorType={PendingModalError.CONFIRMATION_ERROR} onRetry={onRetry} onDismiss={onDismiss} />
+    )
+
+    fireEvent.click(screen.getByTestId('pending-modal-failure-dismiss'))
+    expect(onDismiss).toHaveBeenCalledTimes(1)
+    expect(onRetry).not.toHaveBeenCalled()
+
+    fireEvent.click(screen.getByText('Retry'))
+    expect(onRetry).toHaveBeenCalledTimes(1)
   })
 })
