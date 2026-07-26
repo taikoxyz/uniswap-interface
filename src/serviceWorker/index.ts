@@ -27,7 +27,7 @@ registerRoute(
     ({ url }) => onDemandURLs.includes('.' + url.pathname),
     new CacheFirst({
       cacheName: onDemandCacheName,
-      plugins: [new ExpirationPlugin({ maxEntries: 64 })],
+      plugins: [new ExpirationPlugin({ maxEntries: 64, maxAgeSeconds: 24 * 60 * 60 })],
     })
   )
 )
