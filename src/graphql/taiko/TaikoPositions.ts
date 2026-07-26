@@ -1,18 +1,22 @@
 import { gql, useQuery } from '@apollo/client'
 import { isAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
-import { AddressZero } from '@ethersproject/constants'
+import { AddressZero, MaxUint256 } from '@ethersproject/constants'
+import { FeeAmount, TICK_SPACINGS, TickMath } from '@uniswap/v3-sdk'
 import { isTaikoChain } from 'config/chains/taiko'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { PositionDetails } from 'types/position'
 
 import { getPoolClientForChain } from './apollo'
 
 const MAX_SUBGRAPH_BLOCK_LAG = 20
+const MAX_SUBGRAPH_FUTURE_BLOCKS = 2
 const MAX_SUBGRAPH_POSITIONS = 1_000
 const SUBGRAPH_POLL_INTERVAL = 30_000
+const SUBGRAPH_REQUEST_TIMEOUT = 10_000
 const ZERO = BigNumber.from(0)
+const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
 
 const TAIKO_USER_POSITIONS_QUERY = gql`
   query TaikoUserPositionsForPools($account: Bytes!) {
@@ -66,22 +70,42 @@ function mapPosition(position: TaikoPosition): PositionDetails {
   const fee = Number(position.feeTier)
   const tickLower = Number(position.tickLower)
   const tickUpper = Number(position.tickUpper)
+  const tickSpacing = TICK_SPACINGS[fee as FeeAmount]
+  const tokenId = BigNumber.from(position.id)
+  const liquidity = BigNumber.from(position.liquidity)
+  const token0 = position.token0.id.toLowerCase()
+  const token1 = position.token1.id.toLowerCase()
   if (
     ![fee, tickLower, tickUpper].every(Number.isSafeInteger) ||
-    !isAddress(position.token0.id) ||
-    !isAddress(position.token1.id)
+    tickSpacing === undefined ||
+    tickLower < TickMath.MIN_TICK ||
+    tickLower > TickMath.MAX_TICK ||
+    tickUpper < TickMath.MIN_TICK ||
+    tickUpper > TickMath.MAX_TICK ||
+    tickLower >= tickUpper ||
+    tickLower % tickSpacing !== 0 ||
+    tickUpper % tickSpacing !== 0 ||
+    tokenId.lt(ZERO) ||
+    tokenId.gt(MaxUint256) ||
+    liquidity.lt(ZERO) ||
+    liquidity.gt(MAX_UINT128) ||
+    !isAddress(token0) ||
+    !isAddress(token1) ||
+    token0 === AddressZero ||
+    token1 === AddressZero ||
+    token0 === token1
   ) {
     throw new Error('Invalid Taiko position value')
   }
 
   return {
-    tokenId: BigNumber.from(position.id),
+    tokenId,
     fee,
-    liquidity: BigNumber.from(position.liquidity),
+    liquidity,
     tickLower,
     tickUpper,
-    token0: position.token0.id,
-    token1: position.token1.id,
+    token0,
+    token1,
     nonce: ZERO,
     operator: AddressZero,
     feeGrowthInside0LastX128: ZERO,
@@ -98,6 +122,8 @@ export function useTaikoV3Positions(
   const latestBlock = useBlockNumber()
   const enabled = !!chainId && isTaikoChain(chainId) && !!account
   const client = enabled ? getPoolClientForChain(chainId) : undefined
+  const requestKey = enabled && client ? `${chainId}:${account?.toLowerCase()}` : undefined
+  const [timedOutRequest, setTimedOutRequest] = useState<string>()
   const { data, loading, error } = useQuery<TaikoPositionsData>(TAIKO_USER_POSITIONS_QUERY, {
     client,
     variables: { account: account?.toLowerCase() ?? '' },
@@ -106,19 +132,30 @@ export function useTaikoV3Positions(
     pollInterval: SUBGRAPH_POLL_INTERVAL,
   })
 
+  useEffect(() => {
+    setTimedOutRequest(undefined)
+    if (!requestKey || !loading || data || error) return undefined
+
+    const timeout = setTimeout(() => setTimedOutRequest(requestKey), SUBGRAPH_REQUEST_TIMEOUT)
+    return () => clearTimeout(timeout)
+  }, [data, error, loading, requestKey])
+
   return useMemo(() => {
     if (!enabled) return { loading: false, fallbackToRpc: false }
     if (!client || error) return { loading: false, fallbackToRpc: true }
+    if (timedOutRequest === requestKey && loading && !data) return { loading: false, fallbackToRpc: true }
     if (loading && !data) return { loading: true, fallbackToRpc: false }
 
     const indexedBlock = data?._meta?.block?.number
-    const isStale =
-      latestBlock !== undefined && indexedBlock !== undefined && latestBlock - indexedBlock > MAX_SUBGRAPH_BLOCK_LAG
+    const blockLag = latestBlock !== undefined && indexedBlock !== undefined ? latestBlock - indexedBlock : undefined
+    const isStale = blockLag !== undefined && blockLag > MAX_SUBGRAPH_BLOCK_LAG
+    const isFromFuture = blockLag !== undefined && blockLag < -MAX_SUBGRAPH_FUTURE_BLOCKS
     if (
       !data ||
       !Number.isSafeInteger(indexedBlock) ||
       data._meta?.hasIndexingErrors ||
       isStale ||
+      isFromFuture ||
       !Array.isArray(data.positions) ||
       data.positions.length >= MAX_SUBGRAPH_POSITIONS
     ) {
@@ -134,5 +171,5 @@ export function useTaikoV3Positions(
     } catch {
       return { loading: false, fallbackToRpc: true }
     }
-  }, [client, data, enabled, error, latestBlock, loading])
+  }, [client, data, enabled, error, latestBlock, loading, requestKey, timedOutRequest])
 }

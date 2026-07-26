@@ -39,9 +39,13 @@ the fast path.
 The existing RPC loader is retained and activated when:
 
 - the configured Taiko pool client is unavailable;
-- the query or conversion fails;
+- the query fails, takes more than 10 seconds to return its first result, or
+  conversion fails;
 - `_meta.hasIndexingErrors` is true;
-- the indexed block is more than 20 blocks behind the active chain; or
+- the indexed block is more than 20 blocks behind the active chain or more
+  than two blocks ahead of it;
+- a position contains unsupported V3 fee/tick values or values outside their
+  contract integer bounds; or
 - the query reaches the 1,000-position page limit, avoiding silent truncation.
 
 While the Taiko subgraph query is healthy, the RPC loader receives no account
@@ -53,7 +57,8 @@ Focused tests cover:
 
 - mapping valid subgraph positions into the existing list data shape;
 - Taiko mainnet and Hoodi client selection;
-- healthy, stale, indexing-error, malformed, and 1,000-position-limit results;
+- healthy, timed-out, stale/future, indexing-error, malformed, and
+  1,000-position-limit results;
 - fallback selection in `useV3Positions`; and
 - unchanged RPC selection on non-Taiko chains.
 
