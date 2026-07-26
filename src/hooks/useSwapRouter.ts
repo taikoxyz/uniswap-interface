@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { t } from '@lingui/macro'
 import { SwapEventName } from '@uniswap/analytics-events'
 import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
-import { SwapRouter, FeeOptions, toHex, Trade as V3Trade } from '@uniswap/v3-sdk'
+import { SwapRouter, FeeOptions, PermitOptions, toHex, Trade as V3Trade } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendAnalyticsEvent, useTrace } from 'analytics'
 import { TAIKO_HOODI_ADDRESSES, TAIKO_MAINNET_ADDRESSES, TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
@@ -101,7 +101,9 @@ export function useSwapRouterSwapCallback(
             slippageTolerance: taxAdjustedSlippageTolerance,
             recipient: account,
             deadline: options.deadline?.toNumber() ?? Math.floor(Date.now() / 1000) + 1800, // 30 minutes default
-            inputTokenPermit: options.permit,
+            // Type-only cast: Permit2 signatures are never produced on Taiko (see usePermit2Allowance),
+            // so this stays undefined at runtime; v3-sdk's EIP-2612 PermitOptions shape differs.
+            inputTokenPermit: options.permit as unknown as PermitOptions | undefined,
             fee: options.feeOptions,
           }
         )
