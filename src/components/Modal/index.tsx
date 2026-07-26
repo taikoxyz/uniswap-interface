@@ -55,7 +55,7 @@ const StyledDialogContent = styled(AnimatedDialogContent)<StyledDialogProps>`
   &[data-reach-dialog-content] {
     margin: ${({ $compact }) => ($compact ? '0' : 'auto')};
     background-color: ${({ theme }) => theme.surface2};
-    border: ${({ theme, $hideBorder, $compact }) => ($compact || $hideBorder) ? 'none' : `1px solid ${theme.surface3}`};
+    border: ${({ theme, $hideBorder, $compact }) => ($compact || $hideBorder ? 'none' : `1px solid ${theme.surface3}`)};
     box-shadow: ${({ theme, $compact }) => ($compact ? 'none' : theme.deprecated_deepShadow)};
     padding: 0px;
     width: ${({ $compact }) => ($compact ? '100vw' : '50vw')};
@@ -63,12 +63,14 @@ const StyledDialogContent = styled(AnimatedDialogContent)<StyledDialogProps>`
     overflow-x: hidden;
     max-width: ${({ $maxWidth, $compact }) => ($compact ? '100vw' : `${$maxWidth}px`)};
     ${({ $maxHeight, $compact }) =>
-      !$compact && $maxHeight &&
+      !$compact &&
+      $maxHeight &&
       css`
         max-height: ${$maxHeight}vh;
       `}
     ${({ $minHeight, $compact }) =>
-      !$compact && $minHeight &&
+      !$compact &&
+      $minHeight &&
       css`
         min-height: ${$minHeight}vh;
       `}

@@ -165,8 +165,8 @@ const SwapWrapperOuter = styled.main<{ isDark?: boolean; compact?: boolean }>`
     compact
       ? 'none'
       : isDark
-        ? '0 0 40px rgba(232, 24, 153, 0.2), 0 0 80px rgba(252, 114, 255, 0.15)'
-        : '0 4px 12px rgba(0, 0, 0, 0.05)'};
+      ? '0 0 40px rgba(232, 24, 153, 0.2), 0 0 80px rgba(252, 114, 255, 0.15)'
+      : '0 4px 12px rgba(0, 0, 0, 0.05)'};
 
   &:before {
     content: ' ';
@@ -189,8 +189,8 @@ const SwapWrapperOuter = styled.main<{ isDark?: boolean; compact?: boolean }>`
       compact
         ? 'none'
         : isDark
-          ? '0 0 50px rgba(232, 24, 153, 0.25), 0 0 100px rgba(252, 114, 255, 0.2)'
-          : '0 4px 16px rgba(0, 0, 0, 0.08)'};
+        ? '0 0 50px rgba(232, 24, 153, 0.25), 0 0 100px rgba(252, 114, 255, 0.2)'
+        : '0 4px 16px rgba(0, 0, 0, 0.08)'};
   }
 `
 
