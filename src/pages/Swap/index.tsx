@@ -625,7 +625,13 @@ export function Swap({
   const isUniswapXDefaultEnabled = useUniswapXDefaultEnabled()
 
   const swapElement = (
-    <SwapWrapper isDark={isDark} compact={compact} className={className} id="swap-page" style={{ position: 'relative' }}>
+    <SwapWrapper
+      isDark={isDark}
+      compact={compact}
+      className={className}
+      id="swap-page"
+      style={{ position: 'relative' }}
+    >
       <WrongChainOverlay />
       {/* <TokenSafetyModal
         isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}

@@ -213,13 +213,15 @@ export default function App() {
             user={statsigUser}
             sdkKey={STATSIG_DUMMY_KEY}
             waitForInitialization={false}
-            options={{
-              environment: { tier: getEnvName() },
-              disableNetwork: true,
-              disableAutoMetricsLogging: true,
-              disableErrorLogging: true,
-              localMode: true,
-            }}
+            options={
+              {
+                environment: { tier: getEnvName() },
+                disableNetwork: true, // Disable analytics telemetry (not in StatsigOptions typings; ignored by the SDK)
+                disableAutoMetricsLogging: true, // Disable automatic event tracking
+                disableErrorLogging: true, // Disable error logging to Statsig
+                localMode: true, // Run in local mode - no network requests
+              } as StatsigOptions
+            }
           >
             <Suspense>
               <AppChrome />

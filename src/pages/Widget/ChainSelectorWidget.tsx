@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro'
 import { BrowserEvent, SharedEventName } from '@uniswap/analytics-events'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
+import { TraceEvent } from 'analytics'
 import { showTestnetsAtom } from 'components/AccountDrawer/TestnetsToggle'
 import Loader from 'components/Icons/LoadingSpinner'
 import { MouseoverTooltip } from 'components/Tooltip'
@@ -17,12 +18,11 @@ import useSelectChain from 'hooks/useSelectChain'
 import useSyncChainQuery from 'hooks/useSyncChainQuery'
 import { useAtomValue } from 'jotai'
 import { CheckMarkIcon } from 'nft/components/icons'
-import { TraceEvent } from 'analytics'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
 import styled from 'styled-components'
-import { getSupportedChainIdsFromWalletConnectSession } from 'utils/getSupportedChainIdsFromWalletConnectSession'
 import { Z_INDEX } from 'theme/zIndex'
+import { getSupportedChainIdsFromWalletConnectSession } from 'utils/getSupportedChainIdsFromWalletConnectSession'
 
 // Light theme colors
 const LIGHT_COLORS = {
@@ -128,9 +128,10 @@ function useWalletSupportedChains(): ChainId[] {
 
   switch (connectionType) {
     case ConnectionType.WALLET_CONNECT_V2:
-    case ConnectionType.UNISWAP_WALLET_V2:
+    case ConnectionType.UNISWAP_WALLET_V2: {
       const wcChains = getSupportedChainIdsFromWalletConnectSession((connector as WalletConnectV2).provider?.session)
       return wcChains.filter((chainId) => enabledChains.includes(chainId))
+    }
     default:
       return enabledChains
   }
