@@ -23,7 +23,8 @@ const LIGHT_COLORS = {
   surfaceHover: '#F0F0F0',
   border: '#E8E8E8',
   text: '#222222',
-  textSecondary: '#7D7D7D',
+  // WCAG AA (4.5:1) for 12px captions on both the white background and the #F0F0F0 hover surface
+  textSecondary: '#666666',
   accent: '#E81899',
 }
 

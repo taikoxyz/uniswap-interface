@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { Percent } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { Scrim } from 'components/AccountDrawer'
@@ -166,7 +166,7 @@ export default function SettingsTab({
         <MenuFlyout $compact={compact}>
           {compact && (
             <MobileMenuHeader padding="8px 0px 4px">
-              <CloseButton data-testid="compact-settings-close" onClick={closeMenu}>
+              <CloseButton data-testid="compact-settings-close" aria-label={t`Close settings`} onClick={closeMenu}>
                 <X size={24} />
               </CloseButton>
               <Row padding="0px 24px 0px 0px" justify="center">
@@ -185,7 +185,7 @@ export default function SettingsTab({
             <Scrim onClick={closeMenu} $open />
             <MobileMenuWrapper $open>
               <MobileMenuHeader padding="8px 0px 4px">
-                <CloseButton data-testid="mobile-settings-close" onClick={closeMenu}>
+                <CloseButton data-testid="mobile-settings-close" aria-label={t`Close settings`} onClick={closeMenu}>
                   <X size={24} />
                 </CloseButton>
                 <Row padding="0px 24px 0px 0px" justify="center">
