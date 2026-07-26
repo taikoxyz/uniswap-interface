@@ -5,9 +5,13 @@ describe('isWidgetPath', () => {
     expect(isWidgetPath('/widget')).toBe(true)
   })
 
-  it('matches the widget route with trailing slashes', () => {
+  it('matches the widget route with a single trailing slash (server normalizes it away)', () => {
     expect(isWidgetPath('/widget/')).toBe(true)
-    expect(isWidgetPath('/widget//')).toBe(true)
+  })
+
+  it('does not match multi-slash variants, which the framing header does not cover', () => {
+    expect(isWidgetPath('/widget//')).toBe(false)
+    expect(isWidgetPath('/widget///')).toBe(false)
   })
 
   it('does not match other routes', () => {

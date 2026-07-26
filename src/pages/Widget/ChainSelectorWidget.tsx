@@ -208,12 +208,13 @@ export function ChainSelectorWidget() {
   return (
     <Container ref={ref}>
       <MouseoverTooltip text={t`Your wallet's current network is unsupported.`} disabled={isSupported}>
+        {/* Disclosure pattern: aria-expanded without aria-haspopup — the dropdown is a plain
+            list of buttons, not a role="menu" with menu-item keyboard behavior. */}
         <SelectorButton
           $isOpen={isOpen}
           onClick={() => setIsOpen(!isOpen)}
           data-testid="chain-selector"
           aria-label={t`Select network`}
-          aria-haspopup="true"
           aria-expanded={isOpen}
         >
           {!isSupported ? (

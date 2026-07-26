@@ -63,7 +63,7 @@ const MenuFlyout = styled(AutoColumn)<{ $compact?: boolean }>`
   `};
   user-select: none;
   padding: 16px;
-  justify-content: flex-start;
+  justify-content: ${({ $compact }) => ($compact ? 'flex-start' : 'initial')};
   align-items: ${({ $compact }) => ($compact ? 'stretch' : 'initial')};
   height: ${({ $compact }) => ($compact ? 'auto' : 'initial')};
 `

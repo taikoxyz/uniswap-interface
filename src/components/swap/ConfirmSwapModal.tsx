@@ -421,7 +421,9 @@ export default function ConfirmSwapModal({
           <ErrorModalContent
             errorType={approvalError ?? PendingModalError.CONFIRMATION_ERROR}
             onRetry={startSwapFlow}
-            onDismiss={onModalDismiss}
+            // Compact (widget) mode has no outside-overlay target and no swipe-dismiss, so the
+            // error screen needs its own Close; outside the widget the modal keeps its original layout.
+            onDismiss={compact ? onModalDismiss : undefined}
           />
         ) : (
           <ConfirmationModalContent
