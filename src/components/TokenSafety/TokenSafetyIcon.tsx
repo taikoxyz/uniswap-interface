@@ -18,7 +18,7 @@ const WarningIcon = styled(AlertTriangle)`
   color: ${({ theme }) => theme.neutral3};
 `
 
-export const BlockedIcon = styled(Slash)`
+const BlockedIcon = styled(Slash)`
   ${WarningIconStyle}
   color: ${({ theme }) => theme.neutral2};
 `

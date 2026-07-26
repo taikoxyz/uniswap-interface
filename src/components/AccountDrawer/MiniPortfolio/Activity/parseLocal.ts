@@ -9,7 +9,6 @@ import { useMemo } from 'react'
 import { isOnChainOrder, useAllSignatures } from 'state/signatures/hooks'
 import { SignatureDetails, SignatureType } from 'state/signatures/types'
 import { useMultichainTransactions } from 'state/transactions/hooks'
-import { mergeTaikoTokens } from 'utils/getTaikoTokenMap'
 import {
   AddLiquidityV2PoolTransactionInfo,
   AddLiquidityV3PoolTransactionInfo,
@@ -25,6 +24,7 @@ import {
   WrapTransactionInfo,
 } from 'state/transactions/types'
 import { NumberType, useFormatter } from 'utils/formatNumbers'
+import { mergeTaikoTokens } from 'utils/getTaikoTokenMap'
 
 import { CancelledTransactionTitleTable, getActivityTitle, OrderTextTable } from '../constants'
 import { Activity, ActivityMap } from './types'

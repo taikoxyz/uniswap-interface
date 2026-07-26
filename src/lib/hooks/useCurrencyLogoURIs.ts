@@ -12,7 +12,7 @@ import { isCelo, NATIVE_CHAIN_ID, nativeOnChain } from '../../constants/tokens'
 
 type Network = 'ethereum' | 'arbitrum' | 'optimism' | 'polygon' | 'smartchain' | 'celo' | 'avalanchec'
 
-export function chainIdToNetworkName(networkId: ChainId): Network {
+function chainIdToNetworkName(networkId: ChainId): Network {
   switch (networkId) {
     case ChainId.MAINNET:
       return 'ethereum'

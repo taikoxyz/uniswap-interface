@@ -43,7 +43,11 @@ describe('useTaikoActivityAdapter swap direction', () => {
   // Pool is token0=WETH, token1=TAIKO. A TAIKO->WETH trade has amount1 (TAIKO) > 0 (sold in)
   // and amount0 (WETH) < 0 (bought out). It must read "Swap TAIKO for WETH", not "WETH for TAIKO".
   it('labels a TAIKO->WETH swap in the user trade direction', () => {
-    mockUseTaikoActivity.mockReturnValue({ activities: mockSwap('-0.1', '2051.75'), loading: false, refetch: jest.fn() })
+    mockUseTaikoActivity.mockReturnValue({
+      activities: mockSwap('-0.1', '2051.75'),
+      loading: false,
+      refetch: jest.fn(),
+    })
     const { result } = renderHook(() => useTaikoActivityAdapter('0xabc'))
     const activity = result.current.activities?.[0]
     expect(activity?.title).toBe('Swap TAIKO for WETH')
@@ -54,7 +58,11 @@ describe('useTaikoActivityAdapter swap direction', () => {
 
   // The opposite direction (WETH->TAIKO): amount0 (WETH) > 0 sold in, amount1 (TAIKO) < 0 bought out.
   it('labels a WETH->TAIKO swap in the user trade direction', () => {
-    mockUseTaikoActivity.mockReturnValue({ activities: mockSwap('0.1', '-2051.75'), loading: false, refetch: jest.fn() })
+    mockUseTaikoActivity.mockReturnValue({
+      activities: mockSwap('0.1', '-2051.75'),
+      loading: false,
+      refetch: jest.fn(),
+    })
     const { result } = renderHook(() => useTaikoActivityAdapter('0xabc'))
     const activity = result.current.activities?.[0]
     expect(activity?.title).toBe('Swap WETH for TAIKO')

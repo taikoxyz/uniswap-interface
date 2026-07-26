@@ -7,14 +7,15 @@
  * use the Taiko-specific clients from graphql/taiko/apollo.ts
  */
 
-import { ApolloClient, InMemoryCache } from '@apollo/client'
-import { Reference, relayStylePagination } from '@apollo/client/utilities'
-
+import { ApolloClient } from '@apollo/client'
+import { NormalizedCacheObject } from '@apollo/client/cache'
 // Import the Taiko token client as the default Apollo client
 import { taikoTokenClient } from 'graphql/taiko/apollo'
 
 /**
  * Export the Taiko token client as the default Apollo client for the app.
  * This provides GraphQL capabilities without requiring AWS infrastructure.
+ * The cast drops `undefined` from the type: a client is always constructed for at least one of
+ * the configured Taiko subgraph URLs (and ApolloProvider would throw on undefined regardless).
  */
-export const apolloClient = taikoTokenClient
+export const apolloClient = taikoTokenClient as ApolloClient<NormalizedCacheObject>

@@ -3,9 +3,6 @@ import { SwapOrderStatus, TransactionStatus } from 'graphql/data/__generated__/t
 import { UniswapXOrderStatus } from 'lib/hooks/orders/types'
 import { TransactionType } from 'state/transactions/types'
 
-// use even number because rows are in groups of 2
-export const DEFAULT_NFT_QUERY_AMOUNT = 26
-
 const TransactionTitleTable: { [key in TransactionType]: { [state in TransactionStatus]: string } } = {
   [TransactionType.SWAP]: {
     [TransactionStatus.Pending]: t`Swapping`,

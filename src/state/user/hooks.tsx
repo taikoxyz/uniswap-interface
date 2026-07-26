@@ -206,6 +206,7 @@ export function usePairAdder(): (pair: Pair) => void {
   )
 }
 
+// eslint-disable-next-line import/no-unused-modules -- used by the temporarily disabled BaseWalletBanner (components/Banner/BaseAnnouncementBanner)
 export function useHideBaseWalletBanner(): [boolean, () => void] {
   const dispatch = useAppDispatch()
   const hideBaseWalletBanner = useAppSelector((state) => state.user.hideBaseWalletBanner)
