@@ -72,18 +72,6 @@ export default function PoolDetailsPage() {
   const isInvalidPool = !chainName || !poolAddress || !getValidUrlChainName(chainName) || !isAddress(poolAddress)
   const poolNotFound = (!loading && !poolData) || isInvalidPool
 
-  // Debug logging
-  console.log('PoolDetails Debug:', {
-    chainName,
-    poolAddress,
-    chain,
-    chainId,
-    loading,
-    poolData,
-    isInvalidPool,
-    poolNotFound,
-  })
-
   // TODO(WEB-2814): Add skeleton once designed
   if (loading) return null
   if (poolNotFound) return <NotFound />
@@ -95,7 +83,7 @@ export default function PoolDetailsPage() {
           poolAddress={poolAddress}
           token0={token0}
           token1={token1}
-          feeTier={poolData?.feeTier}
+          feeTier={poolData ? Number(poolData.feeTier) : undefined}
           toggleReversed={toggleReversed}
         />
         <PoolDetailsChart poolAddress={poolAddress ?? ''} chainId={chainId} />

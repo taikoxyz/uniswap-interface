@@ -33,13 +33,3 @@ export function getPermit2Address(chainId?: number): string {
   }
   return CANONICAL_PERMIT2_ADDRESS
 }
-
-/**
- * PERMIT2_ADDRESS override
- *
- * NOTE: This exports the canonical address for backward compatibility.
- * Code that needs chain-specific addresses should use getPermit2Address(chainId).
- *
- * For Taiko Hoodi, use getPermit2Address(TAIKO_HOODI_CHAIN_ID) to get the correct address.
- */
-export const PERMIT2_ADDRESS = CANONICAL_PERMIT2_ADDRESS

@@ -47,14 +47,15 @@ module.exports = {
       return Object.assign(jestConfig, {
         cacheDirectory: getCacheDirectory('jest'),
         transform: {
-          ...Object.entries(jestConfig.transform).reduce((transform, [key, value]) => {
-            if (value.match(/babel/)) return transform
-            return { ...transform, [key]: value }
-          }, {}),
-          // Transform vanilla-extract using its own transformer.
+          // Transform vanilla-extract using its own transformer. It must be
+          // registered before CRA's catch-all JS/TS transform because jest
+          // picks the first matching pattern in insertion order.
           // See https://sandroroth.com/blog/vanilla-extract-cra#jest-transform.
           '\\.css\\.ts$': '@vanilla-extract/jest-transform',
-          '\\.(t|j)sx?$': '@swc/jest',
+          // Keep CRA's babel transforms (rather than @swc/jest): the .swcrc
+          // wasm plugins crash @swc/core on current runners, and the build
+          // already uses babel for the same reason (see NOTE below).
+          ...jestConfig.transform,
         },
         // Use d3-arrays's build directly, as jest does not support its exports.
         transformIgnorePatterns: ['d3-array'],

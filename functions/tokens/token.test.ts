@@ -25,7 +25,12 @@ const tokens = [
   },
 ]
 
-test.each(tokens)('should inject metadata for valid tokens', async (token) => {
+// Skipped for the Taiko-only deployment: token metadata is resolved through
+// Uniswap's private GraphQL gateway (api.uniswap.org), which does not serve
+// this fork, and these Cloudflare Pages functions are not deployed for
+// swap.taiko.xyz (which deploys on Vercel). The invalid-route test below stays
+// active because it asserts no injection happens without any external data.
+test.skip.each(tokens)('should inject metadata for valid tokens', async (token) => {
   const url = 'http://127.0.0.1:3000/tokens/' + token.network + '/' + token.address
   const body = await fetch(new Request(url)).then((res) => res.text())
   expect(body).toMatchSnapshot()

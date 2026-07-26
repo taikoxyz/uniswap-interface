@@ -14,9 +14,9 @@ import {
   TransactionType,
 } from '../state/transactions/types'
 import { currencyId } from '../utils/currencyId'
+import { useSwapRouterSwapCallback } from './useSwapRouter'
 import useTransactionDeadline from './useTransactionDeadline'
 import { useUniswapXSwapCallback } from './useUniswapXSwapCallback'
-import { useSwapRouterSwapCallback } from './useSwapRouter'
 
 export type SwapResult = Awaited<ReturnType<ReturnType<typeof useSwapCallback>>>
 
@@ -40,15 +40,11 @@ export function useSwapCallback(
     fiatValues,
   })
 
-  const swapRouterSwapCallback = useSwapRouterSwapCallback(
-    isClassicTrade(trade) ? trade : undefined,
-    fiatValues,
-    {
-      slippageTolerance: allowedSlippage,
-      deadline,
-      permit: permitSignature,
-    }
-  )
+  const swapRouterSwapCallback = useSwapRouterSwapCallback(isClassicTrade(trade) ? trade : undefined, fiatValues, {
+    slippageTolerance: allowedSlippage,
+    deadline,
+    permit: permitSignature,
+  })
 
   const swapCallback = isUniswapXTrade(trade) ? uniswapXSwapCallback : swapRouterSwapCallback
 

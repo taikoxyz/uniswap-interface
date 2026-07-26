@@ -12,7 +12,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
 import { shouldDisableNFTRoutesAtom } from 'state/application/atoms'
 import { useRouterPreference } from 'state/user/hooks'
-import { StatsigProvider, StatsigUser } from 'statsig-react'
+import { StatsigOptions, StatsigProvider, StatsigUser } from 'statsig-react'
 import styled from 'styled-components'
 import { SpinnerSVG } from 'theme/components'
 import DarkModeQueryParamReader from 'theme/components/DarkModeQueryParamReader'
@@ -26,7 +26,6 @@ import { getCLS, getFCP, getFID, getLCP, Metric } from 'web-vitals'
 
 // High-traffic pages (index and /swap) should not be lazy-loaded.
 import Landing from './Landing'
-import Swap from './Swap'
 import Widget from './Widget'
 
 const AppChrome = lazy(() => import('./AppChrome'))
@@ -214,13 +213,15 @@ export default function App() {
             user={statsigUser}
             sdkKey={STATSIG_DUMMY_KEY}
             waitForInitialization={false}
-            options={{
-              environment: { tier: getEnvName() },
-              disableNetwork: true,
-              disableAutoMetricsLogging: true,
-              disableErrorLogging: true,
-              localMode: true,
-            }}
+            options={
+              {
+                environment: { tier: getEnvName() },
+                disableNetwork: true, // Disable analytics telemetry (not in StatsigOptions typings; ignored by the SDK)
+                disableAutoMetricsLogging: true, // Disable automatic event tracking
+                disableErrorLogging: true, // Disable error logging to Statsig
+                localMode: true, // Run in local mode - no network requests
+              } as StatsigOptions
+            }
           >
             <Suspense>
               <AppChrome />
@@ -241,13 +242,15 @@ export default function App() {
           // TODO: replace with proxy and cycle key
           sdkKey={STATSIG_DUMMY_KEY}
           waitForInitialization={false}
-          options={{
-            environment: { tier: getEnvName() },
-            disableNetwork: true, // Disable analytics telemetry
-            disableAutoMetricsLogging: true, // Disable automatic event tracking
-            disableErrorLogging: true, // Disable error logging to Statsig
-            localMode: true, // Run in local mode - no network requests
-          }}
+          options={
+            {
+              environment: { tier: getEnvName() },
+              disableNetwork: true, // Disable analytics telemetry (not in StatsigOptions typings; ignored by the SDK)
+              disableAutoMetricsLogging: true, // Disable automatic event tracking
+              disableErrorLogging: true, // Disable error logging to Statsig
+              localMode: true, // Run in local mode - no network requests
+            } as StatsigOptions
+          }
         >
           <HeaderWrapper transparent={isHeaderTransparent}>
             <NavBar blur={isHeaderTransparent} />

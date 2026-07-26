@@ -4,7 +4,7 @@ import { localPoint } from '@visx/event'
 import { GridRows } from '@visx/grid'
 import { Group } from '@visx/group'
 import { scaleLinear, scaleTime } from '@visx/scale'
-import { LinePath, Bar } from '@visx/shape'
+import { Bar, LinePath } from '@visx/shape'
 import { defaultStyles, TooltipWithBounds, useTooltip } from '@visx/tooltip'
 import * as d3 from 'd3-array'
 import { ChartDataPoint } from 'graphql/thegraph/PoolChartData'
@@ -66,7 +66,10 @@ export function PoolChart({ data, width, height, chartType }: PoolChartProps) {
   const xScale = useMemo(
     () =>
       scaleTime({
-        domain: [new Date(Math.min(...data.map((d) => d.timestamp)) * 1000), new Date(Math.max(...data.map((d) => d.timestamp)) * 1000)],
+        domain: [
+          new Date(Math.min(...data.map((d) => d.timestamp)) * 1000),
+          new Date(Math.max(...data.map((d) => d.timestamp)) * 1000),
+        ],
         range: [0, innerWidth],
       }),
     [data, innerWidth]
@@ -117,14 +120,7 @@ export function PoolChart({ data, width, height, chartType }: PoolChartProps) {
       <svg width={width} height={height}>
         <Group left={margin.left} top={margin.top}>
           <GridRows scale={yScale} width={innerWidth} strokeDasharray="3,3" stroke={theme.surface3} />
-          <LinePath
-            data={data}
-            x={getX}
-            y={getY}
-            stroke={theme.accent1}
-            strokeWidth={2}
-            curve={curveCardinal}
-          />
+          <LinePath data={data} x={getX} y={getY} stroke={theme.accent1} strokeWidth={2} curve={curveCardinal} />
           <AxisBottom
             top={innerHeight}
             scale={xScale}

@@ -3,7 +3,12 @@ const tokenImageUrl = [
   'http://127.0.0.1:3000/api/image/tokens/ethereum/NATIVE',
 ]
 
-test.each(tokenImageUrl)('tokenImageUrl', async (url) => {
+// Skipped for the Taiko-only deployment: og-image generation resolves token
+// data through Uniswap's private GraphQL gateway (api.uniswap.org), which does
+// not serve this fork, and these Cloudflare Pages functions are not deployed
+// for swap.taiko.xyz (which deploys on Vercel). The invalid-route test below
+// stays active because it asserts 404s without any external data.
+test.skip.each(tokenImageUrl)('tokenImageUrl', async (url) => {
   const response = await fetch(new Request(url))
   expect(response.status).toBe(200)
   expect(response.headers.get('content-type')).toBe('image/png')

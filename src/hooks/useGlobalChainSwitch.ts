@@ -9,7 +9,7 @@ export const useOnGlobalChainSwitch = (callback: (chain: Chain) => void) => {
   const prevGlobalChainRef = useRef(globalChainName)
   useEffect(() => {
     if (prevGlobalChainRef.current !== globalChainName) {
-      callback(globalChainName)
+      callback(globalChainName as Chain)
     }
     prevGlobalChainRef.current = globalChainName
     // eslint-disable-next-line react-hooks/exhaustive-deps

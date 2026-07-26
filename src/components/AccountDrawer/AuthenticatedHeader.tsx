@@ -3,14 +3,12 @@ import { BrowserEvent, InterfaceElementName, SharedEventName } from '@uniswap/an
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { TraceEvent } from 'analytics'
-import { ButtonEmphasis, ButtonSize, LoadingButtonSpinner, ThemeButton } from 'components/Button'
+import { ButtonEmphasis, ButtonSize, ThemeButton } from 'components/Button'
 import Column from 'components/Column'
 import { Power } from 'components/Icons/Power'
-import { Settings } from 'components/Icons/Settings'
 import { AutoRow } from 'components/Row'
 import { LoadingBubble } from 'components/Tokens/loading'
 import { DeltaArrow, formatDelta } from 'components/Tokens/TokenDetails/Delta'
-import Tooltip from 'components/Tooltip'
 import { isTaikoChain } from 'config/chains/taiko'
 import { getConnection } from 'connection'
 import { useDisableNFTRoutes } from 'hooks/useDisableNFTRoutes'
@@ -34,7 +32,7 @@ import { useUserHasAvailableClaim, useUserUnclaimedAmount } from '../../state/cl
 import StatusIcon from '../Identicon/StatusIcon'
 import { useCachedPortfolioBalancesQuery } from '../PrefetchBalancesWrapper/PrefetchBalancesWrapper'
 import { useToggleAccountDrawer } from '.'
-import IconButton, { IconHoverText, IconWithConfirmTextButton } from './IconButton'
+import { IconHoverText, IconWithConfirmTextButton } from './IconButton'
 import MiniPortfolio from './MiniPortfolio'
 import { portfolioFadeInAnimation } from './MiniPortfolio/PortfolioRow'
 
@@ -143,7 +141,9 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
   const isTaiko = chainId && isTaikoChain(chainId)
 
   // Get Taiko portfolio value if on Taiko chains
-  const { totalValueUSD: taikoTotalValue, loading: taikoLoading } = useTaikoPortfolioValue(isTaiko ? account : undefined)
+  const { totalValueUSD: taikoTotalValue, loading: taikoLoading } = useTaikoPortfolioValue(
+    isTaiko ? account : undefined
+  )
 
   const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)
   const isUnclaimed = useUserHasAvailableClaim(account)
