@@ -5,6 +5,7 @@ import { blocksPerWindow, DATA_REFRESH_WINDOW_MS, TAIKO_MAINNET_CHAIN_ID } from 
 import { useInterfaceMulticall, useMainnetInterfaceMulticall } from 'hooks/useContract'
 import useBlockNumber, { useFastForwardedBlockNumber, useMainnetBlockNumber } from 'lib/hooks/useBlockNumber'
 import { useEffect, useMemo, useState } from 'react'
+import { useAppSelector } from 'state/hooks'
 
 const multicall = createMulticall()
 
@@ -14,12 +15,12 @@ export default multicall
 // number it receives changes, so if a provider's round trip is slower than the
 // block interval (common for wallet extensions and WalletConnect, especially
 // under RPC rate limits), results are discarded before they ever land and
-// pages that block on multicall data (e.g. /pools) load forever. Only
-// advancing the block number fed to the Updater once per data refresh window —
-// a block count derived from the chain's block time: 6 blocks at today's 2s
-// Taiko cadence, 24 if Taiko moves to 0.5s — gives fetches a full window to
-// complete while still refreshing at the cadence the interface was designed
-// for.
+// pages that block on multicall data (e.g. /pools) load forever. Advancing the
+// desired block once per data refresh window — a block count derived from the
+// chain's block time: 6 blocks at today's 2s Taiko cadence, 24 if Taiko moves
+// to 0.5s — preserves the interface's intended refresh cadence.
+// `useSettledBlockNumber` below then prevents even slower fetches from being
+// cancelled at a window boundary.
 //
 // `snapTo` cuts through the window: it carries the block number of a confirmed
 // receipt for one of the user's own transactions, proof that state relevant to
@@ -63,6 +64,37 @@ export function useQuantizedBlockNumber(
     )
   }, [chainId, snapTo])
   return quantized.chainId === chainId ? quantized.block : undefined
+}
+
+// Keep the block given to redux-multicall stable until its current request
+// settles. The dependency cancels in-flight work when this value changes; once
+// fetching clears, forwarding the latest desired block exposes the settled
+// result first and then starts a background refresh.
+export function useSettledBlockNumber(
+  chainId: number | undefined,
+  desiredBlockNumber: number | undefined,
+  isFetching: boolean
+): number | undefined {
+  const [settled, setSettled] = useState<{ chainId?: number; block?: number }>({})
+  useEffect(() => {
+    // While fetching, the desired block keeps changing; adopt its latest value
+    // on the first render after fetching clears.
+    if (!isFetching) {
+      setSettled({ chainId, block: desiredBlockNumber })
+    }
+  }, [chainId, desiredBlockNumber, isFetching])
+  return settled.chainId === chainId ? settled.block : undefined
+}
+
+function useMulticallFetching(chainId: number | undefined): boolean {
+  return useAppSelector((state) => {
+    if (chainId === undefined) return false
+    const callResults = state.multicall.callResults[chainId] ?? {}
+    for (const callKey in callResults) {
+      if (typeof callResults[callKey].fetchingBlockNumber === 'number') return true
+    }
+    return false
+  })
 }
 
 /**
@@ -110,6 +142,10 @@ export function MulticallUpdater() {
     blocksPerWindow(TAIKO_MAINNET_CHAIN_ID, DATA_REFRESH_WINDOW_MS),
     chainId === TAIKO_MAINNET_CHAIN_ID ? fastForwardedBlock : undefined
   )
+  const isFetching = useMulticallFetching(chainId)
+  const isMainnetFetching = useMulticallFetching(ChainId.MAINNET)
+  const settledBlockNumber = useSettledBlockNumber(chainId, latestBlockNumber, isFetching)
+  const settledMainnetBlockNumber = useSettledBlockNumber(ChainId.MAINNET, latestMainnetBlockNumber, isMainnetFetching)
   const contract = useInterfaceMulticall()
   const mainnetContract = useMainnetInterfaceMulticall()
   const listenerOptions: ListenerOptions = useMemo(
@@ -129,14 +165,17 @@ export function MulticallUpdater() {
     <>
       <multicall.Updater
         chainId={ChainId.MAINNET}
-        latestBlockNumber={latestMainnetBlockNumber}
+        latestBlockNumber={settledMainnetBlockNumber}
         contract={mainnetContract}
         listenerOptions={mainnetListener}
       />
       {chainId !== ChainId.MAINNET && (
+        // redux-multicall stores cancellation callbacks on the updater
+        // instance, so remount it to keep callbacks from crossing chains.
         <multicall.Updater
+          key={chainId}
           chainId={chainId}
-          latestBlockNumber={latestBlockNumber}
+          latestBlockNumber={settledBlockNumber}
           contract={contract}
           listenerOptions={listenerOptions}
         />
