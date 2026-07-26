@@ -256,7 +256,12 @@ const fiatTokenStatsFormatter: FormatterRule[] = [
   { exact: 0, hardCodedInput: { hardcodedOutput: '-' }, formatterOptions: ONE_SIG_FIG_CURRENCY },
   { upperBound: 0.01, hardCodedInput: { input: 0.01, prefix: '<' }, formatterOptions: TWO_DECIMALS_CURRENCY },
   { upperBound: 1000, formatterOptions: TWO_DECIMALS_CURRENCY },
-  { upperBound: Infinity, formatterOptions: SHORTHAND_CURRENCY_ONE_DECIMAL },
+  { upperBound: 1e15, formatterOptions: SHORTHAND_CURRENCY_ONE_DECIMAL },
+  {
+    upperBound: Infinity,
+    hardCodedInput: { input: 999_000_000_000_000, prefix: '>' },
+    formatterOptions: SHORTHAND_CURRENCY_ONE_DECIMAL,
+  },
 ]
 
 const fiatGasPriceFormatter: FormatterRule[] = [

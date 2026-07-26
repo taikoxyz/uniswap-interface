@@ -268,7 +268,11 @@ function normalizeTokens(
 ): NormalizedTaikoToken[] {
   const chainName = chainId === TAIKO_MAINNET_CHAIN_ID ? 'TAIKO' : 'TAIKO_HOODI'
 
-  return tokens.map((token): NormalizedTaikoToken => {
+  // Filter out tokens with negligible TVL (e.g. leftover from inactive pools)
+  return tokens.filter((token) => {
+    const tvl = parseFloat(token.totalValueLockedUSD)
+    return tvl >= 1000
+  }).map((token): NormalizedTaikoToken => {
     const volumeUSD = parseFloat(token.volumeUSD)
     const tvlUSD = parseFloat(token.totalValueLockedUSD)
     const derivedETH = parseFloat(token.derivedETH || '0')

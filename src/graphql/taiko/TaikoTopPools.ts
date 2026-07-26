@@ -170,15 +170,15 @@ export function useTopPoolsTaiko(
 }
 
 /**
- * Query for protocol-wide TVL stats
+ * Query for protocol-wide TVL stats from factory entity
  */
 const TAIKO_PROTOCOL_STATS_QUERY = gql`
   query TaikoProtocolStats {
     factories(first: 1) {
       id
       totalVolumeUSD
-      totalValueLockedUSD
       totalFeesUSD
+      totalValueLockedUSD
       txCount
       poolCount
     }
@@ -208,8 +208,8 @@ export function useProtocolStatsTaiko(chainId: number): UseProtocolStatsTaikoRes
   const { data, loading, error } = useQuery<{
     factories: Array<{
       totalVolumeUSD: string
-      totalValueLockedUSD: string
       totalFeesUSD: string
+      totalValueLockedUSD: string
       txCount: string
       poolCount: string
     }>
@@ -222,6 +222,7 @@ export function useProtocolStatsTaiko(chainId: number): UseProtocolStatsTaikoRes
     if (!data?.factories?.[0]) return undefined
 
     const factory = data.factories[0]
+
     return {
       totalVolumeUSD: parseFloat(factory.totalVolumeUSD),
       totalValueLockedUSD: parseFloat(factory.totalValueLockedUSD),

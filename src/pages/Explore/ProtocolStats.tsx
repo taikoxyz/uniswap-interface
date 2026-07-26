@@ -33,6 +33,9 @@ const StatLabel = styled(ThemedText.BodySecondary)`
 const StatValue = styled(ThemedText.HeadlineLarge)`
   font-size: 28px;
   font-weight: 535;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const StatChange = styled.span<{ $positive?: boolean }>`
@@ -43,17 +46,16 @@ const StatChange = styled.span<{ $positive?: boolean }>`
 
 function formatNumber(value: number | undefined): string {
   if (value === undefined) return '-'
+  if (value === 0) return '$0.00'
+  if (value >= 1e15) return '>$999T'
 
-  if (value >= 1_000_000_000) {
-    return `$${(value / 1_000_000_000).toFixed(2)}B`
-  }
-  if (value >= 1_000_000) {
-    return `$${(value / 1_000_000).toFixed(2)}M`
-  }
-  if (value >= 1_000) {
-    return `$${(value / 1_000).toFixed(2)}K`
-  }
-  return `$${value.toFixed(2)}`
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    notation: 'compact',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value)
 }
 
 function formatCount(value: number | undefined): string {
