@@ -50,6 +50,11 @@ function parseTaikoBlockTimeMs(raw: string | undefined): number {
 /**
  * Block time for Taiko chains. When the network cuts over to sub-second blocks, deploy with
  * REACT_APP_TAIKO_BLOCK_TIME_MS=500 — all block-count-derived behavior follows from it.
+ *
+ * NB: the override applies to BOTH Taiko chains. That matches the deployment model (separate
+ * mainnet and Hoodi builds selected via REACT_APP_TAIKO_CHAIN), but a single build exposing both
+ * chains cannot model a staggered rollout where only one chain has cut over — give each chain its
+ * own entry in the table below if that is ever needed.
  */
 export const TAIKO_BLOCK_TIME_MS = parseTaikoBlockTimeMs(process.env.REACT_APP_TAIKO_BLOCK_TIME_MS)
 
