@@ -78,7 +78,7 @@ export function useTaikoPortfolioValue(account: string | undefined): UseTaikoPor
     const fetchBalances = async () => {
       setLoading(true)
       try {
-        const provider = RPC_PROVIDERS[chainId]
+        const provider = RPC_PROVIDERS[chainId as keyof typeof RPC_PROVIDERS]
         if (!provider) {
           setLoading(false)
           return

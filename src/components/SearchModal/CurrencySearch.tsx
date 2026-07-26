@@ -112,7 +112,9 @@ export function CurrencySearch({
           const address = currency.isNative ? 'ETH' : currency.isToken ? currency.address?.toLowerCase() : undefined
           if (address) {
             balanceMap[address] = {
-              balance: balance.toExact(),
+              // Keep the exact decimal string at runtime (consumers String() it before parsing);
+              // TokenBalances declares number, so cast rather than parseFloat to avoid precision loss.
+              balance: balance.toExact() as unknown as number,
               usdValue: 0, // USD value not available from on-chain data
             }
           }

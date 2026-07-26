@@ -1,19 +1,9 @@
+import type { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import { _TypedDataEncoder } from '@ethersproject/hash'
 import type { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
 
-// TypedData types from ethers v5
-export interface TypedDataDomain {
-  name?: string
-  version?: string
-  chainId?: number
-  verifyingContract?: string
-  salt?: string
-}
-
-export interface TypedDataField {
-  name: string
-  type: string
-}
+// TypedData types from ethers v5 (chainId is a BigNumberish there, e.g. it may be a string)
+export type { TypedDataDomain, TypedDataField }
 
 import { getWalletMeta, WalletType } from 'utils/walletMeta'
 
