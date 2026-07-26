@@ -53,7 +53,7 @@ export default function useFeeTierDistributionQuery(
   token0: string | undefined,
   token1: string | undefined,
   interval: number
-): { error?: ApolloError; isLoading: boolean; data: FeeTierDistributionQueryData | undefined } {
+): { error?: ApolloError; isLoading: boolean; data?: FeeTierDistributionQueryData } {
   const { chainId } = useWeb3React()
 
   // Skip subgraph queries for Taiko chains (no subgraph deployed yet)

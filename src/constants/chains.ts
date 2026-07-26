@@ -1,6 +1,5 @@
 import { ChainId, SUPPORTED_CHAINS, SupportedChainsType } from '@uniswap/sdk-core'
-
-import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID, getEnabledChainIds } from 'config/chains'
+import { getEnabledChainIds, TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 
 // Get enabled Taiko chains from the validated registry
 const ENABLED_TAIKO_CHAIN_IDS = getEnabledChainIds()
@@ -31,7 +30,10 @@ const NOT_YET_UX_SUPPORTED_CHAIN_IDS: number[] = [ChainId.BASE_GOERLI]
 const CUSTOM_SUPPORTED_CHAIN_IDS: number[] = ENABLED_TAIKO_CHAIN_IDS
 
 // TODO: include BASE_GOERLI when routing is implemented
-export type SupportedInterfaceChain = Exclude<SupportedChainsType, ChainId.BASE_GOERLI> | typeof TAIKO_MAINNET_CHAIN_ID | typeof TAIKO_HOODI_CHAIN_ID
+export type SupportedInterfaceChain =
+  | Exclude<SupportedChainsType, ChainId.BASE_GOERLI>
+  | typeof TAIKO_MAINNET_CHAIN_ID
+  | typeof TAIKO_HOODI_CHAIN_ID
 
 export function isSupportedChain(
   chainId: number | null | undefined | ChainId,

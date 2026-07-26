@@ -82,7 +82,18 @@ export function useFeeTierDistribution(
       distributions: percentages,
       largestUsageFeeTier: largestUsageFeeTier === -1 ? undefined : largestUsageFeeTier,
     }
-  }, [isLoading, error, distributions, poolStateVeryLow, poolStateLow200, poolStateLow300, poolStateLow400, poolStateLow, poolStateMedium, poolStateHigh])
+  }, [
+    isLoading,
+    error,
+    distributions,
+    poolStateVeryLow,
+    poolStateLow200,
+    poolStateLow300,
+    poolStateLow400,
+    poolStateLow,
+    poolStateMedium,
+    poolStateHigh,
+  ])
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {

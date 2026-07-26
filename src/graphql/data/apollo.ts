@@ -7,10 +7,8 @@
  * use the Taiko-specific clients from graphql/taiko/apollo.ts
  */
 
-import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ApolloClient } from '@apollo/client'
 import { NormalizedCacheObject } from '@apollo/client/cache'
-import { Reference, relayStylePagination } from '@apollo/client/utilities'
-
 // Import the Taiko token client as the default Apollo client
 import { taikoTokenClient } from 'graphql/taiko/apollo'
 

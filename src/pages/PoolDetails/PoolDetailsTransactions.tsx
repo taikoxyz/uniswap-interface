@@ -4,11 +4,11 @@ import Column from 'components/Column'
 import { isTaikoChain } from 'config/chains/taiko'
 import { getPoolClientForChain as getTaikoPoolClient } from 'graphql/taiko/apollo'
 import {
-    PoolBurn,
-    PoolMint,
-    PoolSwap,
-    TransactionType,
-    usePoolTransactionsQuery,
+  PoolBurn,
+  PoolMint,
+  PoolSwap,
+  TransactionType,
+  usePoolTransactionsQuery,
 } from 'graphql/thegraph/__generated__/types-and-hooks'
 import { chainToApolloClient } from 'graphql/thegraph/apollo'
 import { useState } from 'react'

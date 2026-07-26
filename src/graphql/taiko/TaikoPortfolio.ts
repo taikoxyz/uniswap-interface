@@ -112,9 +112,9 @@ export interface TaikoPortfolioData {
 }
 
 export interface UseTaikoPortfolioResult {
-  positions: TaikoPosition[] | undefined
+  positions?: TaikoPosition[]
   loading: boolean
-  error: Error | undefined
+  error?: Error
   refetch: () => void
   totalValueUSD: number
 }
@@ -195,7 +195,7 @@ export interface TokenPriceInfo {
 export interface UseTaikoTokenPricesResult {
   tokenPrices: Map<string, TokenPriceInfo>
   loading: boolean
-  error: Error | undefined
+  error?: Error
   refetch: () => void
 }
 

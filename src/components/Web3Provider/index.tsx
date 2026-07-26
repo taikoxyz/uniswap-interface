@@ -2,18 +2,18 @@ import { CustomUserProperties, InterfaceEventName, WalletConnectionResult } from
 import { useWeb3React, Web3ReactHooks, Web3ReactProvider } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
 import { sendAnalyticsEvent, user, useTrace } from 'analytics'
+import { getDefaultChainId } from 'config/chains'
 import { connections, getConnection } from 'connection'
 import { isSupportedChain } from 'constants/chains'
 import { RPC_PROVIDERS } from 'constants/providers'
 import { TraceJsonRpcVariant, useTraceJsonRpcFlag } from 'featureFlags/flags/traceJsonRpc'
 import usePrevious from 'hooks/usePrevious'
+import useSelectChain from 'hooks/useSelectChain'
 import { ReactNode, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useConnectedWallets } from 'state/wallets/hooks'
 import { getCurrentPageFromLocation } from 'utils/urlRoutes'
 import { getWalletMeta } from 'utils/walletMeta'
-import { getDefaultChainId } from 'config/chains'
-import useSelectChain from 'hooks/useSelectChain'
 
 export default function Web3Provider({ children }: { children: ReactNode }) {
   const connectors = connections.map<[Connector, Web3ReactHooks]>(({ hooks, connector }) => [connector, hooks])

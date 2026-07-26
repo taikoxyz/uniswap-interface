@@ -4,10 +4,10 @@
  * Custom implementation for querying pool data from Goldsky's Taiko V3 subgraph.
  */
 
-import { useQuery, gql, ApolloError } from '@apollo/client'
+import { ApolloError, gql, useQuery } from '@apollo/client'
 import { useMemo } from 'react'
+
 import { getClient } from '../thegraph/apollo'
-import { TAIKO_HOODI_CHAIN_ID } from 'config/chains'
 
 /**
  * Pool data structure from Goldsky V3 subgraph
@@ -109,7 +109,7 @@ export interface UseTopPoolsTaikoResult {
  */
 export function useTopPoolsTaiko(
   chainId: number,
-  first: number = 100,
+  first = 100,
   orderBy: 'totalValueLockedUSD' | 'volumeUSD' = 'totalValueLockedUSD'
 ): UseTopPoolsTaikoResult {
   // Get the Apollo client for the specified Taiko chain

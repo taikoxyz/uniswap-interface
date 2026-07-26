@@ -5,10 +5,11 @@
  * Uses tokenHourDatas for short timeframes (HOUR, DAY) and tokenDayDatas for longer timeframes (WEEK, MONTH, YEAR).
  */
 
-import { gql, useQuery, ApolloError } from '@apollo/client'
+import { ApolloError, gql, useQuery } from '@apollo/client'
 import { useMemo } from 'react'
+
+import { PricePoint, TimePeriod } from '../data/util'
 import { getTokenClientForChain } from './apollo'
-import { TimePeriod, PricePoint } from '../data/util'
 
 /**
  * Token hour data structure from Goldsky subgraph
@@ -138,9 +139,9 @@ function transformDailyData(data: TaikoTokenDayData[]): PricePoint[] {
 }
 
 export interface UseTaikoTokenPriceHistoryResult {
-  priceHistory: PricePoint[] | undefined
+  priceHistory?: PricePoint[]
   loading: boolean
-  error: ApolloError | undefined
+  error?: ApolloError
 }
 
 /**

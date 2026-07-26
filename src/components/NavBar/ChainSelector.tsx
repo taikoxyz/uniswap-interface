@@ -3,12 +3,12 @@ import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { showTestnetsAtom } from 'components/AccountDrawer/TestnetsToggle'
 import { MouseoverTooltip } from 'components/Tooltip'
+import { getEnabledChainIds } from 'config/chains'
 import { getConnection } from 'connection'
 import { ConnectionType } from 'connection/types'
 import { WalletConnectV2 } from 'connection/WalletConnectV2'
 import { getChainInfo } from 'constants/chainInfo'
-import { getChainPriority, L1_CHAIN_IDS, L2_CHAIN_IDS, TESTNET_CHAIN_IDS } from 'constants/chains'
-import { getEnabledChainIds } from 'config/chains'
+import { getChainPriority, TESTNET_CHAIN_IDS } from 'constants/chains'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import useSelectChain from 'hooks/useSelectChain'
 import useSyncChainQuery from 'hooks/useSyncChainQuery'
@@ -42,7 +42,7 @@ function useWalletSupportedChains(): ChainId[] {
     case ConnectionType.UNISWAP_WALLET_V2:
       const wcChains = getSupportedChainIdsFromWalletConnectSession((connector as WalletConnectV2).provider?.session)
       // Filter WalletConnect chains to only include enabled ones
-      return wcChains.filter(chainId => enabledChains.includes(chainId))
+      return wcChains.filter((chainId) => enabledChains.includes(chainId))
     default:
       return enabledChains
   }

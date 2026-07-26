@@ -90,9 +90,7 @@ export function CurrencySearch({
   const filteredTokens: Token[] = useMemo(() => {
     // For Taiko, use tokens from COMMON_BASES instead of active lists
     if (isTaiko) {
-      return taikoCurrencies
-        .filter((c): c is Token => c.isToken)
-        .filter(getTokenFilter(debouncedQuery))
+      return taikoCurrencies.filter((c): c is Token => c.isToken).filter(getTokenFilter(debouncedQuery))
     }
     return Object.values(defaultTokens).filter(getTokenFilter(debouncedQuery))
   }, [defaultTokens, debouncedQuery, isTaiko, taikoCurrencies])

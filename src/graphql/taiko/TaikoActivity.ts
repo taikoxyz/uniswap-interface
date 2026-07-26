@@ -4,12 +4,7 @@ import { useMemo } from 'react'
 
 const TAIKO_USER_ACTIVITY_QUERY = gql`
   query TaikoUserActivity($account: Bytes!, $first: Int = 100) {
-    swaps(
-      first: $first
-      orderBy: timestamp
-      orderDirection: desc
-      where: { origin: $account }
-    ) {
+    swaps(first: $first, orderBy: timestamp, orderDirection: desc, where: { origin: $account }) {
       id
       timestamp
       sender
@@ -38,12 +33,7 @@ const TAIKO_USER_ACTIVITY_QUERY = gql`
         timestamp
       }
     }
-    mints(
-      first: $first
-      orderBy: timestamp
-      orderDirection: desc
-      where: { origin: $account }
-    ) {
+    mints(first: $first, orderBy: timestamp, orderDirection: desc, where: { origin: $account }) {
       id
       timestamp
       sender
@@ -72,12 +62,7 @@ const TAIKO_USER_ACTIVITY_QUERY = gql`
         timestamp
       }
     }
-    burns(
-      first: $first
-      orderBy: timestamp
-      orderDirection: desc
-      where: { origin: $account }
-    ) {
+    burns(first: $first, orderBy: timestamp, orderDirection: desc, where: { origin: $account }) {
       id
       timestamp
       owner
@@ -106,12 +91,7 @@ const TAIKO_USER_ACTIVITY_QUERY = gql`
         timestamp
       }
     }
-    collects(
-      first: $first
-      orderBy: timestamp
-      orderDirection: desc
-      where: { owner: $account }
-    ) {
+    collects(first: $first, orderBy: timestamp, orderDirection: desc, where: { owner: $account }) {
       id
       timestamp
       owner
@@ -216,9 +196,9 @@ export interface TaikoActivityData {
 }
 
 export interface UseTaikoActivityResult {
-  activities: TaikoActivityData | undefined
+  activities?: TaikoActivityData
   loading: boolean
-  error: Error | undefined
+  error?: Error
   refetch: () => void
 }
 
@@ -228,7 +208,7 @@ export interface UseTaikoActivityResult {
  * @param account - User wallet address
  * @param first - Number of items to fetch per activity type (default: 100)
  */
-export function useTaikoActivity(chainId: number, account: string, first: number = 100): UseTaikoActivityResult {
+export function useTaikoActivity(chainId: number, account: string, first = 100): UseTaikoActivityResult {
   const client = getClient(chainId)
 
   const { data, loading, error, refetch } = useQuery<TaikoActivityData>(TAIKO_USER_ACTIVITY_QUERY, {
