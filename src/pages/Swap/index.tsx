@@ -192,6 +192,7 @@ export function Swap({
   chainId,
   onCurrencyChange,
   disableTokenInputs = false,
+  compact = false,
 }: {
   className?: string
   initialInputCurrencyId?: string | null
@@ -199,6 +200,7 @@ export function Swap({
   chainId?: ChainId
   onCurrencyChange?: (selected: Pick<SwapState, Field.INPUT | Field.OUTPUT>) => void
   disableTokenInputs?: boolean
+  compact?: boolean
 }) {
   const { account, chainId: connectedChainId, connector } = useWeb3React()
   const trace = useTrace()
@@ -623,7 +625,13 @@ export function Swap({
   const isUniswapXDefaultEnabled = useUniswapXDefaultEnabled()
 
   const swapElement = (
-    <SwapWrapper isDark={isDark} className={className} id="swap-page" style={{ position: 'relative' }}>
+    <SwapWrapper
+      isDark={isDark}
+      compact={compact}
+      className={className}
+      id="swap-page"
+      style={{ position: 'relative' }}
+    >
       <WrongChainOverlay />
       {/* <TokenSafetyModal
         isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
@@ -633,7 +641,7 @@ export function Swap({
         onCancel={handleDismissTokenWarning}
         showCancel={true}
       /> */}
-      <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} />
+      <SwapHeader trade={trade} autoSlippage={autoSlippage} chainId={chainId} compact={compact} />
       {trade && showConfirm && allowance.state !== AllowanceState.LOADING && (
         <ConfirmSwapModal
           trade={trade}
@@ -649,6 +657,7 @@ export function Swap({
           onDismiss={handleConfirmDismiss}
           fiatValueInput={fiatValueTradeInput}
           fiatValueOutput={fiatValueTradeOutput}
+          compact={compact}
         />
       )}
       {showPriceImpactModal && showPriceImpactWarning && (

@@ -21,10 +21,12 @@ export default function SwapHeader({
   autoSlippage,
   chainId,
   trade,
+  compact,
 }: {
   autoSlippage: Percent
   chainId?: number
   trade?: InterfaceTrade
+  compact?: boolean
 }) {
   return (
     <StyledSwapHeader>
@@ -35,7 +37,7 @@ export default function SwapHeader({
         {/* <SwapBuyFiatButton /> */}
       </HeaderButtonContainer>
       <RowFixed>
-        <SettingsTab autoSlippage={autoSlippage} chainId={chainId} trade={trade} />
+        <SettingsTab autoSlippage={autoSlippage} chainId={chainId} trade={trade} compact={compact} />
       </RowFixed>
     </StyledSwapHeader>
   )
