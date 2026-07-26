@@ -74,6 +74,10 @@ The hook stores the last block forwarded to the dependency:
    background refresh for the new block.
 4. Key stored state by chain. During a switch, return `undefined` until the new
    chain's value is adopted so a block from the previous chain cannot leak.
+5. Key the active inner `multicall.Updater` React element by `chainId`.
+   `@uniswap/redux-multicall` stores cancellation callbacks inside an updater
+   instance; remounting on a switch prevents the new chain from cancelling the
+   old chain's in-flight request and orphaning its Redux fetching marker.
 
 Apply the hook independently to:
 
@@ -107,8 +111,9 @@ raw blocks / confirmed receipts
   and allows the dependency to retry at the newest desired block.
 - Receipt snaps received during a fetch are queued rather than cancelling the
   fetch. They are forwarded as soon as it settles.
-- A chain switch observes fetching state only for the new Redux chain key and
-  never forwards the old chain's block.
+- A chain switch remounts the active dependency updater. The old request can
+  still settle its old-chain Redux marker, while the new chain observes only
+  its own fetching state and never receives the old chain's block.
 
 ## Tests
 
@@ -121,6 +126,10 @@ Extend `src/lib/state/multicall.test.tsx` with:
   quantization window, and verifies the inner updater's block remains fixed;
 - settlement coverage that dispatches a real result action and verifies the
   newest queued block is then forwarded;
+- isolation coverage proving fetching state for the active and
+  dedicated-mainnet Redux keys freezes only its matching updater;
+- chain-switch coverage proving the active updater remounts, the old chain's
+  block does not leak, and an eventual old-chain result releases its gate;
 - existing quantization, receipt-snap, Hoodi, and mainnet-feed tests as
   regressions.
 
