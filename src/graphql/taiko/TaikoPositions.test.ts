@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client'
+import { ChainId } from '@uniswap/sdk-core'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import { getPoolClientForChain } from 'graphql/taiko/apollo'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
@@ -17,7 +18,7 @@ jest.mock('lib/hooks/useBlockNumber', () => ({
   default: jest.fn(),
 }))
 
-const ACCOUNT = '0x1111111111111111111111111111111111111111'
+const ACCOUNT = '0xA111111111111111111111111111111111111111'
 const CLIENT = {} as ReturnType<typeof getPoolClientForChain>
 const POSITION = {
   id: '42',
@@ -53,7 +54,7 @@ it.each([TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID])('queries and maps positi
       client: CLIENT,
       pollInterval: 30_000,
       skip: false,
-      variables: { account: ACCOUNT },
+      variables: { account: ACCOUNT.toLowerCase() },
     })
   )
   expect(result.current.fallbackToRpc).toBe(false)
@@ -69,11 +70,67 @@ it.each([TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID])('queries and maps positi
 })
 
 it.each([
+  ['an unsupported chain', ChainId.MAINNET, ACCOUNT],
+  ['a disconnected wallet', TAIKO_MAINNET_CHAIN_ID, undefined],
+])('skips the query for %s', (_name, chainId, account) => {
+  const { result } = renderHook(() => useTaikoV3Positions(chainId, account))
+
+  expect(getPoolClientForChain).not.toHaveBeenCalled()
+  expect(useQuery).toHaveBeenCalledWith(
+    expect.anything(),
+    expect.objectContaining({
+      client: undefined,
+      skip: true,
+    })
+  )
+  expect(result.current).toEqual({ loading: false, fallbackToRpc: false })
+})
+
+it('falls back when the configured pool client is unavailable', () => {
+  ;(getPoolClientForChain as jest.MockedFunction<typeof getPoolClientForChain>).mockReturnValue(undefined)
+
+  const { result } = renderHook(() => useTaikoV3Positions(TAIKO_MAINNET_CHAIN_ID, ACCOUNT))
+
+  expect(result.current).toEqual({ loading: false, fallbackToRpc: true })
+})
+
+it('reports loading while the first query is in flight', () => {
+  ;(useQuery as jest.MockedFunction<typeof useQuery>).mockReturnValue({
+    loading: true,
+  } as ReturnType<typeof useQuery>)
+
+  const { result } = renderHook(() => useTaikoV3Positions(TAIKO_MAINNET_CHAIN_ID, ACCOUNT))
+
+  expect(result.current).toEqual({ loading: true, fallbackToRpc: false })
+})
+
+it('falls back when a completed query returns no data', () => {
+  ;(useQuery as jest.MockedFunction<typeof useQuery>).mockReturnValue({
+    loading: false,
+  } as ReturnType<typeof useQuery>)
+
+  const { result } = renderHook(() => useTaikoV3Positions(TAIKO_MAINNET_CHAIN_ID, ACCOUNT))
+
+  expect(result.current).toEqual({ loading: false, fallbackToRpc: true })
+})
+
+it('uses healthy data while the active block feed initializes', () => {
+  ;(useBlockNumber as jest.MockedFunction<typeof useBlockNumber>).mockReturnValue(undefined)
+
+  const { result } = renderHook(() => useTaikoV3Positions(TAIKO_MAINNET_CHAIN_ID, ACCOUNT))
+
+  expect(result.current.fallbackToRpc).toBe(false)
+  expect(result.current.positions).toHaveLength(1)
+})
+
+it.each([
   ['indexing errors', { ...DATA, _meta: { ...DATA._meta, hasIndexingErrors: true } }, 1_010],
   ['stale data', DATA, 1_021],
   ['missing metadata', { positions: [POSITION] }, 1_010],
   ['result limit', { ...DATA, positions: Array(1_000).fill(POSITION) }, 1_010],
   ['malformed values', { ...DATA, positions: [{ ...POSITION, feeTier: 'bad' }] }, 1_010],
+  ['malformed token ID', { ...DATA, positions: [{ ...POSITION, id: 'bad' }] }, 1_010],
+  ['malformed liquidity', { ...DATA, positions: [{ ...POSITION, liquidity: 'bad' }] }, 1_010],
   ['invalid token address', { ...DATA, positions: [{ ...POSITION, token0: { id: 'bad' } }] }, 1_010],
   ['missing positions array', { ...DATA, positions: undefined }, 1_010],
 ])('falls back for %s', (_name, data, block) => {

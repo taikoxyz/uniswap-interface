@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import { useTaikoV3Positions } from 'graphql/taiko/TaikoPositions'
 import { useSingleCallResult, useSingleContractMultipleData } from 'lib/hooks/multicall'
 import { mocked } from 'test-utils/mocked'
@@ -39,18 +39,51 @@ beforeEach(() => {
   mocked(useSingleContractMultipleData).mockReturnValue([])
 })
 
-it('uses the healthy Taiko subgraph result without RPC enumeration', () => {
+it.each([TAIKO_MAINNET_CHAIN_ID, TAIKO_HOODI_CHAIN_ID])(
+  'uses the healthy Taiko subgraph result without RPC enumeration on chain %s',
+  (chainId) => {
+    mocked(useWeb3React).mockReturnValue({ chainId } as ReturnType<typeof useWeb3React>)
+    mocked(useTaikoV3Positions).mockReturnValue({
+      loading: false,
+      positions: [GRAPH_POSITION],
+      fallbackToRpc: false,
+    })
+
+    const { result } = renderHook(() => useV3Positions(ACCOUNT))
+
+    expect(result.current.positions).toEqual([GRAPH_POSITION])
+    expect(useSingleCallResult).toHaveBeenCalledWith(POSITION_MANAGER, 'balanceOf', [undefined])
+  }
+)
+
+it('keeps RPC enumeration disabled while the first Taiko query loads', () => {
   mocked(useWeb3React).mockReturnValue({ chainId: TAIKO_MAINNET_CHAIN_ID } as ReturnType<typeof useWeb3React>)
   mocked(useTaikoV3Positions).mockReturnValue({
-    loading: false,
-    positions: [GRAPH_POSITION],
+    loading: true,
     fallbackToRpc: false,
   })
 
   const { result } = renderHook(() => useV3Positions(ACCOUNT))
 
-  expect(result.current.positions).toEqual([GRAPH_POSITION])
+  expect(result.current).toEqual({ loading: true, positions: undefined })
   expect(useSingleCallResult).toHaveBeenCalledWith(POSITION_MANAGER, 'balanceOf', [undefined])
+})
+
+it('switches from graph loading to RPC enumeration after a query failure', () => {
+  mocked(useWeb3React).mockReturnValue({ chainId: TAIKO_MAINNET_CHAIN_ID } as ReturnType<typeof useWeb3React>)
+  mocked(useTaikoV3Positions).mockReturnValue({
+    loading: true,
+    fallbackToRpc: false,
+  })
+
+  const { rerender } = renderHook(() => useV3Positions(ACCOUNT))
+  mocked(useTaikoV3Positions).mockReturnValue({
+    loading: false,
+    fallbackToRpc: true,
+  })
+  rerender()
+
+  expect(useSingleCallResult).toHaveBeenLastCalledWith(POSITION_MANAGER, 'balanceOf', [ACCOUNT])
 })
 
 it('restores RPC enumeration when the Taiko subgraph is unavailable', () => {
