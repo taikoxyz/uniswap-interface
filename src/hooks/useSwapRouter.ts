@@ -2,10 +2,15 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { t } from '@lingui/macro'
 import { SwapEventName } from '@uniswap/analytics-events'
 import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
-import { SwapRouter, FeeOptions, PermitOptions, toHex, Trade as V3Trade } from '@uniswap/v3-sdk'
+import { FeeOptions, PermitOptions, SwapRouter, toHex, Trade as V3Trade } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendAnalyticsEvent, useTrace } from 'analytics'
-import { TAIKO_HOODI_ADDRESSES, TAIKO_MAINNET_ADDRESSES, TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import {
+  TAIKO_HOODI_ADDRESSES,
+  TAIKO_HOODI_CHAIN_ID,
+  TAIKO_MAINNET_ADDRESSES,
+  TAIKO_MAINNET_CHAIN_ID,
+} from 'config/chains'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { formatCommonPropertiesForTrade, formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
 import { useCallback } from 'react'

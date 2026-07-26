@@ -1,8 +1,8 @@
 import { ChainId } from '@uniswap/sdk-core'
+import { isTaikoChain } from 'config/chains/taiko'
 import { TimePeriod } from 'graphql/data/util'
 import { useMemo } from 'react'
 
-import { isTaikoChain } from 'config/chains/taiko'
 import { getPoolClientForChain as getTaikoPoolClient } from '../taiko/apollo'
 import { usePoolDayDataQuery, usePoolHourDataQuery } from './__generated__/types-and-hooks'
 import { chainToApolloClient } from './apollo'
@@ -52,9 +52,7 @@ export function usePoolChartData(poolAddress: string, chainId: ChainId | undefin
 
   // Use Taiko-specific Apollo client for Taiko chains, otherwise use standard client
   const isTaiko = chainId && isTaikoChain(chainId)
-  const apolloClient = isTaiko
-    ? getTaikoPoolClient(chainId)
-    : chainToApolloClient[chainId || ChainId.MAINNET]
+  const apolloClient = isTaiko ? getTaikoPoolClient(chainId) : chainToApolloClient[chainId || ChainId.MAINNET]
 
   // Fetch hour data for short time periods
   const shouldFetchHourData = useHourData && !!poolAddress

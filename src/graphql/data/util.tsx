@@ -1,4 +1,4 @@
-import { QueryResult, OperationVariables } from '@apollo/client'
+import { OperationVariables, QueryResult } from '@apollo/client'
 import * as Sentry from '@sentry/react'
 import { ChainId, Currency, Token } from '@uniswap/sdk-core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
@@ -17,7 +17,10 @@ export enum PollingInterval {
 }
 
 // Polls a query only when the current component is mounted, as useQuery's pollInterval prop will continue to poll after unmount
-export function usePollQueryWhileMounted<T, K extends OperationVariables>(queryResult: QueryResult<T, K>, interval: PollingInterval) {
+export function usePollQueryWhileMounted<T, K extends OperationVariables>(
+  queryResult: QueryResult<T, K>,
+  interval: PollingInterval
+) {
   const { startPolling, stopPolling } = queryResult
 
   useEffect(() => {
@@ -167,8 +170,8 @@ const CHAIN_NAME_TO_CHAIN_ID: { [key in InterfaceGqlChain | 'TAIKO' | 'TAIKO_HOO
   [Chain.Bnb]: ChainId.BNB,
   [Chain.Avalanche]: ChainId.AVALANCHE,
   [Chain.Base]: ChainId.BASE,
-  'TAIKO': 167000,
-  'TAIKO_HOODI': 167013,
+  TAIKO: 167000,
+  TAIKO_HOODI: 167013,
 }
 
 export function isSupportedGQLChain(chain: Chain): chain is InterfaceGqlChain {

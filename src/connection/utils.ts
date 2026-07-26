@@ -74,10 +74,10 @@ export function didUserReject(connection: Connection, error: any): boolean {
   const isIOSMetaMaskError =
     connection.type === ConnectionType.INJECTED &&
     (errorMessage.includes('Invalid') ||
-     errorMessage.includes('cancelled') ||
-     errorMessage.includes('canceled') ||
-     errorString.includes('Invalid') ||
-     errorString.includes('navigation'))
+      errorMessage.includes('cancelled') ||
+      errorMessage.includes('canceled') ||
+      errorString.includes('Invalid') ||
+      errorString.includes('navigation'))
 
   return (
     error?.code === ErrorCode.USER_REJECTED_REQUEST ||

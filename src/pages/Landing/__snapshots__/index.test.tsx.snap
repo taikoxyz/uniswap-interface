@@ -811,7 +811,7 @@ exports[`disable nft on landing page does not render nft information and card 1`
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(101.8% 4091.31% at 0% 0%,#E81899 0%,#FC72FF 100%);
+  background: radial-gradient(101.8% 4091.31% at 0% 0%,#e81899 0%,#fc72ff 100%);
   border-radius: 50%;
   -webkit-filter: blur(150px);
   filter: blur(150px);
@@ -827,9 +827,9 @@ exports[`disable nft on landing page does not render nft information and card 1`
   border-radius: 50%;
   opacity: 0.35;
   mix-blend-mode: multiply;
-  -webkit-mask-image: radial-gradient(circle at center,black 0%,black 25%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.2) 70%,transparent 90%);
-  mask-image: radial-gradient(circle at center,black 0%,black 25%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.2) 70%,transparent 90%);
-  -webkit-mask-image: radial-gradient(circle at center,black 0%,black 25%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.2) 70%,transparent 90%);
+  -webkit-mask-image: radial-gradient( circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90% );
+  mask-image: radial-gradient( circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90% );
+  -webkit-mask-image: radial-gradient( circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90% );
 }
 
 .c10 {
@@ -2831,7 +2831,7 @@ exports[`disable nft on landing page does not render nft information and card ev
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(101.8% 4091.31% at 0% 0%,#E81899 0%,#FC72FF 100%);
+  background: radial-gradient(101.8% 4091.31% at 0% 0%,#e81899 0%,#fc72ff 100%);
   border-radius: 50%;
   -webkit-filter: blur(150px);
   filter: blur(150px);
@@ -2847,9 +2847,9 @@ exports[`disable nft on landing page does not render nft information and card ev
   border-radius: 50%;
   opacity: 0.35;
   mix-blend-mode: multiply;
-  -webkit-mask-image: radial-gradient(circle at center,black 0%,black 25%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.2) 70%,transparent 90%);
-  mask-image: radial-gradient(circle at center,black 0%,black 25%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.2) 70%,transparent 90%);
-  -webkit-mask-image: radial-gradient(circle at center,black 0%,black 25%,rgba(0,0,0,0.5) 50%,rgba(0,0,0,0.2) 70%,transparent 90%);
+  -webkit-mask-image: radial-gradient( circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90% );
+  mask-image: radial-gradient( circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90% );
+  -webkit-mask-image: radial-gradient( circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90% );
 }
 
 .c10 {

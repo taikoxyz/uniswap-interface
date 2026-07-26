@@ -1,20 +1,15 @@
 import { useQuery } from '@apollo/client'
 import { ChainId } from '@uniswap/sdk-core'
+import { isTaikoChain } from 'config/chains/taiko'
 import gql from 'graphql-tag'
 import { useMemo } from 'react'
 
-import { isTaikoChain } from 'config/chains/taiko'
 import { getPoolClientForChain as getTaikoPoolClient } from '../taiko/apollo'
 import { chainToApolloClient } from './apollo'
 
 const POOL_HISTORICAL_DATA_QUERY = gql`
   query PoolHistoricalData($poolId: ID!, $date: Int!) {
-    poolDayDatas(
-      first: 1
-      where: { pool: $poolId, date: $date }
-      orderBy: date
-      orderDirection: desc
-    ) {
+    poolDayDatas(first: 1, where: { pool: $poolId, date: $date }, orderBy: date, orderDirection: desc) {
       date
       volumeUSD
       tvlUSD
@@ -23,14 +18,14 @@ const POOL_HISTORICAL_DATA_QUERY = gql`
   }
 `
 
-export interface PoolHistoricalData {
+interface PoolHistoricalData {
   date: number
   volumeUSD: string
   tvlUSD: string
   feesUSD: string
 }
 
-export interface PoolHistoricalDataQuery {
+interface PoolHistoricalDataQuery {
   poolDayDatas: PoolHistoricalData[]
 }
 
@@ -40,7 +35,7 @@ export interface PoolHistoricalDataQuery {
  * @param chainId - The chain ID
  * @param daysAgo - Number of days ago to fetch data for (default: 1 for yesterday)
  */
-export function usePoolHistoricalData(poolAddress: string, chainId?: ChainId, daysAgo: number = 1) {
+export function usePoolHistoricalData(poolAddress: string, chainId?: ChainId, daysAgo = 1) {
   // Calculate the timestamp for the target date (start of day UTC)
   const targetDate = useMemo(() => {
     const now = new Date()
@@ -51,9 +46,7 @@ export function usePoolHistoricalData(poolAddress: string, chainId?: ChainId, da
 
   // Use Taiko-specific Apollo client for Taiko chains, otherwise use standard client
   const isTaiko = chainId && isTaikoChain(chainId)
-  const apolloClient = isTaiko
-    ? getTaikoPoolClient(chainId)
-    : chainToApolloClient[chainId || ChainId.MAINNET]
+  const apolloClient = isTaiko ? getTaikoPoolClient(chainId) : chainToApolloClient[chainId || ChainId.MAINNET]
 
   const { data, loading, error } = useQuery<PoolHistoricalDataQuery>(POOL_HISTORICAL_DATA_QUERY, {
     variables: {

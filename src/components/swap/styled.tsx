@@ -85,7 +85,7 @@ export const SwapGlow = styled.div`
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(101.8% 4091.31% at 0% 0%, #E81899 0%, #FC72FF 100%);
+    background: radial-gradient(101.8% 4091.31% at 0% 0%, #e81899 0%, #fc72ff 100%);
     border-radius: 50%;
     filter: blur(150px);
     opacity: 0.7;
@@ -102,12 +102,27 @@ export const SwapGlow = styled.div`
     opacity: 0.35;
     mix-blend-mode: multiply;
     /* Radial opacity fade: strong in center, transparent at edges */
-    mask-image: radial-gradient(circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90%);
-    -webkit-mask-image: radial-gradient(circle at center, black 0%, black 25%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 70%, transparent 90%);
+    mask-image: radial-gradient(
+      circle at center,
+      black 0%,
+      black 25%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.2) 70%,
+      transparent 90%
+    );
+    -webkit-mask-image: radial-gradient(
+      circle at center,
+      black 0%,
+      black 25%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.2) 70%,
+      transparent 90%
+    );
   }
 
   @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.6;
       transform: scale(1) translateZ(0);
     }
@@ -150,8 +165,8 @@ const SwapWrapperOuter = styled.main<{ isDark?: boolean; compact?: boolean }>`
     compact
       ? 'none'
       : isDark
-        ? '0 0 40px rgba(232, 24, 153, 0.2), 0 0 80px rgba(252, 114, 255, 0.15)'
-        : '0 4px 12px rgba(0, 0, 0, 0.05)'};
+      ? '0 0 40px rgba(232, 24, 153, 0.2), 0 0 80px rgba(252, 114, 255, 0.15)'
+      : '0 4px 12px rgba(0, 0, 0, 0.05)'};
 
   &:before {
     content: ' ';

@@ -297,7 +297,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 }
 
 .c5 {
-  background: linear-gradient(93.06deg,#C8047D 2.66%,#FC72FF 98.99%);
+  background: linear-gradient(93.06deg,#c8047d 2.66%,#fc72ff 98.99%);
   font-size: 20px;
   font-weight: 535;
   padding: 16px;
@@ -310,11 +310,11 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 
 .c5:focus {
   box-shadow: 0 0 0 2pt rgba(200,4,125,0.4),0 0 30px rgba(200,4,125,0.4);
-  background: linear-gradient(93.06deg,#B00370 2.66%,#E865F0 98.99%);
+  background: linear-gradient(93.06deg,#b00370 2.66%,#e865f0 98.99%);
 }
 
 .c5:hover {
-  background: linear-gradient(93.06deg,#B00370 2.66%,#E865F0 98.99%);
+  background: linear-gradient(93.06deg,#b00370 2.66%,#e865f0 98.99%);
   box-shadow: 0 0 30px rgba(200,4,125,0.5);
   -webkit-transform: translateY(-1px);
   -ms-transform: translateY(-1px);
@@ -323,7 +323,7 @@ exports[`SwapModalFooter.tsx matches base snapshot, test trade exact input 1`] =
 
 .c5:active {
   box-shadow: 0 0 0 2pt rgba(200,4,125,0.5),0 0 35px rgba(200,4,125,0.5);
-  background: linear-gradient(93.06deg,#A00268 2.66%,#D655E0 98.99%);
+  background: linear-gradient(93.06deg,#a00268 2.66%,#d655e0 98.99%);
 }
 
 .c5:disabled {

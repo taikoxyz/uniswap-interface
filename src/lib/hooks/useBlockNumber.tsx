@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
-import { RPC_PROVIDERS } from 'constants/providers'
 import { TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import { RPC_PROVIDERS } from 'constants/providers'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
@@ -94,8 +94,7 @@ export function BlockNumberProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (mainnetBlock === undefined) {
-      RPC_PROVIDERS[TAIKO_MAINNET_CHAIN_ID]
-        .getBlockNumber()
+      RPC_PROVIDERS[TAIKO_MAINNET_CHAIN_ID].getBlockNumber()
         .then((block) => {
           onChainBlock(TAIKO_MAINNET_CHAIN_ID, block)
         })

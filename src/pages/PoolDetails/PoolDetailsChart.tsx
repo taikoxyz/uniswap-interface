@@ -82,7 +82,7 @@ type ChartType = 'VOLUME' | 'TVL'
 
 interface PoolDetailsChartProps {
   poolAddress: string
-  chainId: ChainId | undefined
+  chainId?: ChainId
 }
 
 export function PoolDetailsChart({ poolAddress, chainId }: PoolDetailsChartProps) {
@@ -132,9 +132,7 @@ export function PoolDetailsChart({ poolAddress, chainId }: PoolDetailsChartProps
           </Column>
         ) : (
           <ParentSize>
-            {({ width, height }) => (
-              <PoolChart data={chartData} width={width} height={height} chartType={chartType} />
-            )}
+            {({ width, height }) => <PoolChart data={chartData} width={width} height={height} chartType={chartType} />}
           </ParentSize>
         )}
       </ChartWrapper>

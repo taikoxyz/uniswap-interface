@@ -1,8 +1,8 @@
 import { ChainId } from '@uniswap/sdk-core'
+import { isTaikoChain } from 'config/chains/taiko'
 import gql from 'graphql-tag'
 import { useMemo } from 'react'
 
-import { isTaikoChain } from 'config/chains/taiko'
 import { getPoolClientForChain as getTaikoPoolClient } from '../taiko/apollo'
 import { usePoolDataQuery } from './__generated__/types-and-hooks'
 import { chainToApolloClient } from './apollo'
@@ -50,9 +50,7 @@ export function usePoolData(poolAddress: string, chainId?: ChainId) {
 
   // Use Taiko-specific Apollo client for Taiko chains, otherwise use standard client
   const isTaiko = chainId && isTaikoChain(chainId)
-  const apolloClient = isTaiko
-    ? getTaikoPoolClient(chainId)
-    : chainToApolloClient[chainId || ChainId.MAINNET]
+  const apolloClient = isTaiko ? getTaikoPoolClient(chainId) : chainToApolloClient[chainId || ChainId.MAINNET]
 
   const { data, loading, error } = usePoolDataQuery({ variables: { poolId }, client: apolloClient })
 

@@ -1,11 +1,11 @@
-import { useWeb3React } from '@web3-react/core'
-import { useMemo } from 'react'
 import { Contract } from '@ethersproject/contracts'
-import { useEffect, useState } from 'react'
 import { Token } from '@uniswap/sdk-core'
+import { useWeb3React } from '@web3-react/core'
+import { isTaikoChain } from 'config/chains/taiko'
 import { RPC_PROVIDERS } from 'constants/providers'
 import { useTaikoPortfolio, useTaikoTokenPrices } from 'graphql/taiko/TaikoPortfolio'
-import { isTaikoChain } from 'config/chains/taiko'
+import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
 const ERC20_ABI = [
   'function balanceOf(address owner) view returns (uint256)',
@@ -26,13 +26,13 @@ const TAIKO_HOODI_TOKEN_ADDRESSES = [
   '0x18d5bB147f3D05D5f6c5E60Caf1daeeDBF5155B6', // USDC (correct address from taiko.tokenlist.json)
 ]
 
-export interface TokenBalance {
+interface TokenBalance {
   token: Token
   balance: string
   balanceUSD: number
 }
 
-export interface UseTaikoPortfolioValueResult {
+interface UseTaikoPortfolioValueResult {
   tokenBalances: TokenBalance[]
   lpPositionsValueUSD: number
   totalValueUSD: number
@@ -60,10 +60,7 @@ export function useTaikoPortfolioValue(account: string | undefined): UseTaikoPor
   const { tokenPrices, loading: pricesLoading } = useTaikoTokenPrices(chainId || 167000, tokenAddresses)
 
   // Get LP positions value from subgraph
-  const { totalValueUSD: lpPositionsValueUSD, loading: lpLoading } = useTaikoPortfolio(
-    chainId || 167000,
-    account || ''
-  )
+  const { totalValueUSD: lpPositionsValueUSD, loading: lpLoading } = useTaikoPortfolio(chainId || 167000, account || '')
 
   // Fetch token balances on-chain
   useEffect(() => {
@@ -97,13 +94,7 @@ export function useTaikoPortfolioValue(account: string | undefined): UseTaikoPor
               const balanceNum = parseFloat(balance) / Math.pow(10, tokenInfo.decimals)
               const balanceUSD = balanceNum * tokenInfo.priceUSD
 
-              const token = new Token(
-                chainId,
-                tokenInfo.address,
-                tokenInfo.decimals,
-                tokenInfo.symbol,
-                tokenInfo.name
-              )
+              const token = new Token(chainId, tokenInfo.address, tokenInfo.decimals, tokenInfo.symbol, tokenInfo.name)
 
               return {
                 token,

@@ -46,6 +46,7 @@ type TokenSafetyMessageProps = {
   tokenAddress: string
 }
 
+// eslint-disable-next-line import/no-unused-modules -- used by commented-out token-safety UI in Tokens/TokenDetails, kept for re-enablement
 export default function TokenSafetyMessage({ warning, tokenAddress }: TokenSafetyMessageProps) {
   const backgroundColor = useTokenWarningColor(warning.level)
   const textColor = useTokenWarningTextColor(warning.level)
