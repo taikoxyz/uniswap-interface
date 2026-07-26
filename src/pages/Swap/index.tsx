@@ -477,7 +477,6 @@ export function Swap({
   )
 
   const handleContinueToReview = useCallback(() => {
-    console.log('🔍 handleContinueToReview called', { trade, allowance })
     setSwapState({
       tradeToConfirm: trade,
       swapError: undefined,
@@ -829,12 +828,19 @@ export function Swap({
                 }}
                 id="swap-button"
                 data-testid="swap-button"
-                disabled={!getIsValidSwapQuote(trade, tradeState, swapInputError)}
+                // Disable while the (token) allowance is still loading. The ConfirmSwapModal is gated
+                // on `allowance.state !== LOADING`, so without this the button looks active but clicking
+                // it is a silent no-op ("the pink button isn't working") until the allowance read lands.
+                disabled={
+                  !getIsValidSwapQuote(trade, tradeState, swapInputError) || allowance.state === AllowanceState.LOADING
+                }
                 error={!swapInputError && priceImpactSeverity > 2 && allowance.state === AllowanceState.ALLOWED}
               >
                 <Text fontSize={20}>
                   {swapInputError ? (
                     swapInputError
+                  ) : allowance.state === AllowanceState.LOADING ? (
+                    <Trans>Loading…</Trans>
                   ) : routeIsSyncing || routeIsLoading ? (
                     <Trans>Swap</Trans>
                   ) : priceImpactSeverity > 2 ? (

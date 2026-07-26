@@ -42,6 +42,21 @@ export function useTaikoActivityAdapter(account: string): {
         swap.pool.token1.name
       )
 
+      // Uniswap V3 swap amounts are signed from the pool's perspective: the token with a
+      // positive amount was sold INTO the pool (the trade input), the token with a negative
+      // amount was bought OUT of the pool (the trade output). Label the activity in the user's
+      // actual trade direction instead of a fixed token0 -> token1, which rendered ~half of all
+      // swaps backwards (e.g. a TAIKO->ETH swap shown as "Swap WETH for TAIKO").
+      const amount0 = parseFloat(swap.amount0)
+      const amount1 = parseFloat(swap.amount1)
+      const token0IsInput = amount0 >= 0
+      const inputToken = token0IsInput ? token0 : token1
+      const outputToken = token0IsInput ? token1 : token0
+      const inputInfo = token0IsInput ? swap.pool.token0 : swap.pool.token1
+      const outputInfo = token0IsInput ? swap.pool.token1 : swap.pool.token0
+      const inputAmount = Math.abs(token0IsInput ? amount0 : amount1)
+      const outputAmount = Math.abs(token0IsInput ? amount1 : amount0)
+
       allActivities.push({
         hash: swap.transaction.id,
         chainId: chainId!,
@@ -49,12 +64,10 @@ export function useTaikoActivityAdapter(account: string): {
         timestamp: parseInt(swap.timestamp),
         from: swap.origin,
         nonce: undefined,
-        title: `Swap ${swap.pool.token0.symbol} for ${swap.pool.token1.symbol}`,
-        descriptor: `${Math.abs(parseFloat(swap.amount0))} ${swap.pool.token0.symbol} → ${Math.abs(
-          parseFloat(swap.amount1)
-        )} ${swap.pool.token1.symbol}`,
-        logos: [swap.pool.token0.id, swap.pool.token1.id],
-        currencies: [token0, token1],
+        title: `Swap ${inputInfo.symbol} for ${outputInfo.symbol}`,
+        descriptor: `${inputAmount} ${inputInfo.symbol} → ${outputAmount} ${outputInfo.symbol}`,
+        logos: [inputInfo.id, outputInfo.id],
+        currencies: [inputToken, outputToken],
       } as Activity)
     })
 
