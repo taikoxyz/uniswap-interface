@@ -178,20 +178,28 @@ polling already resolves in sub-second, thresholds are already denominated in ti
 
 ## 4. Implementation plan (one PR per major change)
 
-Merge order matters only where noted; every PR is independently revertible.
+Merge order: #47 before #49 (#49 imports #47's block-time API); #48 and this document are
+independent. The same dependency governs reverts: the stack is **not** independently
+revertible — reverting #47 requires reverting #49 first (reverse dependency order). #48, #51,
+and this document can each be reverted on their own.
 
-| # | PR | Base | Contents |
-| :-- | :-- | :-- | :-- |
-| 0 | **#51** (merged; carries the #44 fix) | `main` | Multicall quantization + `blocksPerFetch: 6`; CI to green. Everything below builds on it. |
-| 1 | **this PR** — docs: block-time review & plan | `main` | This document. |
-| 2 | **#47** — feat: per-chain block time config + fast Taiko tx confirmation (F1, F3-partial, F5) | PR #44 branch | New `src/config/chains/blockTime.ts` (`getAverageBlockTimeMs`, `blocksPerWindow`, `DATA_REFRESH_WINDOW_MS`, `REACT_APP_TAIKO_BLOCK_TIME_MS` override, validation, tests). Taiko receipt retry options; `shouldCheck` backoff converted from block counts to time (behavior-identical on 12s chains — unit-tested both ways). Quote-poll + permit-margin consumers moved off `AVERAGE_L1_BLOCK_TIME`; permit `now` seconds fix. |
-| 3 | **#48** — fix: surface Taiko chain stalls in minutes instead of 25 (F2, F6) | PR #44 branch | `blockWaitMsBeforeWarning`: Taiko mainnet 3m, Hoodi 10m. `L2_CHAIN_IDS` dedupe. |
-| 4 | **#49** — refactor: derive multicall cadence from chain block time and snap to confirmed blocks (F3, F4) | PR #47 branch | `MULTICALL_BLOCK_QUANTIZATION` and `getBlocksPerFetchForChainId` derived via `blocksPerWindow` (identical values at 2s: step 6; at 0.5s: step 24 automatically). Quantizer snaps to `fastForward`ed (receipt-confirmed) blocks; `useBlockNumber` exposes the fast-forward signal. Hook-level unit tests for quantize + snap semantics. |
+Status as of the last update of this document:
 
-**Stacking note**: #47 and #48 were originally stacked on #44's branch, which owned
+| # | PR | Base | Status | Contents |
+| :-- | :-- | :-- | :-- | :-- |
+| 0 | **#51** (carries the #44 fix) | `main` | **merged** | Multicall quantization + `blocksPerFetch: 6`; CI to green. Everything below builds on it. |
+| 1 | **this PR** — docs: block-time review & plan | `main` | open | This document. |
+| 2 | **#47** — feat: per-chain block time config + fast Taiko tx confirmation (F1, F3-partial, F5) | `main` | open | New `src/config/chains/blockTime.ts` (`getAverageBlockTimeMs`, `blocksPerWindow`, `DATA_REFRESH_WINDOW_MS`, `REACT_APP_TAIKO_BLOCK_TIME_MS` override, validation, tests). Taiko receipt retry options; `shouldCheck` backoff converted from block counts to time (behavior-identical on 12s chains — unit-tested both ways). Quote-poll + permit-margin consumers moved off `AVERAGE_L1_BLOCK_TIME`; permit `now` seconds fix. |
+| 3 | **#48** — fix: surface Taiko chain stalls in minutes instead of 25 (F2, F6) | `main` | **merged** | `blockWaitMsBeforeWarning`: Taiko mainnet 3m, Hoodi 10m. `L2_CHAIN_IDS` dedupe. |
+| 4 | **#49** — refactor: derive multicall cadence from chain block time and snap to confirmed blocks (F3, F4) | #47 branch | open | `MULTICALL_BLOCK_QUANTIZATION` and `getBlocksPerFetchForChainId` derived via `blocksPerWindow` (identical values at 2s: step 6; at 0.5s: step 24 automatically). Quantizer snaps to `fastForward`ed (receipt-confirmed) blocks; `useBlockNumber` exposes the fast-forward signal. Hook-level unit tests for quantize + snap semantics. |
+
+**History note**: #47 and #48 were originally stacked on #44's branch, which owned
 `src/lib/state/multicall.tsx` and the only green CI toolchain while `main` failed
 typecheck/tests/lint. Once #51 merged that history into `main`, both were rebased and retargeted
-to `main`. #49 targets #47's branch and merges right after it.
+to `main` (#48 has since merged). #49 targets #47's branch and retargets to `main` when #47
+merges. Once the whole stack lands, this section is historical record; the durable content of
+this document is the architecture review (§1–§3), the cutover runbook (§5), and the backlog
+(§6).
 
 **Verification done per PR** (on the stacked branches, where jest/tsc are green):
 
