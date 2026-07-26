@@ -6,9 +6,12 @@ interface, which was designed around Ethereum L1's ~12 second cadence. This docu
 review of every place the interface's design or code depends on block cadence, the improvement
 plan, and the implementation plan (one PR per major change).
 
-PR [#44](https://github.com/taikoxyz/uniswap-interface/pull/44) already fixed the most severe
-2s-block bug (multicall fetch-cancellation storm that hung `/pools` behind a connected wallet).
-This review covers everything **besides** PR #44, and builds on top of it.
+The most severe 2s-block bug — the multicall fetch-cancellation storm that hung `/pools` behind a
+connected wallet — was diagnosed and fixed in PR
+[#44](https://github.com/taikoxyz/uniswap-interface/pull/44) and landed on `main` through
+[#51](https://github.com/taikoxyz/uniswap-interface/pull/51) together with the CI repair
+(#44 itself was closed as superseded). This review covers everything **besides** that fix, and
+builds on top of it.
 
 ---
 
@@ -83,8 +86,8 @@ Hard-coded block *counts* that mean "~12 seconds" only at a 2s block time:
 
 | Site | Constant | At 0.5s blocks it becomes |
 | :-- | :-- | :-- |
-| `src/lib/state/multicall.tsx` (PR #44) | `MULTICALL_BLOCK_QUANTIZATION = 6` | a 3s window — the cancellation storm PR #44 fixed **comes back** for any wallet provider with >3s round trip |
-| `src/lib/state/multicall.tsx` (PR #44) | `blocksPerFetch: 6` | refetch every 3s — 4× the RPC load |
+| `src/lib/state/multicall.tsx` (from #44/#51) | `MULTICALL_BLOCK_QUANTIZATION = 6` | a 3s window — the cancellation storm PR #44 fixed **comes back** for any wallet provider with >3s round trip |
+| `src/lib/state/multicall.tsx` (from #44/#51) | `blocksPerFetch: 6` | refetch every 3s — 4× the RPC load |
 | `src/lib/hooks/transactions/updater.tsx` | `shouldCheck`: "every 3 blocks" / "every 10 blocks" backoff | 1.5s / 5s — hour-old stuck transactions get receipt-checked at nearly every poll, forever |
 
 **Fix**: one source of truth, `getAverageBlockTimeMs(chainId)` (2000ms for Taiko today,
@@ -179,16 +182,16 @@ Merge order matters only where noted; every PR is independently revertible.
 
 | # | PR | Base | Contents |
 | :-- | :-- | :-- | :-- |
-| 0 | **#44** (existing) | `main` | Multicall quantization + `blocksPerFetch: 6`; CI to green. Everything below stacks on it (it owns the multicall code and the working test toolchain). |
+| 0 | **#51** (merged; carries the #44 fix) | `main` | Multicall quantization + `blocksPerFetch: 6`; CI to green. Everything below builds on it. |
 | 1 | **this PR** — docs: block-time review & plan | `main` | This document. |
 | 2 | **#47** — feat: per-chain block time config + fast Taiko tx confirmation (F1, F3-partial, F5) | PR #44 branch | New `src/config/chains/blockTime.ts` (`getAverageBlockTimeMs`, `blocksPerWindow`, `DATA_REFRESH_WINDOW_MS`, `REACT_APP_TAIKO_BLOCK_TIME_MS` override, validation, tests). Taiko receipt retry options; `shouldCheck` backoff converted from block counts to time (behavior-identical on 12s chains — unit-tested both ways). Quote-poll + permit-margin consumers moved off `AVERAGE_L1_BLOCK_TIME`; permit `now` seconds fix. |
 | 3 | **#48** — fix: surface Taiko chain stalls in minutes instead of 25 (F2, F6) | PR #44 branch | `blockWaitMsBeforeWarning`: Taiko mainnet 3m, Hoodi 10m. `L2_CHAIN_IDS` dedupe. |
 | 4 | **#49** — refactor: derive multicall cadence from chain block time and snap to confirmed blocks (F3, F4) | PR #47 branch | `MULTICALL_BLOCK_QUANTIZATION` and `getBlocksPerFetchForChainId` derived via `blocksPerWindow` (identical values at 2s: step 6; at 0.5s: step 24 automatically). Quantizer snaps to `fastForward`ed (receipt-confirmed) blocks; `useBlockNumber` exposes the fast-forward signal. Hook-level unit tests for quantize + snap semantics. |
 
-**Stacking note**: #47 and #48 target #44's branch (`claude/swap-pools-wallet-load-8kmzzw`);
-#49 targets #47's branch. They are stacked because #44 owns `src/lib/state/multicall.tsx` and
-the green CI toolchain, and `main` currently fails typecheck/tests/lint. After each upstream PR in
-the stack merges, the next PR retargets (and is rebased if the merge was a squash).
+**Stacking note**: #47 and #48 were originally stacked on #44's branch, which owned
+`src/lib/state/multicall.tsx` and the only green CI toolchain while `main` failed
+typecheck/tests/lint. Once #51 merged that history into `main`, both were rebased and retargeted
+to `main`. #49 targets #47's branch and merges right after it.
 
 **Verification done per PR** (on the stacked branches, where jest/tsc are green):
 
