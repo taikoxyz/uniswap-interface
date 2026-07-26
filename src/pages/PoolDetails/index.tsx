@@ -95,7 +95,7 @@ export default function PoolDetailsPage() {
           poolAddress={poolAddress}
           token0={token0}
           token1={token1}
-          feeTier={poolData?.feeTier}
+          feeTier={poolData ? Number(poolData.feeTier) : undefined}
           toggleReversed={toggleReversed}
         />
         <PoolDetailsChart poolAddress={poolAddress ?? ''} chainId={chainId} />
