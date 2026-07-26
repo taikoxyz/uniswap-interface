@@ -25,27 +25,44 @@ export default multicall
 // receipt for one of the user's own transactions, proof that state relevant to
 // the user changed. Snapping the quantized feed to it makes dependent data
 // (balances, allowances, positions) refetch immediately instead of waiting out
-// the remainder of the window. Exported for testing.
+// the remainder of the window.
+//
+// The quantized value is keyed by `chainId`: block numbers from different
+// chains are not comparable, so after a chain switch the hook returns
+// undefined until the new chain's feed produces a block (which is adopted
+// directly), rather than leaking the previous chain's number to the new
+// chain's updater. Exported for testing.
 export function useQuantizedBlockNumber(
+  chainId: number | undefined,
   blockNumber: number | undefined,
   step: number,
   snapTo?: number
 ): number | undefined {
-  const [quantized, setQuantized] = useState<number | undefined>(undefined)
+  const [quantized, setQuantized] = useState<{ chainId?: number; block?: number }>({})
   useEffect(() => {
-    if (blockNumber === undefined) return
+    if (chainId === undefined || blockNumber === undefined) return
     setQuantized((prev) => {
-      // Advance only in `step` increments; take the new number directly if it
-      // moved backwards (chain switch or reorg).
-      if (prev === undefined || blockNumber >= prev + step || blockNumber < prev) return blockNumber
+      // The first block observed for a chain is adopted directly; afterwards
+      // advance only in `step` increments, and take the new number directly if
+      // it moved backwards (reorg).
+      if (
+        prev.chainId !== chainId ||
+        prev.block === undefined ||
+        blockNumber >= prev.block + step ||
+        blockNumber < prev.block
+      ) {
+        return { chainId, block: blockNumber }
+      }
       return prev
     })
-  }, [blockNumber, step])
+  }, [chainId, blockNumber, step])
   useEffect(() => {
-    if (snapTo === undefined) return
-    setQuantized((prev) => (prev === undefined || snapTo > prev ? snapTo : prev))
-  }, [snapTo])
-  return quantized
+    if (chainId === undefined || snapTo === undefined) return
+    setQuantized((prev) =>
+      prev.chainId === chainId && prev.block !== undefined && snapTo <= prev.block ? prev : { chainId, block: snapTo }
+    )
+  }, [chainId, snapTo])
+  return quantized.chainId === chainId ? quantized.block : undefined
 }
 
 /**
@@ -78,14 +95,17 @@ export function MulticallUpdater() {
   const { chainId } = useWeb3React()
   const fastForwardedBlock = useFastForwardedBlockNumber()
   const latestBlockNumber = useQuantizedBlockNumber(
+    chainId,
     useBlockNumber(),
     blocksPerWindow(chainId, DATA_REFRESH_WINDOW_MS),
     fastForwardedBlock
   )
   // In this Taiko-only fork the "mainnet" feed carries Taiko mainnet blocks
   // (see useMainnetInterfaceMulticall), so it quantizes, snaps, and fetches on
-  // the Taiko mainnet cadence rather than Ethereum mainnet's.
+  // the Taiko mainnet cadence rather than Ethereum mainnet's. Its feed is
+  // always Taiko-mainnet-keyed, no matter which chain the wallet is on.
   const latestMainnetBlockNumber = useQuantizedBlockNumber(
+    TAIKO_MAINNET_CHAIN_ID,
     useMainnetBlockNumber(),
     blocksPerWindow(TAIKO_MAINNET_CHAIN_ID, DATA_REFRESH_WINDOW_MS),
     chainId === TAIKO_MAINNET_CHAIN_ID ? fastForwardedBlock : undefined

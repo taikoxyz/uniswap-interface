@@ -19,11 +19,22 @@ jest.mock('hooks/useContract', () => {
 })
 
 const STEP = 6
+const CHAIN_A = TAIKO_MAINNET_CHAIN_ID
+const CHAIN_B = TAIKO_HOODI_CHAIN_ID
 
-function renderQuantized(initial: { blockNumber?: number; step?: number; snapTo?: number }) {
+function renderQuantized(initial: { chainId?: number; blockNumber?: number; step?: number; snapTo?: number }) {
   return renderHook(
-    ({ blockNumber, step, snapTo }: { blockNumber?: number; step?: number; snapTo?: number }) =>
-      useQuantizedBlockNumber(blockNumber, step ?? STEP, snapTo),
+    ({
+      chainId,
+      blockNumber,
+      step,
+      snapTo,
+    }: {
+      chainId?: number
+      blockNumber?: number
+      step?: number
+      snapTo?: number
+    }) => useQuantizedBlockNumber(chainId ?? CHAIN_A, blockNumber, step ?? STEP, snapTo),
     { initialProps: initial }
   )
 }
@@ -47,10 +58,27 @@ describe('useQuantizedBlockNumber', () => {
     expect(result.current).toEqual(106) // next window starts from the adopted block
   })
 
-  it('adopts a lower block number immediately (chain switch or reorg)', () => {
+  it('adopts a lower block number immediately (reorg)', () => {
     const { result, rerender } = renderQuantized({ blockNumber: 100 })
     rerender({ blockNumber: 50 })
     expect(result.current).toEqual(50)
+  })
+
+  it('returns undefined while the new chain block is still unknown after a chain switch', () => {
+    const { result, rerender } = renderQuantized({ chainId: CHAIN_A, blockNumber: 100 })
+    expect(result.current).toEqual(100)
+    // The chain switched but its first block has not arrived yet: the old
+    // chain's number must not leak to the new chain's updater.
+    rerender({ chainId: CHAIN_B, blockNumber: undefined })
+    expect(result.current).toBeUndefined()
+  })
+
+  it("adopts the new chain's first block even when it is within a step of the old value", () => {
+    const { result, rerender } = renderQuantized({ chainId: CHAIN_A, blockNumber: 100 })
+    // 102 is < one step ahead of 100 - on the same chain it would hold, but on
+    // a new chain it is the first observation and must be adopted.
+    rerender({ chainId: CHAIN_B, blockNumber: 102 })
+    expect(result.current).toEqual(102)
   })
 
   it('snaps forward to a receipt-confirmed block inside the window', () => {
@@ -82,11 +110,18 @@ describe('useQuantizedBlockNumber', () => {
     expect(result.current).toEqual(100)
   })
 
-  it('does not resurrect a stale snap after moving to a lower block (chain switch)', () => {
+  it('does not resurrect a stale snap after moving to a lower block (reorg)', () => {
     const { result, rerender } = renderQuantized({ blockNumber: 100, snapTo: 102 })
     expect(result.current).toEqual(102)
     rerender({ blockNumber: 50, snapTo: undefined })
     expect(result.current).toEqual(50)
+  })
+
+  it('does not carry a snap across a chain switch', () => {
+    const { result, rerender } = renderQuantized({ chainId: CHAIN_A, blockNumber: 100, snapTo: 102 })
+    expect(result.current).toEqual(102)
+    rerender({ chainId: CHAIN_B, blockNumber: undefined, snapTo: undefined })
+    expect(result.current).toBeUndefined()
   })
 })
 
