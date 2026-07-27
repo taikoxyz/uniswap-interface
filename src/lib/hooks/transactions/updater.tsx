@@ -7,6 +7,7 @@ import {
   TAIKO_HOODI_CHAIN_ID,
   TAIKO_MAINNET_CHAIN_ID,
 } from 'config/chains'
+import { getAppRpcProvider } from 'constants/providers'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import useBlockNumber, { useFastForwardBlockNumber } from 'lib/hooks/useBlockNumber'
 import ms from 'ms'
@@ -69,7 +70,10 @@ interface UpdaterProps {
 }
 
 export default function Updater({ pendingTransactions, onCheck, onReceipt }: UpdaterProps): null {
-  const { account, chainId, provider } = useWeb3React()
+  const { account, chainId, provider: walletProvider } = useWeb3React()
+  // Receipts are data reads: poll them through the interface's own RPC when it has a provider
+  // for the chain, so confirmation tracking never depends on the wallet's endpoint.
+  const provider = getAppRpcProvider(chainId) ?? walletProvider
 
   const lastBlockNumber = useBlockNumber()
   const fastForwardBlockNumber = useFastForwardBlockNumber()

@@ -26,7 +26,7 @@ import {
   TICK_LENS_ADDRESSES,
   V3_MIGRATOR_ADDRESSES,
 } from 'config/chains'
-import { RPC_PROVIDERS } from 'constants/providers'
+import { getAppRpcProvider, RPC_PROVIDERS } from 'constants/providers'
 import { WRAPPED_NATIVE_CURRENCY } from 'constants/tokens'
 import { useEffect, useMemo } from 'react'
 import { NonfungiblePositionManager, TickLens, UniswapInterfaceMulticall } from 'types/v3'
@@ -49,13 +49,19 @@ export function useContract<T extends Contract = Contract>(
   const { provider, account, chainId } = useWeb3React()
 
   return useMemo(() => {
-    if (!addressOrAddressMap || !ABI || !provider || !chainId) return null
+    if (!addressOrAddressMap || !ABI || !chainId) return null
     let address: string | undefined
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
     else address = addressOrAddressMap[chainId]
     if (!address) return null
+    // Only signing needs the connected wallet. Reads go through the interface's own RPC when it
+    // has a provider for the chain, so data fetching never depends on the wallet's endpoint; the
+    // wallet's provider remains the fallback for chains the interface has no provider for.
+    const signerAccount = withSignerIfPossible && account ? account : undefined
+    const contractProvider = signerAccount ? provider : getAppRpcProvider(chainId) ?? provider
+    if (!contractProvider) return null
     try {
-      return getContract(address, ABI, provider, withSignerIfPossible && account ? account : undefined)
+      return getContract(address, ABI, contractProvider, signerAccount)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
@@ -64,20 +70,17 @@ export function useContract<T extends Contract = Contract>(
 }
 
 function useMainnetContract<T extends Contract = Contract>(address: string | undefined, ABI: any): T | null {
-  const { chainId } = useWeb3React()
-  const isTaikoMainnet = chainId === TAIKO_MAINNET_CHAIN_ID
-  const contract = useContract(isTaikoMainnet ? address : undefined, ABI, false)
+  // Always reads through the interface's own Taiko mainnet RPC: this feed must be available and
+  // wallet-independent no matter which chain (if any) the wallet is on.
   return useMemo(() => {
-    if (isTaikoMainnet) return contract
     if (!address) return null
-    const provider = RPC_PROVIDERS[TAIKO_MAINNET_CHAIN_ID]
     try {
-      return getContract(address, ABI, provider)
+      return getContract(address, ABI, RPC_PROVIDERS[TAIKO_MAINNET_CHAIN_ID])
     } catch (error) {
       console.error('Failed to get Taiko mainnet contract', error)
       return null
     }
-  }, [address, ABI, contract, isTaikoMainnet]) as T
+  }, [address, ABI]) as T
 }
 
 export function useV2MigratorContract() {

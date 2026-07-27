@@ -1,6 +1,7 @@
 import { TradeType } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { DEFAULT_TXN_DISMISS_MS, L2_TXN_DISMISS_MS } from 'constants/misc'
+import { getAppRpcProvider } from 'constants/providers'
 import { UniswapXBackendOrder, UniswapXOrderStatus } from 'lib/hooks/orders/types'
 import OrderUpdater from 'lib/hooks/orders/updater'
 import { useCallback, useMemo } from 'react'
@@ -47,7 +48,9 @@ export default function Updater() {
           }
         }
         // Wait to update a filled order until the on-chain tx is available.
-        provider?.getTransactionReceipt(update.txHash).then((receipt) => {
+        // The receipt is a data read, so prefer the interface's own RPC over the wallet's.
+        const receiptProvider = getAppRpcProvider(updatedOrder.chainId) ?? provider
+        receiptProvider?.getTransactionReceipt(update.txHash).then((receipt) => {
           dispatch(
             addTransaction({
               chainId: updatedOrder.chainId,

@@ -1,5 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import { RPC_PROVIDERS } from 'constants/providers'
 import { EventEmitter } from 'events'
 import { mocked } from 'test-utils/mocked'
 import { act, renderHook } from 'test-utils/render'
@@ -22,8 +23,42 @@ class FakeProvider extends EventEmitter {
   }
 }
 
+// A wallet provider that records every use: the block feed must come from the interface's own
+// RPC provider, so any call against the wallet is a regression (asserted in afterEach).
+class ForbiddenWalletProvider {
+  readonly calls: string[] = []
+  getBlockNumber() {
+    this.calls.push('getBlockNumber')
+    return Promise.reject(new Error('wallet RPC must not serve reads'))
+  }
+  on(event: string) {
+    this.calls.push(`on:${event}`)
+  }
+  removeListener(event: string) {
+    this.calls.push(`removeListener:${event}`)
+  }
+}
+
+const walletProviders: ForbiddenWalletProvider[] = []
+afterEach(() => {
+  const calls = walletProviders.flatMap((wallet) => wallet.calls)
+  walletProviders.length = 0
+  if (calls.length) {
+    throw new Error(`wallet provider was used for reads: ${calls.join(', ')}`)
+  }
+})
+
 function mockChain(chainId: number, provider: FakeProvider) {
-  mocked(useWeb3React).mockReturnValue({ chainId, provider } as unknown as ReturnType<typeof useWeb3React>)
+  // The wallet's provider is deliberately distinct from the fake feed: reads must flow through
+  // the interface's own RPC provider (installed below), never the wallet's. Each jest test file
+  // gets its own module registry, so the RPC_PROVIDERS mutation cannot leak into other files.
+  const walletProvider = new ForbiddenWalletProvider()
+  walletProviders.push(walletProvider)
+  mocked(useWeb3React).mockReturnValue({
+    chainId,
+    provider: walletProvider,
+  } as unknown as ReturnType<typeof useWeb3React>)
+  ;(RPC_PROVIDERS as Record<number, unknown>)[chainId] = provider
 }
 
 describe('BlockNumberProvider', () => {

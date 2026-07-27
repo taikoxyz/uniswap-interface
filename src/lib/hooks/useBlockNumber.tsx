@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
-import { RPC_PROVIDERS } from 'constants/providers'
+import { getAppRpcProvider, RPC_PROVIDERS } from 'constants/providers'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
@@ -47,7 +47,11 @@ export function useFastForwardedBlockNumber(): number | undefined {
 }
 
 export function BlockNumberProvider({ children }: { children: ReactNode }) {
-  const { chainId: activeChainId, provider } = useWeb3React()
+  const { chainId: activeChainId, provider: walletProvider } = useWeb3React()
+  // Blocks are data reads: watch them through the interface's own RPC when it has a provider for
+  // the active chain, so the feed never depends on the wallet's endpoint. The wallet's provider
+  // remains the fallback for chains the interface has no provider for.
+  const provider = getAppRpcProvider(activeChainId) ?? walletProvider
   const [{ chainId, block, mainnetBlock }, setChainBlock] = useState<{
     chainId?: number
     block?: number

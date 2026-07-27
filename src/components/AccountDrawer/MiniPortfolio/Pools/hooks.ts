@@ -5,7 +5,7 @@ import NFTPositionManagerJSON from '@uniswap/v3-periphery/artifacts/contracts/No
 import { useWeb3React } from '@web3-react/core'
 import { MULTICALL_ADDRESSES, NONFUNGIBLE_POSITION_MANAGER_ADDRESSES as V3NFT_ADDRESSES } from 'config/chains'
 import { isSupportedChain } from 'constants/chains'
-import { RPC_PROVIDERS } from 'constants/providers'
+import { getAppRpcProvider } from 'constants/providers'
 import { BaseContract } from 'ethers/lib/ethers'
 import { ContractInput, useUniswapPricesQuery } from 'graphql/data/__generated__/types-and-hooks'
 import { toContractInput } from 'graphql/data/util'
@@ -19,7 +19,9 @@ import { PositionInfo } from './cache'
 
 type ContractMap<T extends BaseContract> = { [key: number]: T }
 
-// Constructs a chain-to-contract map, using the wallet's provider when available
+// Constructs a chain-to-contract map, preferring the interface's own RPC providers so reads never
+// depend on the wallet's endpoint; the wallet's provider is only a fallback for chains the
+// interface has no provider for.
 function useContractMultichain<T extends BaseContract>(
   addressMap: AddressMap,
   ABI: any,
@@ -42,11 +44,7 @@ function useContractMultichain<T extends BaseContract>(
       }
 
       const provider =
-        walletProvider && walletChainId === chainId
-          ? walletProvider
-          : isSupportedChain(chainId)
-          ? RPC_PROVIDERS[chainId]
-          : undefined
+        getAppRpcProvider(chainId) ?? (walletProvider && walletChainId === chainId ? walletProvider : undefined)
       if (provider) {
         acc[chainId] = getContract(address, ABI, provider) as T
       }
