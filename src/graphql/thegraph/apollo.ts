@@ -15,10 +15,10 @@ const CHAIN_SUBGRAPH_URL: Record<number, string> = {
   // Taiko subgraphs configured via environment variables
   [TAIKO_MAINNET_CHAIN_ID]:
     process.env.REACT_APP_TAIKO_MAINNET_SUBGRAPH_POOLS ||
-    'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/uniswap-v3-taiko/136dd59/gn',
+    'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/uniswap-v3-taiko/mainnet/gn',
   [TAIKO_HOODI_CHAIN_ID]:
     process.env.REACT_APP_TAIKO_HOODI_SUBGRAPH_POOLS ||
-    'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/uniswap-v3-taiko-hoodi-testnet/7060ecc/gn',
+    'https://api.goldsky.com/api/public/project_clz85cxrvng3n01ughcv5e7hg/subgraphs/uniswap-v3-taiko-hoodi-testnet/testnet/gn',
 }
 
 const httpLink = new HttpLink({ uri: CHAIN_SUBGRAPH_URL[ChainId.MAINNET] })
