@@ -186,6 +186,25 @@ describe('MulticallUpdater', () => {
     }
   }
 
+  // A wallet provider that records every use: the block feed driving the updaters must come
+  // from the interface's own RPC providers, so any call against the wallet is a regression
+  // (asserted in afterEach).
+  class ForbiddenWalletProvider {
+    readonly calls: string[] = []
+    getBlockNumber() {
+      this.calls.push('getBlockNumber')
+      return Promise.reject(new Error('wallet RPC must not serve reads'))
+    }
+    on(event: string) {
+      this.calls.push(`on:${event}`)
+    }
+    removeListener(event: string) {
+      this.calls.push(`removeListener:${event}`)
+    }
+  }
+
+  const walletProviders: ForbiddenWalletProvider[] = []
+
   // Far above any real Taiko block number, so the ambient mainnet-block fetch
   // (swallowed in tests) can never outrank the fake feed.
   const BLOCK = 1_000_000_100
@@ -235,6 +254,12 @@ describe('MulticallUpdater', () => {
       )
     })
     updaterSpy.mockRestore()
+    // No read in any test may have touched a wallet provider.
+    const walletCalls = walletProviders.flatMap((wallet) => wallet.calls)
+    walletProviders.length = 0
+    if (walletCalls.length) {
+      throw new Error(`wallet provider was used for reads: ${walletCalls.join(', ')}`)
+    }
   })
 
   function markFetching(chainId: number, call: typeof ACTIVE_CALL, blockNumber: number) {
@@ -265,11 +290,21 @@ describe('MulticallUpdater', () => {
     return call?.[0]
   }
 
-  function renderUpdater(chainId: number, provider: FakeProvider) {
-    mocked(useWeb3React).mockReturnValue({ chainId, provider } as unknown as ReturnType<typeof useWeb3React>)
-    // The block feed reads through the interface's own RPC providers rather than the wallet's,
-    // so the fake must be installed there too (per-file module registry, cannot leak).
+  function mockChain(chainId: number, provider: FakeProvider) {
+    // The wallet's provider is deliberately distinct from the fake feed: reads must flow through
+    // the interface's own RPC provider (installed below), never the wallet's (per-file module
+    // registry, so the mutation cannot leak into other files).
+    const walletProvider = new ForbiddenWalletProvider()
+    walletProviders.push(walletProvider)
+    mocked(useWeb3React).mockReturnValue({
+      chainId,
+      provider: walletProvider,
+    } as unknown as ReturnType<typeof useWeb3React>)
     ;(RPC_PROVIDERS as Record<number, unknown>)[chainId] = provider
+  }
+
+  function renderUpdater(chainId: number, provider: FakeProvider) {
+    mockChain(chainId, provider)
     return render(updaterTree())
   }
 
@@ -406,22 +441,14 @@ describe('MulticallUpdater', () => {
     })
 
     const providerB = new FakeProvider(BLOCK + STEP)
-    mocked(useWeb3React).mockReturnValue({
-      chainId: CHAIN_B,
-      provider: providerB,
-    } as unknown as ReturnType<typeof useWeb3React>)
-    ;(RPC_PROVIDERS as Record<number, unknown>)[CHAIN_B] = providerB
+    mockChain(CHAIN_B, providerB)
     view.rerender(updaterTree())
     await act(async () => undefined)
 
     expect(mounted).toContain(CHAIN_B)
     expect(unmounted).toContain(CHAIN_A)
 
-    mocked(useWeb3React).mockReturnValue({
-      chainId: CHAIN_A,
-      provider: providerA,
-    } as unknown as ReturnType<typeof useWeb3React>)
-    ;(RPC_PROVIDERS as Record<number, unknown>)[CHAIN_A] = providerA
+    mockChain(CHAIN_A, providerA)
     view.rerender(updaterTree())
     await act(async () => undefined)
     expect(latestUpdaterProps(CHAIN_A)?.latestBlockNumber).toBeUndefined()

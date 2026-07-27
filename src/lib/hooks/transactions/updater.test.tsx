@@ -99,6 +99,27 @@ describe('Updater receipt polling', () => {
     }
   }
 
+  // A wallet provider that records every use: with an app RPC provider installed for the chain,
+  // neither the block feed nor receipt polling may ever touch the wallet.
+  class ForbiddenWalletProvider {
+    readonly _isProvider = true
+    readonly calls: string[] = []
+    getTransactionReceipt() {
+      this.calls.push('getTransactionReceipt')
+      return Promise.reject(new Error('wallet RPC must not serve reads'))
+    }
+    getBlockNumber() {
+      this.calls.push('getBlockNumber')
+      return Promise.reject(new Error('wallet RPC must not serve reads'))
+    }
+    on(event: string) {
+      this.calls.push(`on:${event}`)
+    }
+    removeListener(event: string) {
+      this.calls.push(`removeListener:${event}`)
+    }
+  }
+
   // Feeds Updater a pending map and, like the transactions reducer, marks the transaction
   // finalized when its receipt arrives so it is not re-checked.
   function Harness({
@@ -142,12 +163,14 @@ describe('Updater receipt polling', () => {
     // The transaction confirms on-chain after two polls - long before the next block event,
     // which never arrives in this test.
     provider.getTransactionReceipt.mockResolvedValueOnce(null).mockResolvedValueOnce(null).mockResolvedValue(receipt)
+    // The wallet's provider is deliberately distinct from the fake: the block feed and receipt
+    // polling must read through the interface's own RPC provider (installed below), never the
+    // wallet's (per-file module registry, so the mutation cannot leak into other files).
+    const walletProvider = new ForbiddenWalletProvider()
     mocked(useWeb3React).mockReturnValue({
       chainId: TAIKO_MAINNET_CHAIN_ID,
-      provider,
+      provider: walletProvider,
     } as unknown as ReturnType<typeof useWeb3React>)
-    // The block feed and receipt polling read through the interface's own RPC providers rather
-    // than the wallet's, so the fake must be installed there too (per-file module registry).
     ;(RPC_PROVIDERS as Record<number, unknown>)[TAIKO_MAINNET_CHAIN_ID] = provider
 
     const onCheck = jest.fn()
@@ -161,6 +184,8 @@ describe('Updater receipt polling', () => {
     expect(onReceipt).toHaveBeenCalledTimes(1)
     expect(onReceipt).toHaveBeenCalledWith({ chainId: TAIKO_MAINNET_CHAIN_ID, hash: HASH, receipt })
     expect(onCheck).not.toHaveBeenCalled()
+    // The wallet's endpoint served nothing: every read went through the app's own provider.
+    expect(walletProvider.calls).toEqual([])
   })
 
   it('gives up until the next block event on chains without fast retry options', async () => {
