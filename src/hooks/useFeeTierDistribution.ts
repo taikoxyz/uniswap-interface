@@ -1,5 +1,7 @@
 import { Currency, Token } from '@uniswap/sdk-core'
 import { FeeAmount } from '@uniswap/v3-sdk'
+import { useWeb3React } from '@web3-react/core'
+import { blocksPerWindow } from 'config/chains'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import ms from 'ms'
 import { useMemo } from 'react'
@@ -7,8 +9,10 @@ import { useMemo } from 'react'
 import useFeeTierDistributionQuery from '../graphql/thegraph/FeeTierDistributionQuery'
 import { PoolState, usePool } from './usePools'
 
-// maximum number of blocks past which we consider the data stale
-const MAX_DATA_BLOCK_AGE = 20
+// Maximum wall-clock age past which we consider the subgraph data stale. Denominated in time and
+// converted to a block count per chain, so it keeps meaning the same thing as block time changes;
+// it must stay comfortably above the 30s query poll below plus normal indexing lag.
+const MAX_DATA_AGE_MS = ms(`60s`)
 
 interface FeeTierDistribution {
   isLoading: boolean
@@ -97,6 +101,7 @@ export function useFeeTierDistribution(
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
+  const { chainId } = useWeb3React()
   const latestBlock = useBlockNumber()
   const { isLoading, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, ms(`30s`))
 
@@ -110,7 +115,7 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
       }
     }
 
-    if (latestBlock - (_meta?.block?.number ?? 0) > MAX_DATA_BLOCK_AGE) {
+    if (latestBlock - (_meta?.block?.number ?? 0) > blocksPerWindow(chainId, MAX_DATA_AGE_MS)) {
       console.log(`Graph stale (latest block: ${latestBlock})`)
       return {
         isLoading,
@@ -197,5 +202,5 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
       error,
       distributions,
     }
-  }, [_meta, asToken0, asToken1, isLoading, error, latestBlock])
+  }, [_meta, asToken0, asToken1, chainId, isLoading, error, latestBlock])
 }

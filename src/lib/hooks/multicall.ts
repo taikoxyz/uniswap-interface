@@ -1,6 +1,6 @@
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import useBlockNumber, { useMainnetBlockNumber } from 'lib/hooks/useBlockNumber'
+import { useMainnetRefetchBlockNumber, useRefetchBlockNumber } from 'lib/hooks/useBlockNumber'
 import multicall from 'lib/state/multicall'
 import { SkipFirst } from 'types/tuple'
 
@@ -24,7 +24,7 @@ export function useSingleCallResult(...args: SkipFirstTwoParams<typeof multicall
 }
 
 export function useMainnetSingleCallResult(...args: SkipFirstTwoParams<typeof multicall.hooks.useSingleCallResult>) {
-  const latestMainnetBlock = useMainnetBlockNumber()
+  const latestMainnetBlock = useMainnetRefetchBlockNumber()
   return multicall.hooks.useSingleCallResult(ChainId.MAINNET, latestMainnetBlock, ...args)
 }
 
@@ -37,6 +37,9 @@ export function useSingleContractMultipleData(
 
 function useCallContext() {
   const { chainId } = useWeb3React()
-  const latestBlock = useBlockNumber()
+  // The block fed to the hooks must be the one that drives the MulticallUpdater's fetches: the
+  // hooks compare each result's block against it to derive `valid`/`syncing`, so feeding them
+  // the raw per-block feed on a ~1s chain would mark every result out of sync ~always.
+  const latestBlock = useRefetchBlockNumber()
   return { chainId, latestBlock }
 }

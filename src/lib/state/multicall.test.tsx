@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import { DATA_REFRESH_WINDOW_MS, TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import { EventEmitter } from 'events'
 import { useFastForwardBlockNumber } from 'lib/hooks/useBlockNumber'
 import { useEffect, useState } from 'react'
@@ -9,7 +9,7 @@ import store from 'state'
 import { mocked } from 'test-utils/mocked'
 import { act, render } from 'test-utils/render'
 
-import multicall, { MulticallUpdater, useQuantizedBlockNumber, useSettledBlockNumber } from './multicall'
+import multicall, { MulticallUpdater, useSettledBlockNumber } from './multicall'
 
 jest.mock('hooks/useContract', () => {
   const useContract = jest.requireActual('hooks/useContract')
@@ -21,26 +21,8 @@ jest.mock('hooks/useContract', () => {
   }
 })
 
-const STEP = 6
 const CHAIN_A = TAIKO_MAINNET_CHAIN_ID
 const CHAIN_B = TAIKO_HOODI_CHAIN_ID
-
-function renderQuantized(initial: { chainId?: number; blockNumber?: number; step?: number; snapTo?: number }) {
-  return renderHook(
-    ({
-      chainId,
-      blockNumber,
-      step,
-      snapTo,
-    }: {
-      chainId?: number
-      blockNumber?: number
-      step?: number
-      snapTo?: number
-    }) => useQuantizedBlockNumber(chainId ?? CHAIN_A, blockNumber, step ?? STEP, snapTo),
-    { initialProps: initial }
-  )
-}
 
 function renderSettled(initial: { chainId?: number; blockNumber?: number; isFetching?: boolean }) {
   return renderHook(
@@ -49,92 +31,6 @@ function renderSettled(initial: { chainId?: number; blockNumber?: number; isFetc
     { initialProps: initial }
   )
 }
-
-describe('useQuantizedBlockNumber', () => {
-  it('is undefined until a block number arrives, then adopts it', () => {
-    const { result, rerender } = renderQuantized({ blockNumber: undefined })
-    expect(result.current).toBeUndefined()
-    rerender({ blockNumber: 100 })
-    expect(result.current).toEqual(100)
-  })
-
-  it('holds within a window and advances once a full step has passed', () => {
-    const { result, rerender } = renderQuantized({ blockNumber: 100 })
-    rerender({ blockNumber: 101 })
-    rerender({ blockNumber: 105 })
-    expect(result.current).toEqual(100) // < step ahead: hold
-    rerender({ blockNumber: 106 })
-    expect(result.current).toEqual(106) // step reached: advance
-    rerender({ blockNumber: 111 })
-    expect(result.current).toEqual(106) // next window starts from the adopted block
-  })
-
-  it('adopts a lower block number immediately (reorg)', () => {
-    const { result, rerender } = renderQuantized({ blockNumber: 100 })
-    rerender({ blockNumber: 50 })
-    expect(result.current).toEqual(50)
-  })
-
-  it('returns undefined while the new chain block is still unknown after a chain switch', () => {
-    const { result, rerender } = renderQuantized({ chainId: CHAIN_A, blockNumber: 100 })
-    expect(result.current).toEqual(100)
-    // The chain switched but its first block has not arrived yet: the old
-    // chain's number must not leak to the new chain's updater.
-    rerender({ chainId: CHAIN_B, blockNumber: undefined })
-    expect(result.current).toBeUndefined()
-  })
-
-  it("adopts the new chain's first block even when it is within a step of the old value", () => {
-    const { result, rerender } = renderQuantized({ chainId: CHAIN_A, blockNumber: 100 })
-    // 102 is < one step ahead of 100 - on the same chain it would hold, but on
-    // a new chain it is the first observation and must be adopted.
-    rerender({ chainId: CHAIN_B, blockNumber: 102 })
-    expect(result.current).toEqual(102)
-  })
-
-  it('snaps forward to a receipt-confirmed block inside the window', () => {
-    const { result, rerender } = renderQuantized({ blockNumber: 100 })
-    rerender({ blockNumber: 102 })
-    expect(result.current).toEqual(100)
-    // The user's transaction confirmed in block 102: refresh immediately.
-    rerender({ blockNumber: 102, snapTo: 102 })
-    expect(result.current).toEqual(102)
-    // The next steady-state advance is measured from the snapped block.
-    rerender({ blockNumber: 107, snapTo: 102 })
-    expect(result.current).toEqual(102)
-    rerender({ blockNumber: 108, snapTo: 102 })
-    expect(result.current).toEqual(108)
-  })
-
-  it('snaps even when the receipt block is ahead of the raw feed', () => {
-    // Receipts can reference blocks the polled feed has not seen yet.
-    const { result, rerender } = renderQuantized({ blockNumber: 100 })
-    rerender({ blockNumber: 100, snapTo: 103 })
-    expect(result.current).toEqual(103)
-  })
-
-  it('ignores snaps at or behind the quantized block', () => {
-    const { result, rerender } = renderQuantized({ blockNumber: 100 })
-    rerender({ blockNumber: 100, snapTo: 100 })
-    expect(result.current).toEqual(100)
-    rerender({ blockNumber: 100, snapTo: 99 })
-    expect(result.current).toEqual(100)
-  })
-
-  it('does not resurrect a stale snap after moving to a lower block (reorg)', () => {
-    const { result, rerender } = renderQuantized({ blockNumber: 100, snapTo: 102 })
-    expect(result.current).toEqual(102)
-    rerender({ blockNumber: 50, snapTo: undefined })
-    expect(result.current).toEqual(50)
-  })
-
-  it('does not carry a snap across a chain switch', () => {
-    const { result, rerender } = renderQuantized({ chainId: CHAIN_A, blockNumber: 100, snapTo: 102 })
-    expect(result.current).toEqual(102)
-    rerender({ chainId: CHAIN_B, blockNumber: undefined, snapTo: undefined })
-    expect(result.current).toBeUndefined()
-  })
-})
 
 describe('useSettledBlockNumber', () => {
   it('adopts desired blocks while idle', () => {
@@ -213,6 +109,7 @@ describe('MulticallUpdater', () => {
 
   let updaterSpy: jest.SpyInstance
   beforeEach(() => {
+    jest.useFakeTimers()
     updaterSpy = jest.spyOn(multicall, 'Updater').mockImplementation(() => <></>)
   })
   afterEach(() => {
@@ -234,6 +131,7 @@ describe('MulticallUpdater', () => {
       )
     })
     updaterSpy.mockRestore()
+    jest.useRealTimers()
   })
 
   function markFetching(chainId: number, call: typeof ACTIVE_CALL, blockNumber: number) {
@@ -278,18 +176,29 @@ describe('MulticallUpdater', () => {
     )
   }
 
-  it('feeds Taiko mainnet updaters a quantized feed that snaps to confirmed receipts', async () => {
+  /** Elapses a full data refresh window and delivers the next block event. */
+  function elapseWindowTo(provider: FakeProvider, block: number) {
+    act(() => {
+      jest.advanceTimersByTime(DATA_REFRESH_WINDOW_MS)
+      provider.emit('block', block)
+    })
+  }
+
+  it('feeds Taiko mainnet updaters a wall-clock-gated feed that snaps to confirmed receipts', async () => {
     const provider = new FakeProvider(BLOCK)
     renderUpdater(TAIKO_MAINNET_CHAIN_ID, provider)
     await act(async () => undefined) // flush the initial getBlockNumber()
 
     expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK)
-    // 6 blocks per fetch: one data refresh window (~12s) at Taiko's 2s block time.
-    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.listenerOptions).toEqual({ blocksPerFetch: 6 })
+    // Cadence is owned by the wall-clock gate, so every advance of the feed means "refetch now".
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.listenerOptions).toEqual({ blocksPerFetch: 1 })
 
-    // Within the window, new blocks do not move the quantized feed.
+    // Within the refresh window, new blocks do not move the gated feed - no matter how many the
+    // chain produces.
     act(() => {
       provider.emit('block', BLOCK + 3)
+      provider.emit('block', BLOCK + 6)
+      provider.emit('block', BLOCK + 9)
     })
     expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK)
 
@@ -299,11 +208,13 @@ describe('MulticallUpdater', () => {
     })
     expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 2)
 
-    // The next steady-state advance is measured from the snapped block.
+    // The next steady-state advance happens once a full window has elapsed since the snap.
     act(() => {
-      provider.emit('block', BLOCK + 8)
+      provider.emit('block', BLOCK + 10)
     })
-    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 8)
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 2)
+    elapseWindowTo(provider, BLOCK + 12)
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 12)
   })
 
   it('keeps the dedicated mainnet feed on the Taiko mainnet cadence', async () => {
@@ -314,20 +225,20 @@ describe('MulticallUpdater', () => {
     // The "mainnet" updater (registered under ChainId.MAINNET = 1 in this fork) is fed Taiko
     // mainnet blocks and fetch cadence.
     expect(latestUpdaterProps(1)?.latestBlockNumber).toEqual(BLOCK)
-    expect(latestUpdaterProps(1)?.listenerOptions).toEqual({ blocksPerFetch: 6 })
+    expect(latestUpdaterProps(1)?.listenerOptions).toEqual({ blocksPerFetch: 1 })
     act(() => {
       fastForward(BLOCK + 2)
     })
     expect(latestUpdaterProps(1)?.latestBlockNumber).toEqual(BLOCK + 2)
   })
 
-  it('quantizes and snaps the active feed on Hoodi without touching the mainnet feed', async () => {
+  it('gates and snaps the active feed on Hoodi without touching the mainnet feed', async () => {
     const provider = new FakeProvider(BLOCK)
     renderUpdater(TAIKO_HOODI_CHAIN_ID, provider)
     await act(async () => undefined)
 
     expect(latestUpdaterProps(TAIKO_HOODI_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK)
-    expect(latestUpdaterProps(TAIKO_HOODI_CHAIN_ID)?.listenerOptions).toEqual({ blocksPerFetch: 6 })
+    expect(latestUpdaterProps(TAIKO_HOODI_CHAIN_ID)?.listenerOptions).toEqual({ blocksPerFetch: 1 })
     act(() => {
       fastForward(BLOCK + 2)
     })
@@ -342,16 +253,18 @@ describe('MulticallUpdater', () => {
 
     act(() => {
       markFetching(TAIKO_MAINNET_CHAIN_ID, ISOLATION_ACTIVE_CALL, BLOCK)
-      provider.emit('block', BLOCK + STEP)
-      provider.emit('block', BLOCK + 2 * STEP)
-      provider.emit('block', BLOCK + 3 * STEP)
     })
+    // Windows keep elapsing while the fetch is in flight: the gated feed advances, but the
+    // settled feed passed to the updater must not, or the fetch would be cancelled.
+    elapseWindowTo(provider, BLOCK + 12)
+    elapseWindowTo(provider, BLOCK + 24)
+    elapseWindowTo(provider, BLOCK + 36)
     expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK)
 
     act(() => {
       settle(TAIKO_MAINNET_CHAIN_ID, ISOLATION_ACTIVE_CALL, BLOCK)
     })
-    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 3 * STEP)
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 36)
   })
 
   it('gates the active and dedicated mainnet updater independently', async () => {
@@ -361,23 +274,23 @@ describe('MulticallUpdater', () => {
 
     act(() => {
       markFetching(TAIKO_MAINNET_CHAIN_ID, ACTIVE_CALL, BLOCK)
-      provider.emit('block', BLOCK + STEP)
     })
+    elapseWindowTo(provider, BLOCK + 12)
     expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK)
-    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + STEP)
+    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + 12)
 
     act(() => {
       settle(TAIKO_MAINNET_CHAIN_ID, ACTIVE_CALL, BLOCK)
-      markFetching(ChainId.MAINNET, MAINNET_CALL, BLOCK + STEP)
-      provider.emit('block', BLOCK + 2 * STEP)
+      markFetching(ChainId.MAINNET, MAINNET_CALL, BLOCK + 12)
     })
-    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 2 * STEP)
-    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + STEP)
+    elapseWindowTo(provider, BLOCK + 24)
+    expect(latestUpdaterProps(TAIKO_MAINNET_CHAIN_ID)?.latestBlockNumber).toEqual(BLOCK + 24)
+    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + 12)
 
     act(() => {
-      settle(ChainId.MAINNET, MAINNET_CALL, BLOCK + STEP)
+      settle(ChainId.MAINNET, MAINNET_CALL, BLOCK + 12)
     })
-    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + 2 * STEP)
+    expect(latestUpdaterProps(ChainId.MAINNET)?.latestBlockNumber).toEqual(BLOCK + 24)
   })
 
   it('remounts the active updater across a chain switch and releases the old chain on settlement', async () => {
@@ -401,7 +314,7 @@ describe('MulticallUpdater', () => {
       markFetching(CHAIN_A, SWITCH_CALL, BLOCK)
     })
 
-    const providerB = new FakeProvider(BLOCK + STEP)
+    const providerB = new FakeProvider(BLOCK + 6)
     mocked(useWeb3React).mockReturnValue({
       chainId: CHAIN_B,
       provider: providerB,

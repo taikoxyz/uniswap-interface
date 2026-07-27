@@ -1,6 +1,7 @@
 # Taiko Block Time Support — Design Review & Implementation Plan
 
-**Scope.** Taiko Alethia now produces a block roughly every **2 seconds**, and the protocol roadmap
+**Scope.** Taiko Alethia now produces a block roughly every **second** (down from ~2s when this
+document was first written), and the protocol roadmap
 targets **~0.5 second** blocks (preconfirmation cadence). This interface is a fork of the Uniswap
 interface, which was designed around Ethereum L1's ~12 second cadence. This document is a full
 review of every place the interface's design or code depends on block cadence, the improvement
@@ -27,19 +28,26 @@ Everything the app "knows" about the chain flows through a small set of mechanis
                  │  (constants/providers.ts, pollingInterval = 12s)         │
                  │                                                          │
   wallet    ───► │  ethers Web3Provider over wallet EIP-1193 (poll ~4s)     │
+                 │                                                          │
+                 │  raw feed ──► wall-clock gate (useRefetchBlockNumber:    │
+                 │  advances ≤ once per 12s, snaps to confirmed receipts)   │
                  └────────────┬─────────────────────────────────────────────┘
-                              │  'block' events (bursts of ~6 on a 2s chain)
+                              │  raw 'block' events │ gated refetch feed
               ┌───────────────┼────────────────────┬──────────────────────┐
               ▼               ▼                    ▼                      ▼
       redux-multicall   tx receipt updater   Polling indicator      swap flow
-      (quantized to     (lib/hooks/          + ChainConnectivity    (gas estimate,
-      6-block steps     transactions/        Warning                analytics)
-      by PR #44)        updater.tsx)         (components/Polling)
+      + logs + position (raw feed wakes it;  + ChainConnectivity    (gas estimate,
+      fees (gated       wall-clock backoff)  Warning (raw feed)     analytics)
+      refetch feed)     (lib/hooks/transactions/updater.tsx)
 ```
 
 * **Multicall** (balances, allowances, positions, pool state, on-chain timestamp): refetches when
-  the block number fed to it advances. PR #44 quantizes that feed to 6-block steps and sets
-  `blocksPerFetch: 6` on Taiko, so the steady-state data window is **~12s**.
+  the block number fed to it advances. Originally PR #44/#49 quantized that feed in 6-block steps;
+  the "block-subscription-refetch" PR replaced the block-count step with a **wall-clock gate**
+  (`useRefetchBlockNumber`): block N is adopted at time T, and later blocks are ignored until one
+  arrives at or after T + 12s. The steady-state data window is **~12s of wall time at any block
+  cadence** (1s blocks today, 0.5s tomorrow — no config involved), and `blocksPerFetch` is 1
+  because every advance of the gated feed means "a window elapsed, refetch now".
 * **Transaction receipt updater**: when a block event arrives, checks pending transactions
   (`shouldCheck` block-count backoff), fetching receipts with per-chain retry options, then
   `fastForwardBlockNumber(receipt.blockNumber)`.
@@ -80,7 +88,7 @@ watch stale prices for 25 minutes before `ChainConnectivityWarning` appears.
 ~12–15s staleness of the multicall-fetched timestamp that feeds this check), `10m` for Hoodi
 (testnets idle and hiccup more).
 
-### F3 — Block-count constants silently break at 0.5s blocks  *(P1, fixed across PRs "block-time config" + "multicall cadence")*
+### F3 — Block-count constants silently break at 0.5s blocks  *(P1, fixed across PRs "block-time config" + "multicall cadence"; superseded by "block-subscription-refetch")*
 
 Hard-coded block *counts* that mean "~12 seconds" only at a 2s block time:
 
@@ -90,10 +98,18 @@ Hard-coded block *counts* that mean "~12 seconds" only at a 2s block time:
 | `src/lib/state/multicall.tsx` (from #44/#51) | `blocksPerFetch: 6` | refetch every 3s — 4× the RPC load |
 | `src/lib/hooks/transactions/updater.tsx` | `shouldCheck`: "every 3 blocks" / "every 10 blocks" backoff | 1.5s / 5s — hour-old stuck transactions get receipt-checked at nearly every poll, forever |
 
-**Fix**: one source of truth, `getAverageBlockTimeMs(chainId)` (2000ms for Taiko today,
+**Original fix**: one source of truth, `getAverageBlockTimeMs(chainId)` (2000ms for Taiko today,
 overridable via `REACT_APP_TAIKO_BLOCK_TIME_MS` for the 0.5s cutover), plus
-`blocksPerWindow(chainId, windowMs)`. Every block-count constant above is derived from it. When
-Taiko moves to 0.5s blocks, the cutover is an env change, not a code hunt.
+`blocksPerWindow(chainId, windowMs)`, with every block-count constant above derived from it.
+
+**Superseding fix** ("block-subscription-refetch" PR): deriving cadence from a configured block
+time still drifts whenever the chain's real cadence deviates from the table (as happened when
+Taiko moved from ~2s to ~1s blocks: the "12s" window silently became ~6s). Refetch cadence is now
+gated in **wall-clock time directly** and needs no block-time input at all: the refetch feed
+advances at most once per `DATA_REFRESH_WINDOW_MS`, the receipt-check backoff compares against a
+persisted `lastCheckedTime`, and `blocksPerFetch` is constant 1. `getAverageBlockTimeMs` /
+`blocksPerWindow` remain only for the few places that must convert a *block-number difference*
+into approximate wall time (subgraph staleness threshold, permit signature margin).
 
 ### F4 — After a confirmed transaction, balances can stay stale for up to ~12s  *(P1, fixed in PR "multicall cadence")*
 
@@ -160,10 +176,13 @@ Four principles, in priority order:
 
 1. **Steady-state cadence is a time window, not a block count.** The app refreshes chain data
    every `DATA_REFRESH_WINDOW_MS` (12s) regardless of how many blocks that spans. This is what
-   makes RPC load independent of block time (2s today, 0.5s tomorrow: same load).
-2. **Every block-count constant derives from per-chain block time.** `blocksPerWindow(chainId,
-   windowMs)` is the only allowed way to turn a time window into a block count. Block time comes
-   from one config table with an env override for cutovers.
+   makes RPC load independent of block time (1s today, 0.5s tomorrow: same load). Since the
+   "block-subscription-refetch" PR this is enforced literally: the refetch block feed
+   (`useRefetchBlockNumber`) is gated by elapsed wall time, not by counting blocks.
+2. **Block-count constants that remain derive from per-chain block time.** `blocksPerWindow(
+   chainId, windowMs)` is the only allowed way to turn a time window into a block count, and is
+   reserved for comparisons of block-number differences (e.g. subgraph staleness) — never for
+   refetch cadence, which must be gated in wall time directly.
 3. **User-action feedback bypasses the steady-state window.** Receipt polling races ahead of block
    events (F1), and a confirmed receipt snaps the multicall feed forward (F4). The user's own
    actions feel 2s-chain fast; ambient data stays 12s-window cheap.
@@ -192,6 +211,7 @@ Status as of the last update of this document:
 | 2 | **#47** — feat: per-chain block time config + fast Taiko tx confirmation (F1, F3-partial, F5) | `main` | open | New `src/config/chains/blockTime.ts` (`getAverageBlockTimeMs`, `blocksPerWindow`, `DATA_REFRESH_WINDOW_MS`, `REACT_APP_TAIKO_BLOCK_TIME_MS` override, validation, tests). Taiko receipt retry options; `shouldCheck` backoff converted from block counts to time (behavior-identical on 12s chains — unit-tested both ways). Quote-poll + permit-margin consumers moved off `AVERAGE_L1_BLOCK_TIME`; permit `now` seconds fix. |
 | 3 | **#48** — fix: surface Taiko chain stalls in minutes instead of 25 (F2, F6) | `main` | **merged** | `blockWaitMsBeforeWarning`: Taiko mainnet 3m, Hoodi 10m. `L2_CHAIN_IDS` dedupe. |
 | 4 | **#49** — refactor: derive multicall cadence from chain block time and snap to confirmed blocks (F3, F4) | #47 branch | open | `MULTICALL_BLOCK_QUANTIZATION` and `getBlocksPerFetchForChainId` derived via `blocksPerWindow` (identical values at 2s: step 6; at 0.5s: step 24 automatically). Quantizer snaps to `fastForward`ed (receipt-confirmed) blocks; `useBlockNumber` exposes the fast-forward signal. Hook-level unit tests for quantize + snap semantics. |
+| 5 | **block-subscription-refetch** — refactor: gate data refetching in wall-clock time instead of block counts | `main` | this PR | Replaces the block-count quantizer with a wall-clock gate (`useRefetchBlockNumber` in `lib/hooks/useBlockNumber.tsx`): block N adopted at time T, later blocks ignored until ≥ T + 12s; receipt snaps and reorgs cut through. Motivated by Taiko's move to ~1s blocks, which silently halved the block-count-derived window. Multicall `blocksPerFetch` → 1; multicall hooks, log fetching (`state/logs`), and position-fee simulation (`useV3PositionFees`, previously one `eth_call` per block) all keyed to the gated feed; receipt-check backoff (`shouldCheck`) converted from block-time estimates to a persisted `lastCheckedTime`; fee-tier subgraph staleness threshold time-denominated; `fastForward` made identity-stable. |
 
 **History note**: #47 and #48 were originally stacked on #44's branch, which owned
 `src/lib/state/multicall.tsx` and the only green CI toolchain while `main` failed
@@ -214,21 +234,21 @@ this document is the architecture review (§1–§3), the cutover runbook (§5),
 
 ## 5. Runbook: cutting over to 0.5s blocks
 
-When Taiko mainnet moves to ~0.5s block production:
+When Taiko mainnet moves to ~0.5s block production (updated for the "block-subscription-refetch"
+PR — the refetch cadence no longer depends on block-time configuration at all):
 
-1. Set `REACT_APP_TAIKO_BLOCK_TIME_MS=500` in the deployment environment and rebuild. Derived
-   behavior after PRs 2 & 4:
-   * multicall quantization step & `blocksPerFetch`: 6 → **24** (window stays ~12s; RPC load flat)
-   * receipt-check backoff: unchanged (time-denominated)
-   * receipt retry loop: unchanged (already sub-second)
-   * stall warning: unchanged (minutes-scale)
-2. Decide whether the product wants a faster steady-state window (e.g. 6s). If yes, change
+1. Nothing is required for data-refresh cadence: the wall-clock gate keeps the window at ~12s at
+   any block production rate, and the receipt-check backoff is persisted wall time. The receipt
+   retry loop is already sub-second and the stall warning minutes-scale.
+2. Optionally set `REACT_APP_TAIKO_BLOCK_TIME_MS=500` so the remaining block-diff↔time
+   *comparisons* stay calibrated: the fee-tier subgraph staleness threshold
+   (`useFeeTierDistribution`) and the permit signature margin (`usePermit2Allowance`). Both
+   degrade gracefully (a 2–4× staleness-tolerance skew), so this is tuning, not a cutover.
+3. Decide whether the product wants a faster steady-state window (e.g. 6s). If yes, change
    `DATA_REFRESH_WINDOW_MS` — **one constant** — with the understanding that RPC load scales
    inversely with the window.
-3. If Taiko exposes preconfirmations, see Backlog: surfacing "preconfirmed" is an additive UX
+4. If Taiko exposes preconfirmations, see Backlog: surfacing "preconfirmed" is an additive UX
    feature on top of this foundation, not a rework.
-
-No other code changes are expected. (If block time changes *again*, only the env var moves.)
 
 ---
 

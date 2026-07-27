@@ -1,6 +1,6 @@
 import type { Filter } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import useBlockNumber from 'lib/hooks/useBlockNumber'
+import { useRefetchBlockNumber } from 'lib/hooks/useBlockNumber'
 import { useEffect, useMemo } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../hooks'
@@ -26,13 +26,15 @@ interface UseLogsResult {
 }
 
 /**
- * Returns the logs for the given filter as of the latest block, re-fetching from the library every block.
+ * Returns the logs for the given filter, re-fetched once per data refresh window (see
+ * useRefetchBlockNumber) rather than on every block.
  * @param filter The logs filter, with `fromBlock` or `toBlock` optionally specified.
  * The filter parameter should _always_ be memoized, or else will trigger constant refetching
  */
 export function useLogs(filter: Filter | undefined): UseLogsResult {
   const { chainId } = useWeb3React()
-  const blockNumber = useBlockNumber()
+  // The same feed the logs Updater fetches against, so SYNCED/SYNCING reflect the fetch cadence.
+  const blockNumber = useRefetchBlockNumber()
 
   const logs = useAppSelector((state) => state.logs)
   const dispatch = useAppDispatch()

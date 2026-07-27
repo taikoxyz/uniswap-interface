@@ -204,6 +204,10 @@ export interface TransactionDetails {
   hash: string
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number
+  // Wall-clock time of the last receipt check, used to back off re-checks of long-pending
+  // transactions independently of the chain's block cadence. Absent on transactions persisted
+  // before this field existed; treated as "never checked".
+  lastCheckedTime?: number
   addedTime: number
   confirmedTime?: number
   deadline?: number
