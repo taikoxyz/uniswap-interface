@@ -2,6 +2,7 @@ import { TransactionReceipt } from '@ethersproject/abstract-provider'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import { RPC_PROVIDERS } from 'constants/providers'
 import { EventEmitter } from 'events'
 import { useCallback, useState } from 'react'
 import { TransactionDetails } from 'state/transactions/types'
@@ -145,6 +146,9 @@ describe('Updater receipt polling', () => {
       chainId: TAIKO_MAINNET_CHAIN_ID,
       provider,
     } as unknown as ReturnType<typeof useWeb3React>)
+    // The block feed and receipt polling read through the interface's own RPC providers rather
+    // than the wallet's, so the fake must be installed there too (per-file module registry).
+    ;(RPC_PROVIDERS as Record<number, unknown>)[TAIKO_MAINNET_CHAIN_ID] = provider
 
     const onCheck = jest.fn()
     const onReceipt = jest.fn()

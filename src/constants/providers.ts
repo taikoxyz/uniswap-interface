@@ -66,3 +66,14 @@ export const RPC_PROVIDERS: { [key in SupportedInterfaceChain]: StaticJsonRpcPro
   [TAIKO_MAINNET_CHAIN_ID]: new AppJsonRpcProvider(TAIKO_MAINNET_CHAIN_ID as SupportedInterfaceChain),
   [TAIKO_HOODI_CHAIN_ID]: new AppJsonRpcProvider(TAIKO_HOODI_CHAIN_ID as SupportedInterfaceChain),
 } as any
+
+/**
+ * Returns the interface's own JSON-RPC provider for a chain, if the interface has one.
+ * RPC_PROVIDERS is typed for every supported interface chain, but this Taiko-only deployment
+ * only instantiates Taiko providers, so indexing it for other chains yields undefined at
+ * runtime. This accessor makes that safe for any chainId.
+ */
+export function getAppRpcProvider(chainId: number | undefined): StaticJsonRpcProvider | undefined {
+  if (chainId === undefined) return undefined
+  return (RPC_PROVIDERS as { [chainId: number]: StaticJsonRpcProvider | undefined })[chainId]
+}

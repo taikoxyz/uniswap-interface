@@ -1,5 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import { RPC_PROVIDERS } from 'constants/providers'
 import { EventEmitter } from 'events'
 import { mocked } from 'test-utils/mocked'
 import { act, renderHook } from 'test-utils/render'
@@ -24,6 +25,10 @@ class FakeProvider extends EventEmitter {
 
 function mockChain(chainId: number, provider: FakeProvider) {
   mocked(useWeb3React).mockReturnValue({ chainId, provider } as unknown as ReturnType<typeof useWeb3React>)
+  // The block feed reads through the interface's own RPC providers rather than the wallet's, so
+  // the fake must be installed there too. Each jest test file gets its own module registry, so
+  // this mutation cannot leak into other test files.
+  ;(RPC_PROVIDERS as Record<number, unknown>)[chainId] = provider
 }
 
 describe('BlockNumberProvider', () => {

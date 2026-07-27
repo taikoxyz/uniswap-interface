@@ -1,9 +1,7 @@
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, Token } from '@uniswap/sdk-core'
-import { useWeb3React } from '@web3-react/core'
 import ERC20_ABI from 'abis/erc20.json'
-import { isSupportedChain, SupportedInterfaceChain } from 'constants/chains'
-import { RPC_PROVIDERS } from 'constants/providers'
+import { getAppRpcProvider } from 'constants/providers'
 import { useEffect, useState } from 'react'
 
 interface TaikoTokenBalance {
@@ -60,7 +58,6 @@ const TAIKO_HOODI_COMMON_TOKENS = [
  * Fetches token balances for common tokens on Taiko chains
  */
 export function useTaikoTokenBalances(account: string | undefined, chainId: ChainId | undefined) {
-  const { provider: walletProvider } = useWeb3React()
   const [balances, setBalances] = useState<TaikoTokenBalance[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -81,9 +78,9 @@ export function useTaikoTokenBalances(account: string | undefined, chainId: Chai
     const fetchBalances = async () => {
       setLoading(true)
       try {
-        // Check if chainId is a supported chain before accessing RPC_PROVIDERS
-        const provider =
-          walletProvider || (isSupportedChain(chainId) ? RPC_PROVIDERS[chainId as SupportedInterfaceChain] : undefined)
+        // Balances are data reads: always fetch through the interface's own RPC, never the
+        // wallet's endpoint. Both reachable chains here are Taiko chains, which always have one.
+        const provider = getAppRpcProvider(chainId)
         if (!provider) {
           setLoading(false)
           return
@@ -119,7 +116,7 @@ export function useTaikoTokenBalances(account: string | undefined, chainId: Chai
     }
 
     fetchBalances()
-  }, [account, chainId, walletProvider])
+  }, [account, chainId])
 
   return { balances, loading }
 }

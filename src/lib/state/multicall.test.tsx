@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
+import { RPC_PROVIDERS } from 'constants/providers'
 import { EventEmitter } from 'events'
 import { useFastForwardBlockNumber } from 'lib/hooks/useBlockNumber'
 import { useEffect, useState } from 'react'
@@ -266,6 +267,9 @@ describe('MulticallUpdater', () => {
 
   function renderUpdater(chainId: number, provider: FakeProvider) {
     mocked(useWeb3React).mockReturnValue({ chainId, provider } as unknown as ReturnType<typeof useWeb3React>)
+    // The block feed reads through the interface's own RPC providers rather than the wallet's,
+    // so the fake must be installed there too (per-file module registry, cannot leak).
+    ;(RPC_PROVIDERS as Record<number, unknown>)[chainId] = provider
     return render(updaterTree())
   }
 
@@ -406,6 +410,7 @@ describe('MulticallUpdater', () => {
       chainId: CHAIN_B,
       provider: providerB,
     } as unknown as ReturnType<typeof useWeb3React>)
+    ;(RPC_PROVIDERS as Record<number, unknown>)[CHAIN_B] = providerB
     view.rerender(updaterTree())
     await act(async () => undefined)
 
@@ -416,6 +421,7 @@ describe('MulticallUpdater', () => {
       chainId: CHAIN_A,
       provider: providerA,
     } as unknown as ReturnType<typeof useWeb3React>)
+    ;(RPC_PROVIDERS as Record<number, unknown>)[CHAIN_A] = providerA
     view.rerender(updaterTree())
     await act(async () => undefined)
     expect(latestUpdaterProps(CHAIN_A)?.latestBlockNumber).toBeUndefined()

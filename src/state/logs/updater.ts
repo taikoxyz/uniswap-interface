@@ -1,5 +1,6 @@
 import type { Filter } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
+import { getAppRpcProvider } from 'constants/providers'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { useEffect, useMemo } from 'react'
 
@@ -10,7 +11,10 @@ import { isHistoricalLog, keyToFilter } from './utils'
 export default function Updater(): null {
   const dispatch = useAppDispatch()
   const state = useAppSelector((state) => state.logs)
-  const { chainId, provider } = useWeb3React()
+  const { chainId, provider: walletProvider } = useWeb3React()
+  // Logs are data reads: fetch them through the interface's own RPC when it has a provider for
+  // the chain, so they never depend on the wallet's endpoint.
+  const provider = getAppRpcProvider(chainId) ?? walletProvider
 
   const blockNumber = useBlockNumber()
 
