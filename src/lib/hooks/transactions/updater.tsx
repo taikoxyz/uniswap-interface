@@ -1,12 +1,7 @@
 import { TransactionReceipt } from '@ethersproject/abstract-provider'
 import { ChainId } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import {
-  DEFAULT_AVERAGE_BLOCK_TIME_MS,
-  getAverageBlockTimeMs,
-  TAIKO_HOODI_CHAIN_ID,
-  TAIKO_MAINNET_CHAIN_ID,
-} from 'config/chains'
+import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from 'config/chains'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import useBlockNumber, { useFastForwardBlockNumber } from 'lib/hooks/useBlockNumber'
 import ms from 'ms'
@@ -20,30 +15,29 @@ interface Transaction {
   addedTime: number
   receipt?: unknown
   lastCheckedBlockNumber?: number
+  lastCheckedTime?: number
 }
 
-export function shouldCheck(
-  lastBlockNumber: number,
-  tx: Transaction,
-  averageBlockTimeMs = DEFAULT_AVERAGE_BLOCK_TIME_MS
-): boolean {
+export function shouldCheck(lastBlockNumber: number, tx: Transaction): boolean {
   if (tx.receipt) return false
   if (!tx.lastCheckedBlockNumber) return true
   const blocksSinceCheck = lastBlockNumber - tx.lastCheckedBlockNumber
   if (blocksSinceCheck < 1) return false
-  // Back off in wall time, not block counts: on a 2s (or 0.5s) chain a fixed block count would
-  // shrink to a couple of seconds and long-pending transactions would be re-checked on nearly
-  // every block event, forever.
-  const msSinceCheck = blocksSinceCheck * averageBlockTimeMs
-  const minutesPending = (new Date().getTime() - tx.addedTime) / ms(`1m`)
+  // Back off in wall time, not block counts: on a chain producing a block every second or two, a
+  // fixed block count would shrink to a couple of seconds and long-pending transactions would be
+  // re-checked on nearly every block event, forever. Transactions persisted before
+  // lastCheckedTime existed are treated as due now; the first check stamps them.
+  const msSinceCheck = tx.lastCheckedTime === undefined ? Infinity : Date.now() - tx.lastCheckedTime
+  const minutesPending = (Date.now() - tx.addedTime) / ms(`1m`)
   if (minutesPending > 60) {
-    // at most every ~2m (10 L1 blocks) if pending longer than an hour
+    // at most every ~2m if pending longer than an hour
     return msSinceCheck >= ms(`2m`)
   } else if (minutesPending > 5) {
-    // at most every ~36s (3 L1 blocks) if pending longer than 5 minutes
+    // at most every ~36s if pending longer than 5 minutes
     return msSinceCheck >= ms(`36s`)
   } else {
-    // otherwise on every new block
+    // otherwise on every new block: a transaction the user just submitted must confirm as fast
+    // as the chain does, so recency of feedback deliberately beats the steady-state data window
     return true
   }
 }
@@ -110,7 +104,7 @@ export default function Updater({ pendingTransactions, onCheck, onReceipt }: Upd
     if (!chainId || !provider || !lastBlockNumber) return
 
     const cancels = Object.keys(pendingTransactions)
-      .filter((hash) => shouldCheck(lastBlockNumber, pendingTransactions[hash], getAverageBlockTimeMs(chainId)))
+      .filter((hash) => shouldCheck(lastBlockNumber, pendingTransactions[hash]))
       .map((hash) => {
         const { promise, cancel } = getReceipt(hash)
         promise

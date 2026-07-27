@@ -22,9 +22,12 @@ import { TAIKO_HOODI_CHAIN_ID, TAIKO_MAINNET_CHAIN_ID } from './taiko'
 export const DEFAULT_AVERAGE_BLOCK_TIME_MS = 12_000
 
 /**
- * The steady-state cadence at which the interface refreshes on-chain data (multicall reads, swap
- * quotes). Block numbers are the change signal for that data, but this window is the clock:
- * pushing it lower increases RPC load proportionally on every open tab, regardless of block time.
+ * The steady-state cadence at which the interface refreshes on-chain data (multicall reads, log
+ * fetches, swap quotes). Block numbers are the change signal for that data, but this window is
+ * the clock: the block feed that drives refetching (lib/hooks/useBlockNumber's
+ * useRefetchBlockNumber) advances at most once per this many milliseconds of wall time, no matter
+ * how fast the chain produces blocks. Pushing it lower increases RPC load proportionally on every
+ * open tab, regardless of block time.
  */
 export const DATA_REFRESH_WINDOW_MS = 12_000
 
@@ -72,9 +75,12 @@ export function getAverageBlockTimeMs(chainId?: number): number {
 
 /**
  * Number of blocks the given chain is expected to produce within windowMs, as an integer >= 1.
- * This is the only sanctioned way to turn a time window into a block count (e.g. multicall's
- * blocksPerFetch), so that block-count constants keep meaning the same amount of wall time when
- * the chain's block time changes.
+ * This is the only sanctioned way to turn a time window into a block count (e.g. a "how many
+ * blocks behind the chain head may the subgraph be" staleness threshold), so that block-count
+ * constants keep meaning the same amount of wall time when the chain's block time changes.
+ * Refetch *cadence* must not be derived from it: cadence is gated in wall-clock time directly
+ * (see DATA_REFRESH_WINDOW_MS above), which stays correct even when this table's block time
+ * drifts from what the chain actually does.
  */
 export function blocksPerWindow(chainId: number | undefined, windowMs = DATA_REFRESH_WINDOW_MS): number {
   return Math.max(1, Math.round(windowMs / getAverageBlockTimeMs(chainId)))

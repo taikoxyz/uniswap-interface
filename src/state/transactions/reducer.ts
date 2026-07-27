@@ -57,6 +57,7 @@ const transactionSlice = createSlice({
       } else {
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
+      tx.lastCheckedTime = Date.now()
     },
     finalizeTransaction(transactions, { payload: { hash, chainId, receipt } }) {
       const tx = transactions[chainId]?.[hash]

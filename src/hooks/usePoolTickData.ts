@@ -33,8 +33,6 @@ export interface TickProcessed {
   price0: string
 }
 
-const REFRESH_FREQUENCY = { blocksPerFetch: 2 }
-
 const getActiveTick = (tickCurrent: number | undefined, feeAmount: FeeAmount | undefined) =>
   tickCurrent && feeAmount ? Math.floor(tickCurrent / TICK_SPACINGS[feeAmount]) * TICK_SPACINGS[feeAmount] : undefined
 
@@ -96,11 +94,12 @@ function useTicksFromTickLens(
   )
 
   const tickLens = useTickLens()
+  // Refresh cadence comes from the wall-clock-gated multicall feed (one refetch per data refresh
+  // window); a block-denominated override here would only skip windows on a fast chain.
   const callStates = useSingleContractMultipleData(
     tickLensArgs.length > 0 ? tickLens : undefined,
     'getPopulatedTicksInWord',
-    tickLensArgs,
-    REFRESH_FREQUENCY
+    tickLensArgs
   )
 
   const isError = useMemo(() => callStates.some(({ error }) => error), [callStates])

@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
 import { Pool } from '@uniswap/v3-sdk'
 import { useSingleCallResult } from 'lib/hooks/multicall'
-import useBlockNumber from 'lib/hooks/useBlockNumber'
+import { useRefetchBlockNumber } from 'lib/hooks/useBlockNumber'
 import { useEffect, useState } from 'react'
 import { unwrappedToken } from 'utils/unwrappedToken'
 
@@ -21,10 +21,12 @@ export function useV3PositionFees(
     .result?.[0]
 
   const tokenIdHexString = tokenId?.toHexString()
-  const latestBlockNumber = useBlockNumber()
+  // Keyed on the wall-clock-gated feed, not the raw one: this effect runs an eth_call per change,
+  // which on a ~1s-block chain would mean one RPC round per second per open position.
+  const latestBlockNumber = useRefetchBlockNumber()
 
   // we can't use multicall for this because we need to simulate the call from a specific address
-  // latestBlockNumber is included to ensure data stays up-to-date every block
+  // latestBlockNumber is included to ensure data stays up-to-date as the chain advances
   const [amounts, setAmounts] = useState<[BigNumber, BigNumber] | undefined>()
   useEffect(() => {
     ;(async function getFees() {
