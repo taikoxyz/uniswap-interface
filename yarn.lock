@@ -8661,10 +8661,10 @@ bech32@1.1.4:
   resolved "https://registry.yarnpkg.com/bech32/-/bech32-1.1.4.tgz#e38c9f37bf179b8eb16ae3a772b40c356d4832e9"
   integrity sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==
 
-better-sqlite3@^8.1.0:
-  version "8.6.0"
-  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-8.6.0.tgz#a20717993742f816158f17e2cccd88a979e77e58"
-  integrity sha512-jwAudeiTMTSyby+/SfbHDebShbmC2MCH8mU2+DXi0WJfv13ypEJm47cd3kljmy/H130CazEvkf2Li//ewcMJ1g==
+better-sqlite3@12.4.1, better-sqlite3@^8.1.0:
+  version "12.4.1"
+  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-12.4.1.tgz#f78df6c80530d1a0b750b538033e6199b7d30d26"
+  integrity sha512-3yVdyZhklTiNrtg+4WqHpJpFDd+WHTg2oM7UcR80GqL05AOV0xEJzc6qNvFYoEtE+hRp1n9MpN6/+4yhlGkDXQ==
   dependencies:
     bindings "^1.5.0"
     prebuild-install "^7.1.1"
