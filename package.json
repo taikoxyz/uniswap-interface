@@ -336,6 +336,9 @@
     "workbox-strategies": "^7.3.0",
     "zustand": "^4.3.6"
   },
+  "resolutions": {
+    "better-sqlite3": "12.4.1"
+  },
   "engines": {
     "npm": "please-use-yarn",
     "node": "24.x",
