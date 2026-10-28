@@ -1,4 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { useWeb3React } from '@web3-react/core'
+import { isTaikoChain } from 'config/chains/taiko'
+import { useTaikoV3Positions } from 'graphql/taiko/TaikoPositions'
 import { CallStateResult, useSingleCallResult, useSingleContractMultipleData } from 'lib/hooks/multicall'
 import { useMemo } from 'react'
 import { PositionDetails } from 'types/position'
@@ -62,7 +65,7 @@ export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3P
   }
 }
 
-export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {
+function useV3PositionsFromRpc(account: string | null | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
 
   const { loading: balanceLoading, result: balanceResult } = useSingleCallResult(positionManager, 'balanceOf', [
@@ -102,4 +105,18 @@ export function useV3Positions(account: string | null | undefined): UseV3Positio
     loading: someTokenIdsLoading || balanceLoading || positionsLoading,
     positions,
   }
+}
+
+export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {
+  const { chainId } = useWeb3React()
+  const taikoPositions = useTaikoV3Positions(chainId, account)
+  const useHealthyTaikoSubgraph = !!chainId && isTaikoChain(chainId) && !taikoPositions.fallbackToRpc
+  const rpcPositions = useV3PositionsFromRpc(useHealthyTaikoSubgraph ? undefined : account)
+
+  return useHealthyTaikoSubgraph
+    ? {
+        loading: taikoPositions.loading,
+        positions: taikoPositions.positions,
+      }
+    : rpcPositions
 }
